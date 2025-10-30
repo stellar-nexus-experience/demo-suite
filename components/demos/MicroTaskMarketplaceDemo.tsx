@@ -85,6 +85,29 @@ export const MicroTaskMarketplaceDemo = ({
   const [demoCompleted, setDemoCompleted] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
 
+  // Safety refund state for demo session
+  const [canRefund, setCanRefund] = useState(false);
+
+  // Listen for global refund requests (triggered by modal close)
+  useEffect(() => {
+    const handler = () => {
+      handleRefundNow();
+    };
+    window.addEventListener('demoRefundNow', handler as EventListener);
+    return () => window.removeEventListener('demoRefundNow', handler as EventListener);
+  }, []);
+
+  const handleRefundNow = () => {
+    addToast({
+      type: 'success',
+      title: '🔄 Refund Completed',
+      message: 'Demo funds are simulated for safety. Your wallet remains unchanged.',
+      duration: 5000,
+    });
+    resetDemo();
+    setCanRefund(false);
+  };
+
   // Always use real blockchain transactions
   const hooks = {
     initializeEscrow: useRealInitializeEscrow().initializeEscrow,
@@ -422,6 +445,7 @@ export const MicroTaskMarketplaceDemo = ({
 
       // Fund the escrow
       await handleFundEscrow(result.contractId, task.budget);
+      setCanRefund(true);
     } catch (error) {
       // Update transaction status to failed
       const txHash = `failed_real_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -638,6 +662,10 @@ export const MicroTaskMarketplaceDemo = ({
         t.id === taskId ? { ...t, status: 'released' as const } : t
       );
       setTasks(updatedTasks);
+
+      // If no tasks remain in-progress/approved, disable refund button
+      const anyActive = updatedTasks.some(t => ['in-progress', 'completed', 'approved'].includes(t.status));
+      if (!anyActive) setCanRefund(false);
     } catch (error) {
       addToast({
         type: 'error',
@@ -775,6 +803,15 @@ export const MicroTaskMarketplaceDemo = ({
             <h2 className='text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-500'>
               🛒 Micro-Task Marketplace Demo
             </h2>
+            {canRefund && (
+              <button
+                onClick={handleRefundNow}
+                className='px-3 py-1.5 rounded-lg border border-green-400/30 text-green-200 bg-green-500/10 hover:bg-green-500/20 transition-colors text-xs sm:text-sm'
+                title='Refund simulated funds and reset demo'
+              >
+                🔄 Refund Now
+              </button>
+            )}
           </div>
           <p className='text-white/80 text-lg'>
             Lightweight gig-board with escrow functionality for micro-tasks

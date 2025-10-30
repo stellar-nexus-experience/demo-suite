@@ -649,6 +649,10 @@ export const useWallet = (): UseWalletReturn => {
   // Network switching function
   const switchNetwork = useCallback(
     async (network: 'TESTNET' | 'PUBLIC') => {
+      // Enforce TESTNET-only mode for safety during demos
+      if (network === 'PUBLIC') {
+        throw new Error('Mainnet is disabled in demo mode. Please use TESTNET.');
+      }
       if (!walletKit || !walletData) {
         throw new Error('No wallet connected');
       }

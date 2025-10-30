@@ -74,6 +74,33 @@ export const DisputeResolutionDemo = () => {
   const [demoStartTime, setDemoStartTime] = useState<number | null>(null);
   const [demoStarted, setDemoStarted] = useState(false);
 
+  // Safety refund state
+  const [canRefund, setCanRefund] = useState(false);
+
+  // Listen for global refund requests (triggered by modal close)
+  useEffect(() => {
+    const handler = () => {
+      handleRefundNow();
+    };
+    window.addEventListener('demoRefundNow', handler as EventListener);
+    return () => window.removeEventListener('demoRefundNow', handler as EventListener);
+  }, []);
+
+  const handleRefundNow = () => {
+    addToast({
+      type: 'success',
+      title: '🔄 Refund Completed',
+      message: 'Demo funds are simulated for safety. Your wallet remains unchanged.',
+      duration: 5000,
+    });
+    // Reset demo state
+    setContractId('');
+    setEscrowData(null);
+    setDisputes([]);
+    setMilestones(prev => prev.map(m => ({ ...m, status: 'pending' as const })));
+    setCanRefund(false);
+  };
+
   // Smooth scroll to release funds section
   const scrollToReleaseFunds = () => {
     setTimeout(() => {
@@ -287,6 +314,7 @@ export const DisputeResolutionDemo = () => {
 
       const result = await hooks.fundEscrow.fundEscrow(payload);
       setEscrowData(result.escrow);
+      setCanRefund(true);
 
       updateTransaction(txHash, 'success', 'Dispute resolution escrow funded with 10 USDC');
 
@@ -793,6 +821,7 @@ export const DisputeResolutionDemo = () => {
 
       const result = await hooks.releaseFunds.releaseFunds(payload);
       setEscrowData(result.escrow);
+      setCanRefund(false);
 
       // Update all milestone statuses to released
       const updatedMilestones = milestones.map(m => ({ ...m, status: 'released' as const }));
@@ -903,6 +932,17 @@ export const DisputeResolutionDemo = () => {
             <p className='text-white/80 text-lg'>
               Arbitration and conflict resolution system for handling escrow disputes
             </p>
+            {canRefund && (
+              <div className='mt-3'>
+                <button
+                  onClick={handleRefundNow}
+                  className='px-3 py-1.5 rounded-lg border border-green-400/30 text-green-200 bg-green-500/10 hover:bg-green-500/20 transition-colors text-xs sm:text-sm'
+                  title='Refund simulated funds and reset demo'
+                >
+                  🔄 Refund Now
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Main Demo Content */}

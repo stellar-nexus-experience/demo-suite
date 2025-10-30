@@ -154,6 +154,33 @@ export const HelloMilestoneDemo = ({
   const [showTransactionTooltip, setShowTransactionTooltip] = useState(false);
   const [hasShownTransactionGuidance, setHasShownTransactionGuidance] = useState(false);
   const [autoCompleteCountdown, setAutoCompleteCountdown] = useState<Record<string, number>>({});
+  // Refund visibility state (simulated safety refund)
+  const [canRefund, setCanRefund] = useState(false);
+
+  // Listen to global refund request (from modal close confirm)
+  useEffect(() => {
+    const handler = () => {
+      handleRefundNow();
+    };
+    window.addEventListener('demoRefundNow', handler as EventListener);
+    return () => window.removeEventListener('demoRefundNow', handler as EventListener);
+  }, []);
+
+  const handleRefundNow = () => {
+    // For safety: no real funds moved in simulated steps. Just reset state and notify.
+    addToast({
+      type: 'success',
+      title: '🔄 Refund Completed',
+      message: 'Demo funds were simulated only. Your wallet remains unchanged.',
+      duration: 5000,
+    });
+    // Clear any pending tx and reset demo
+    setPendingTransactions({});
+    setTransactionStatuses({});
+    setTransactionDetails({});
+    resetDemo();
+    setCanRefund(false);
+  };
 
   // Get transactions for this demo
 
@@ -382,12 +409,12 @@ export const HelloMilestoneDemo = ({
     {
       id: 'fund',
       title: 'Fund Escrow Contract',
-      description: 'Transfer real USDC tokens into the blockchain escrow',
+      description: 'Simulated: demonstrate transferring USDC tokens into escrow (no real transfer)',
       status: getStepStatus(1, 'fund'),
       action: handleFundEscrow,
       disabled: getStepDisabled(1, 'fund'),
       details:
-        '💰 Transfers actual USDC from your wallet to the smart contract. Funds will be locked until conditions are met.',
+        '💰 For safety, this step is simulated on TESTNET. No USDC leaves your wallet in this demo.',
     },
     {
       id: 'complete',
@@ -402,7 +429,7 @@ export const HelloMilestoneDemo = ({
     {
       id: 'approve',
       title: 'Client Approval',
-      description: 'Client reviews and approves the completed work',
+      description: 'Simulated: client reviews and approves the completed work',
       status: getStepStatus(3, 'approve'),
       action: handleApproveMilestone,
       disabled: getStepDisabled(3, 'approve'),
@@ -412,12 +439,12 @@ export const HelloMilestoneDemo = ({
     {
       id: 'release',
       title: 'Automatic Fund Release',
-      description: 'Smart contract releases funds to worker automatically',
+      description: 'Simulated: smart contract releases funds to worker (no real transfer)',
       status: getStepStatus(4, 'release'),
       action: handleReleaseFunds,
       disabled: getStepDisabled(4, 'release'),
       details:
-        '🎉 The smart contract automatically transfers funds to the worker. No manual intervention needed - this is the power of trustless work!',
+        '🎉 This step is simulated for safety. In production, funds would transfer according to contract conditions.',
     },
   ];
 
@@ -908,6 +935,7 @@ export const HelloMilestoneDemo = ({
       });
 
       setEscrowData(result.escrow);
+      setCanRefund(true);
       setCurrentStep(2);
 
       // Update progress tracking
@@ -1228,6 +1256,7 @@ export const HelloMilestoneDemo = ({
       });
 
       setEscrowData(result.escrow);
+      setCanRefund(false);
       setCurrentStep(5);
 
       // Update progress tracking
@@ -1310,6 +1339,15 @@ export const HelloMilestoneDemo = ({
           <div className='mb-4'>
             <p className='text-white/80 text-lg'>
               Experience the complete trustless escrow flow with real blockchain transactions
+            </p>
+          </div>
+          {/* Testnet & Safety Notice */}
+          <div className='inline-flex flex-col items-center gap-2'>
+            <span className='px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-yellow-500/20 text-yellow-200 border border-yellow-400/30'>
+              TESTNET ONLY
+            </span>
+            <p className='text-white/70 text-xs max-w-xl'>
+              This is a safe demonstration. Step 1 performs a tiny real TESTNET transaction (XLM fee only). Steps 2–5 are simulated for UX learning. We never ask for your Secret Recovery Phrase or wallet password, and no USDC leaves your wallet in this demo.
             </p>
           </div>
         </div>
@@ -1484,6 +1522,15 @@ export const HelloMilestoneDemo = ({
         <div className='mb-6 sm:mb-8'>
           <div className='flex items-center justify-between mb-3 sm:mb-4'>
             <h3 className='text-lg sm:text-xl font-semibold text-white'>Demo Progress</h3>
+            {canRefund && currentStep < 5 && (
+              <button
+                onClick={handleRefundNow}
+                className='px-3 py-1.5 rounded-lg border border-green-400/30 text-green-200 bg-green-500/10 hover:bg-green-500/20 transition-colors text-xs sm:text-sm'
+                title='Refund simulated funds and reset demo'
+              >
+                🔄 Refund Now
+              </button>
+            )}
           </div>
 
           <div className='space-y-4'>

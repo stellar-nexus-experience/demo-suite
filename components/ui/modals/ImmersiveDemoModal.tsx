@@ -1153,6 +1153,16 @@ export const ImmersiveDemoModal = ({
                     Continue Demo
                   </button>
                   <button
+                    onClick={() => {
+                      // Ask the demo to refund if applicable, then close
+                      window.dispatchEvent(new CustomEvent('demoRefundNow'));
+                      handleCloseModal();
+                    }}
+                    className='flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-green-500/20 hover:bg-green-500/30 border border-green-400/30 hover:border-green-400/50 text-green-300 hover:text-green-200 font-semibold rounded-lg transition-all duration-300 text-sm sm:text-base'
+                  >
+                    Refund Now & Exit
+                  </button>
+                  <button
                     onClick={handleCloseModal}
                     className='flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-400/30 hover:border-red-400/50 text-red-300 hover:text-red-200 font-semibold rounded-lg transition-all duration-300 text-sm sm:text-base'
                   >

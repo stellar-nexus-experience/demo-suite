@@ -144,21 +144,24 @@ export const NetworkIndicator: React.FC<NetworkIndicatorProps> = ({
 
               {currentNetwork !== 'PUBLIC' && (
                 <button
-                  onClick={() => handleNetworkSwitch('PUBLIC')}
-                  disabled={isSwitching}
-                  className='w-full p-3 rounded-lg border border-white/10 hover:border-green-400/30 hover:bg-green-500/10 transition-all duration-200 text-left disabled:opacity-50'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Disabled: mainnet not available in demo
+                  }}
+                  disabled={true}
+                  className='w-full p-3 rounded-lg border border-white/10 bg-white/5 text-left opacity-60 cursor-not-allowed'
+                  title='Coming soon: Mainnet support is disabled for safety'
                 >
                   <div className='flex items-center space-x-3'>
                     <span className='text-lg'>🌐</span>
                     <div>
-                      <div className='text-white font-medium'>Mainnet</div>
+                      <div className='text-white font-medium flex items-center space-x-2'>
+                        <span>Mainnet</span>
+                        <span className='px-1.5 py-0.5 text-[10px] rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-400/30'>Coming Soon</span>
+                      </div>
                       <div className='text-xs text-white/70'>Public Stellar Network</div>
                     </div>
-                    {isSwitching && currentNetwork === 'PUBLIC' && (
-                      <div className='ml-auto'>
-                        <div className='w-4 h-4 border-2 border-green-400 border-t-transparent rounded-full animate-spin'></div>
-                      </div>
-                    )}
                   </div>
                 </button>
               )}
