@@ -43,7 +43,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com data:",
               "img-src 'self' data: https: blob:",
-              "connect-src 'self' https://horizon-testnet.stellar.org https://horizon.stellar.org https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com wss://horizon-testnet.stellar.org wss://horizon.stellar.org",
+              "connect-src 'self' https://horizon-testnet.stellar.org https://horizon.stellar.org https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com wss://horizon-testnet.stellar.org wss://horizon.stellar.org",
               "frame-src 'self' https://*.youtube.com https://www.youtube.com",
               "base-uri 'self'",
               "form-action 'self'",
