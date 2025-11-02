@@ -28,7 +28,6 @@ export { AccountStatusIndicator } from './ui/AccountStatusIndicator';
 export { CollapsibleHeader, BackToTopButton } from './ui/ClientButtons';
 export { ClientOnly } from './ui/ClientOnly';
 export { DemoSelector } from './home/DemoSelector';
-export { DownloadStarter } from './DownloadStarter';
 export { HeroSection } from './home/HeroSection';
 export { InteractiveTutorialSection } from './home/InteractiveTutorialSection';
 export { LeaderboardSection } from './home/LeaderboardSection';
