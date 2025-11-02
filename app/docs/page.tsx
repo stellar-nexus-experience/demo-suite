@@ -1139,6 +1139,13 @@ export default VibecodingComponent;`}
                               <div className='grid md:grid-cols-3 gap-6'>
                                 {/* DeFi Starter */}
                                 <div className='bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-400/30 rounded-2xl p-6 hover:border-cyan-400/50 transition-all duration-300 group relative'>
+                                  {/* Coming Soon Badge */}
+                                  <div className='absolute top-4 right-4 z-10'>
+                                    <span className='bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse'>
+                                      🔜 Coming Soon
+                                    </span>
+                                  </div>
+                                  
                                   <div className='text-center mb-4'>
                                     <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
                                       💎
@@ -1171,18 +1178,23 @@ export default VibecodingComponent;`}
                                     </div>
                                   </div>
 
-                                  <a
-                                    href='https://nexus-starter.vercel.app/'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    className='block w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 text-center'
+                                  <button
+                                    disabled
+                                    className='block w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white/50 font-semibold py-3 px-4 rounded-xl transition-all duration-300 cursor-not-allowed text-center'
                                   >
                                     💎 Explore DeFi Starter
-                                  </a>
+                                  </button>
                                 </div>
 
                                 {/* Gaming Starter */}
                                 <div className='bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-400/30 rounded-2xl p-6 hover:border-purple-400/50 transition-all duration-300 group relative'>
+                                  {/* Coming Soon Badge */}
+                                  <div className='absolute top-4 right-4 z-10'>
+                                    <span className='bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse'>
+                                      🔜 Coming Soon
+                                    </span>
+                                  </div>
+                                  
                                   <div className='text-center mb-4'>
                                     <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
                                       🎮
@@ -1215,18 +1227,23 @@ export default VibecodingComponent;`}
                                     </div>
                                   </div>
 
-                                  <a
-                                    href='https://nexus-starter.vercel.app/'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    className='block w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 text-center'
+                                  <button
+                                    disabled
+                                    className='block w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white/50 font-semibold py-3 px-4 rounded-xl transition-all duration-300 cursor-not-allowed text-center'
                                   >
                                     🎮 Explore Gaming Starter
-                                  </a>
+                                  </button>
                                 </div>
 
                                 {/* Unicorn Starter */}
                                 <div className='bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-400/30 rounded-2xl p-6 hover:border-green-400/50 transition-all duration-300 group relative'>
+                                  {/* Coming Soon Badge */}
+                                  <div className='absolute top-4 right-4 z-10'>
+                                    <span className='bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse'>
+                                      🔜 Coming Soon
+                                    </span>
+                                  </div>
+                                  
                                   <div className='text-center mb-4'>
                                     <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
                                       🦄
@@ -1259,14 +1276,12 @@ export default VibecodingComponent;`}
                                     </div>
                                   </div>
 
-                                  <a
-                                    href='https://nexus-starter.vercel.app/'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    className='block w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 text-center'
+                                  <button
+                                    disabled
+                                    className='block w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white/50 font-semibold py-3 px-4 rounded-xl transition-all duration-300 cursor-not-allowed text-center'
                                   >
                                     🦄 Explore Unicorn Starter
-                                  </a>
+                                  </button>
                                 </div>
                               </div>
 

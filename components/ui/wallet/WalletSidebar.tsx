@@ -178,25 +178,6 @@ export const WalletSidebar = ({ isOpen, onToggle, showBanner = false, hideFloati
     }
   }, [isOpen]);
 
-  // Open mini games store in new window
-  const redirectToNexusStartersLiveApp = () => {
-    const width = 1200;
-    const height = 800;
-    const left = (window.screen.width - width) / 2;
-    const top = (window.screen.height - height) / 2;
-
-    const newWindow = window.open(
-      'https://nexus-starter.vercel.app/',
-      'Nexus Starters',
-      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
-    );
-
-    if (newWindow) {
-      setIsNewWindow(true);
-      newWindow.onbeforeunload = () => setIsNewWindow(false);
-    }
-  };
-
   const copyAddress = () => {
     if (walletData?.publicKey) {
       navigator.clipboard.writeText(walletData.publicKey);

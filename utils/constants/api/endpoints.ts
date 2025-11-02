@@ -20,7 +20,6 @@ export const API_ENDPOINTS = {
     ALBEDO_LINK: 'https://albedo.link/',
     XBULL_APP: 'https://xbull.app/',
     FRIENDBOT: 'https://friendbot.stellar.org',
-    NEXUS_STARTER: 'https://nexus-starter.vercel.app/',
   },
 } as const;
 
