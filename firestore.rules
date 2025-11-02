@@ -2,17 +2,10 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow read and write access to all documents
-    // WARNING: This is for development/testing only - not secure for production!
-    match /{document=**} {
-      allow read, write: if true;
-    }
-    
-    // More secure rules for production (commented out for now):
-    /*
     // Users can read and write their own account documents
     match /accounts/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
     }
     
     // Users can read and write their own points transactions
@@ -36,11 +29,17 @@ service cloud.firestore {
       allow update, delete: if false; // Feedback is immutable once submitted
     }
     
-    // Allow test documents for debugging (remove in production)
-    match /test/{testId} {
-      allow read, write: if true;
+    // Leaderboard - public read, no write
+    match /leaderboard/{entryId} {
+      allow read: if true;
+      allow write: if false;
     }
-    */
+    
+    // Analytics - read for authenticated users
+    match /analytics/{document=**} {
+      allow read: if request.auth != null;
+      allow write: if false; // Only server-side writes allowed
+    }
   }
 }
 
