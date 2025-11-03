@@ -1063,9 +1063,6 @@ export default function MiniGameStore() {
             </div>
           </main>
 
-          {/* Leaderboard Section */}
-          <LeaderboardSection onOpenLeaderboard={() => setLeaderboardSidebarOpen(true)} />
-
           {/* Wallet Sidebar */}
           <WalletSidebar
             isOpen={walletSidebarOpen}
