@@ -41,15 +41,24 @@ const placeholderConfig = {
   measurementId: 'G-PLACEHOLDER',
 };
 
-let app: FirebaseApp | undefined;
-let db: Firestore | undefined;
-let auth: Auth | undefined;
+// Initialize Firebase instances - always ensure they're defined
+// Using definite assignment assertions since they're always initialized in the try-catch below
+let app!: FirebaseApp;
+let db!: Firestore;
+let auth!: Auth;
 let initializedWithPlaceholder = false;
 
 // Initialize Firebase with runtime config check
-function initializeFirebase() {
-  // If already initialized, return existing instances
-  if (app && db && auth) {
+function initializeFirebase(): { app: FirebaseApp; db: Firestore; auth: Auth } {
+  // Check if Firebase is already initialized
+  const existingApps = getApps();
+  if (existingApps.length > 0) {
+    app = existingApps[0];
+    db = getFirestore(app);
+    auth = getAuth(app);
+    // Check if we're using placeholder by examining the project ID
+    const projectId = (app.options as any).projectId;
+    initializedWithPlaceholder = projectId === 'build-placeholder';
     return { app, db, auth };
   }
 
@@ -61,35 +70,20 @@ function initializeFirebase() {
   // In browser runtime, always use real config if available, never placeholder
   const usePlaceholder = !isValid && !isBrowser;
 
+  // In browser runtime, only initialize with real config
+  if (isBrowser && !isValid) {
+    throw new Error(
+      'Missing required Firebase configuration. Please set all NEXT_PUBLIC_FIREBASE_* environment variables.'
+    );
+  }
+
   const finalConfig = usePlaceholder ? placeholderConfig : config;
 
   try {
-    // Check if Firebase app already exists
-    const existingApps = getApps();
-    if (existingApps.length > 0) {
-      app = existingApps[0];
-      db = getFirestore(app);
-      auth = getAuth(app);
-      return { app, db, auth };
-    }
-
-    // In browser runtime, only initialize with real config
-    if (isBrowser && !isValid) {
-      throw new Error(
-        'Missing required Firebase configuration. Please set all NEXT_PUBLIC_FIREBASE_* environment variables.'
-      );
-    }
-
     app = initializeApp(finalConfig);
     db = getFirestore(app);
     auth = getAuth(app);
-
-    // Track if we used placeholder (only happens during build/SSR)
-    if (usePlaceholder) {
-      initializedWithPlaceholder = true;
-    } else if (isBrowser && isValid) {
-      initializedWithPlaceholder = false;
-    }
+    initializedWithPlaceholder = usePlaceholder;
   } catch (error) {
     // During build/SSR, use placeholder to allow build to proceed
     if (!isBrowser) {
@@ -106,12 +100,7 @@ function initializeFirebase() {
         initializedWithPlaceholder = true;
       }
     } else {
-      // In browser runtime, throw error if config is invalid
-      if (!isValid) {
-        throw new Error(
-          'Missing required Firebase configuration. Please set all NEXT_PUBLIC_FIREBASE_* environment variables.'
-        );
-      }
+      // In browser runtime, re-throw the error
       throw error;
     }
   }
@@ -120,14 +109,26 @@ function initializeFirebase() {
 }
 
 // Initialize immediately for build-time compatibility
-// This will be re-initialized with real config at runtime if available
+// This will use real config at runtime if available
 try {
   const result = initializeFirebase();
   app = result.app;
   db = result.db;
   auth = result.auth;
 } catch (error) {
-  // Silently fail during build, will be re-initialized at runtime
+  // Ensure db and auth are always defined, even if initialization fails
+  // This prevents TypeScript errors and ensures the build can proceed
+  try {
+    app = initializeApp(placeholderConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    initializedWithPlaceholder = true;
+  } catch (fallbackError) {
+    // This should never happen, but ensures TypeScript knows they're defined
+    throw new Error('Failed to initialize Firebase with placeholder config');
+  }
+  
+  // Only log error in browser runtime
   if (typeof window !== 'undefined') {
     console.error('Firebase initialization error:', error);
   }
