@@ -374,9 +374,6 @@ export default function HomePageContent() {
             />
       </main>
       
-      {/* Leaderboard Section */}
-      <LeaderboardSection onOpenLeaderboard={() => setLeaderboardSidebarOpen(true)} />
-
       {/* Footer */}
       <div className='animate-fadeIn'>
         <Footer />
