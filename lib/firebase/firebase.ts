@@ -1,76 +1,135 @@
 // Firebase configuration and initialization
-import { initializeApp } from 'firebase/app';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
+import { getFirestore, connectFirestoreEmulator, Firestore } from 'firebase/firestore';
+import { getAuth, connectAuthEmulator, Auth } from 'firebase/auth';
 import { getAnalytics, isSupported } from 'firebase/analytics';
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+// Get Firebase configuration from environment variables
+function getFirebaseConfig() {
+  return {
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  };
+}
+
+// Check if config is valid (not placeholder)
+function isConfigValid(config: ReturnType<typeof getFirebaseConfig>): boolean {
+  return !!(
+    config.apiKey &&
+    config.authDomain &&
+    config.projectId &&
+    config.apiKey !== 'build-placeholder' &&
+    config.projectId !== 'build-placeholder' &&
+    !config.apiKey.includes('placeholder') &&
+    !config.projectId.includes('placeholder')
+  );
+}
+
+// Placeholder config for build-time only
+const placeholderConfig = {
+  apiKey: 'build-placeholder',
+  authDomain: 'build-placeholder.firebaseapp.com',
+  projectId: 'build-placeholder',
+  storageBucket: 'build-placeholder.appspot.com',
+  messagingSenderId: '123456789',
+  appId: '1:123456789:web:placeholder',
+  measurementId: 'G-PLACEHOLDER',
 };
 
-// Validate all required Firebase configuration values are present
-const isRequiredConfigMissing =
-  !firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId;
+let app: FirebaseApp | undefined;
+let db: Firestore | undefined;
+let auth: Auth | undefined;
+let initializedWithPlaceholder = false;
 
-// During build time, if config is missing, use placeholder values to allow build to proceed
-// Errors will be thrown at runtime when Firebase is actually used
-const buildTimeConfig = isRequiredConfigMissing
-  ? {
-      apiKey: 'build-placeholder',
-      authDomain: 'build-placeholder.firebaseapp.com',
-      projectId: 'build-placeholder',
-      storageBucket: 'build-placeholder.appspot.com',
-      messagingSenderId: '123456789',
-      appId: '1:123456789:web:placeholder',
-      measurementId: 'G-PLACEHOLDER',
-    }
-  : firebaseConfig;
-
-let app: ReturnType<typeof initializeApp>;
-let db: ReturnType<typeof getFirestore>;
-let auth: ReturnType<typeof getAuth>;
-
-try {
-  app = initializeApp(buildTimeConfig);
-  db = getFirestore(app);
-  auth = getAuth(app);
-
-  // If we used placeholder config, Firebase will initialize but operations will fail
-  // This allows the build to proceed, errors will occur at runtime
-  if (isRequiredConfigMissing && typeof window !== 'undefined') {
-    console.warn(
-      'Firebase initialized with placeholder config. Set NEXT_PUBLIC_FIREBASE_* environment variables for full functionality.'
-    );
+// Initialize Firebase with runtime config check
+function initializeFirebase() {
+  // If already initialized, return existing instances
+  if (app && db && auth) {
+    return { app, db, auth };
   }
-} catch (error) {
-  // During build/SSR, don't throw - allow build to proceed
-  // Re-initialize with placeholder config to ensure exports are always defined
+
+  const config = getFirebaseConfig();
+  const isValid = isConfigValid(config);
+  const isBrowser = typeof window !== 'undefined';
+
+  // Use placeholder ONLY during build/SSR if config is missing
+  // In browser runtime, always use real config if available, never placeholder
+  const usePlaceholder = !isValid && !isBrowser;
+
+  const finalConfig = usePlaceholder ? placeholderConfig : config;
+
   try {
-    app = initializeApp(buildTimeConfig);
+    // Check if Firebase app already exists
+    const existingApps = getApps();
+    if (existingApps.length > 0) {
+      app = existingApps[0];
+      db = getFirestore(app);
+      auth = getAuth(app);
+      return { app, db, auth };
+    }
+
+    // In browser runtime, only initialize with real config
+    if (isBrowser && !isValid) {
+      throw new Error(
+        'Missing required Firebase configuration. Please set all NEXT_PUBLIC_FIREBASE_* environment variables.'
+      );
+    }
+
+    app = initializeApp(finalConfig);
     db = getFirestore(app);
     auth = getAuth(app);
-    console.warn('Firebase initialized with fallback config during build');
-  } catch (fallbackError) {
-    // If initialization still fails, we must initialize with something
-    // Use the buildTimeConfig which should always be valid format-wise
-    app = initializeApp(buildTimeConfig);
-    db = getFirestore(app);
-    auth = getAuth(app);
-    console.warn('Firebase force-initialized for build compatibility');
+
+    // Track if we used placeholder (only happens during build/SSR)
+    if (usePlaceholder) {
+      initializedWithPlaceholder = true;
+    } else if (isBrowser && isValid) {
+      initializedWithPlaceholder = false;
+    }
+  } catch (error) {
+    // During build/SSR, use placeholder to allow build to proceed
+    if (!isBrowser) {
+      try {
+        app = initializeApp(placeholderConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+        initializedWithPlaceholder = true;
+      } catch (fallbackError) {
+        // Force initialization with placeholder for build compatibility
+        app = initializeApp(placeholderConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+        initializedWithPlaceholder = true;
+      }
+    } else {
+      // In browser runtime, throw error if config is invalid
+      if (!isValid) {
+        throw new Error(
+          'Missing required Firebase configuration. Please set all NEXT_PUBLIC_FIREBASE_* environment variables.'
+        );
+      }
+      throw error;
+    }
   }
 
-  // Only throw error in browser runtime if config is actually missing
-  if (typeof window !== 'undefined' && isRequiredConfigMissing) {
-    throw new Error(
-      'Missing required Firebase configuration. Please set all NEXT_PUBLIC_FIREBASE_* environment variables.'
-    );
+  return { app, db, auth };
+}
+
+// Initialize immediately for build-time compatibility
+// This will be re-initialized with real config at runtime if available
+try {
+  const result = initializeFirebase();
+  app = result.app;
+  db = result.db;
+  auth = result.auth;
+} catch (error) {
+  // Silently fail during build, will be re-initialized at runtime
+  if (typeof window !== 'undefined') {
+    console.error('Firebase initialization error:', error);
   }
 }
 

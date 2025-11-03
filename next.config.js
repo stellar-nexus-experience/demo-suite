@@ -39,11 +39,11 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://www.gstatic.com",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://www.gstatic.com https://www.googletagmanager.com https://vercel.live",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com data:",
               "img-src 'self' data: https: blob:",
-              "connect-src 'self' https://horizon-testnet.stellar.org https://horizon.stellar.org https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com wss://horizon-testnet.stellar.org wss://horizon.stellar.org",
+              "connect-src 'self' https://horizon-testnet.stellar.org https://horizon.stellar.org https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com https://www.googletagmanager.com wss://horizon-testnet.stellar.org wss://horizon.stellar.org",
               "frame-src 'self' https://*.youtube.com https://www.youtube.com",
               "base-uri 'self'",
               "form-action 'self'",
