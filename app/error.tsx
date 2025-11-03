@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 
+// Error component for handling errors in the app
 export default function Error({
   error,
   reset,
