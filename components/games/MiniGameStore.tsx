@@ -114,228 +114,226 @@ export default function MiniGameStore() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden'>
-          {/* Header */}
-          <div className='animate-fadeIn'>
-            <Header />
-          </div>
+      {/* Header */}
+      <div className='animate-fadeIn'>
+        <Header />
+      </div>
 
-          {/* Main Content */}
-          <main 
-            className={`relative z-10 pt-20 animate-fadeIn ${
-              walletSidebarOpen && walletExpanded ? 'mr-96' : walletSidebarOpen ? 'mr-20' : 'mr-0'
-            } ${!walletSidebarOpen ? 'pb-32' : 'pb-8'}`}
-          >
-            <div className='container mx-auto px-4'>
-              <div className='max-w-7xl mx-auto'>
-                {/* Epic Hero Section */}
-                <div className='text-center mb-16 relative'>
-                  {/* Legendary Background Effects */}
-                  <div className='absolute inset-0 flex justify-center items-center pointer-events-none'>
-                    {/* Primary Energy Core */}
-                    <div className='relative w-[600px] h-48'>
-                      {/* Inner Energy Ring */}
-                      <div className='absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/40 via-purple-500/50 to-pink-500/40 blur-lg scale-150 animate-pulse'></div>
+      {/* Main Content */}
+      <main
+        className={`relative z-10 pt-20 animate-fadeIn ${walletSidebarOpen && walletExpanded ? 'mr-96' : walletSidebarOpen ? 'mr-20' : 'mr-0'
+          } ${!walletSidebarOpen ? 'pb-32' : 'pb-8'}`}
+      >
+        <div className='container mx-auto px-4'>
+          <div className='max-w-7xl mx-auto'>
+            {/* Epic Hero Section */}
+            <div className='text-center mb-16 relative'>
+              {/* Legendary Background Effects */}
+              <div className='absolute inset-0 flex justify-center items-center pointer-events-none'>
+                {/* Primary Energy Core */}
+                <div className='relative w-[600px] h-48'>
+                  {/* Inner Energy Ring */}
+                  <div className='absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/40 via-purple-500/50 to-pink-500/40 blur-lg scale-150 animate-pulse'></div>
 
-                      {/* Middle Energy Ring */}
-                      <div
-                        className='absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/30 via-pink-500/40 to-cyan-400/30 blur-xl scale-200 animate-pulse'
-                        style={{ animationDelay: '1s' }}
-                      ></div>
+                  {/* Middle Energy Ring */}
+                  <div
+                    className='absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/30 via-pink-500/40 to-cyan-400/30 blur-xl scale-200 animate-pulse'
+                    style={{ animationDelay: '1s' }}
+                  ></div>
 
-                      {/* Outer Energy Ring */}
-                      <div
-                        className='absolute inset-0 rounded-full bg-gradient-to-r from-pink-400/20 via-cyan-500/30 to-purple-300/20 blur-2xl scale-250 animate-pulse'
-                        style={{ animationDelay: '2s' }}
-                      ></div>
-                    </div>
-                  </div>
+                  {/* Outer Energy Ring */}
+                  <div
+                    className='absolute inset-0 rounded-full bg-gradient-to-r from-pink-400/20 via-cyan-500/30 to-purple-300/20 blur-2xl scale-250 animate-pulse'
+                    style={{ animationDelay: '2s' }}
+                  ></div>
+                </div>
+              </div>
 
-                  {/* Logo and Title */}
-                  <div className='relative z-10 mb-8'>
-                    <div className='flex justify-center mb-6'>
-                      <div className='relative'>
-                        <Image
-                          src='/images/logo/logoicon.png'
-                          alt='Trustless Work'
-                          width={300}
-                          height={300}
-                          className='drop-shadow-2xl animate-pulse opacity-10'
-                        />
-                        {/* Glowing Orb Effect */}
-                        <div className='absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 blur-xl scale-110 animate-ping'></div>
-                      </div>
-                    </div>
-
-                    <h1
-                      className='text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 drop-shadow-2xl mb-6 animate-pulse'
-                      style={{ marginTop: '-200px' }}
-                    >
-                      GAMING STATION
-                    </h1>
-
-                    <h2 className='text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 drop-shadow-xl mb-8'>
-                      WEB3 LEARNING PLATFORM
-                    </h2>
-                  </div>
-
-                  <p className='text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8'>
-                    🚀 <span className='text-cyan-400 font-bold'>LEARN</span> • 🎮{' '}
-                    <span className='text-purple-400 font-bold'>PLAY</span> • 🏆{' '}
-                    <span className='text-pink-400 font-bold'>EARN</span> • 🌟{' '}
-                    <span className='text-yellow-400 font-bold'>BUILD</span>
-                  </p>
-
-                  <p className='text-lg text-white/80 max-w-3xl mx-auto mb-8'>
-                    Master blockchain technology through epic gaming adventures. Complete quests,
-                    earn crypto rewards, and unlock secret missions while building the future of
-                    web3!
-                  </p>
-
-                  {/* Navigation Buttons */}
-                  <div className='flex justify-center gap-6 mb-12'>
-                    <button
-                      onClick={() => {
-                        const bannerSection = document.getElementById('news-banner-carousel');
-                        if (bannerSection) {
-                          bannerSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start',
-                          });
-                        }
-                      }}
-                      className='px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25 border-2 border-white/20 hover:border-white/40 flex items-center space-x-3'
-                    >
-                      <span className='text-2xl'>📰</span>
-                      <span>Go To News Banner</span>
-                      <span className='text-xl'>↓</span>
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        if (!isConnected) {
-                          // Open wallet sidebar if not connected
-                          window.dispatchEvent(
-                            new CustomEvent('walletSidebarToggle', {
-                              detail: { isOpen: true, isExpanded: true },
-                            })
-                          );
-                          return;
-                        }
-                        
-                        const filterSection = document.getElementById('filter-games-section');
-                        if (filterSection) {
-                          filterSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start',
-                          });
-                        }
-                      }}
-                      disabled={isConnected && firebaseLoading && !isInitialized}
-                      className={`px-8 py-4 font-bold rounded-xl transition-all duration-300 transform shadow-lg border-2 flex items-center space-x-3 ${
-                        isConnected && firebaseLoading && !isInitialized
-                          ? 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'
-                          : !isConnected
-                          ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white hover:scale-105 hover:shadow-yellow-500/25 border-white/20 hover:border-white/40'
-                          : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white hover:scale-105 hover:shadow-purple-500/25 border-white/20 hover:border-white/40'
-                      }`}
-                    >
-                      {isConnected && firebaseLoading && !isInitialized ? (
-                        <>
-                          <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white'></div>
-                          <span>Loading...</span>
-                        </>
-                      ) : !isConnected ? (
-                        <>
-                          <span>🔗 Connect to Explore Games</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>Explore Games</span>
-                          <span className='text-xl'>🔍</span>
-                        </>
-                      )}
-                    </button>
+              {/* Logo and Title */}
+              <div className='relative z-10 mb-8'>
+                <div className='flex justify-center mb-6'>
+                  <div className='relative'>
+                    <Image
+                      src='/images/logo/logoicon.png'
+                      alt='Trustless Work'
+                      width={300}
+                      height={300}
+                      className='drop-shadow-2xl animate-pulse opacity-10'
+                    />
+                    {/* Glowing Orb Effect */}
+                    <div className='absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 blur-xl scale-110 animate-ping'></div>
                   </div>
                 </div>
 
-                {/* Wallet Not Connected State */}
-                {!isConnected && (
-                  <div className='text-center py-16'>
-                    {/* Wallet Icon */}
-                    <div className='inline-block mb-6'>
-                      <div className='text-8xl mb-4 animate-bounce'>💼</div>
-                    </div>
+                <h1
+                  className='text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 drop-shadow-2xl mb-6 animate-pulse'
+                  style={{ marginTop: '-200px' }}
+                >
+                  GAMING STATION
+                </h1>
 
-                    {/* Title */}
-                    <h3 className='text-2xl font-semibold text-white mb-2'>
-                      Connect Your Wallet
-                    </h3>
+                <h2 className='text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 drop-shadow-xl mb-8'>
+                  WEB3 LEARNING PLATFORM
+                </h2>
+              </div>
 
-                    {/* Description */}
-                    <p className='text-white/70 text-sm mb-8 max-w-md mx-auto'>
-                      Connect your Stellar wallet to access the Nexus Web3 Playground, track your progress, and compete on the leaderboard!
-                    </p>
+              <p className='text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8'>
+                🚀 <span className='text-cyan-400 font-bold'>LEARN</span> • 🎮{' '}
+                <span className='text-purple-400 font-bold'>PLAY</span> • 🏆{' '}
+                <span className='text-pink-400 font-bold'>EARN</span> • 🌟{' '}
+                <span className='text-yellow-400 font-bold'>BUILD</span>
+              </p>
 
-                    {/* Connect Button */}
-                    <button
-                      onClick={() => {
-                        // Dispatch wallet sidebar toggle event
-                        window.dispatchEvent(
-                          new CustomEvent('walletSidebarToggle', {
-                            detail: { isOpen: true, isExpanded: true },
-                          })
-                        );
-                      }}
-                      className='px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25 border-2 border-white/20 hover:border-white/40'
-                    >
-                      🔗 Connect Wallet
-                    </button>
-                  </div>
-                )}
+              <p className='text-lg text-white/80 max-w-3xl mx-auto mb-8'>
+                Master blockchain technology through epic gaming adventures. Complete quests,
+                earn crypto rewards, and unlock secret missions while building the future of
+                web3!
+              </p>
 
-                {/* Loading State */}
-                {isConnected && firebaseLoading && !isInitialized && (
-                  <div className='text-center py-16'>
-                    {/* Loading Spinner */}
-                    <div className='inline-block'>
-                      <div className='animate-spin rounded-full h-16 w-16 border-b-2 border-purple-400 mb-4'></div>
-                    </div>
+              {/* Navigation Buttons */}
+              <div className='flex justify-center gap-6 mb-12'>
+                <button
+                  onClick={() => {
+                    const bannerSection = document.getElementById('news-banner-carousel');
+                    if (bannerSection) {
+                      bannerSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      });
+                    }
+                  }}
+                  className='px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/25 border-2 border-white/20 hover:border-white/40 flex items-center space-x-3'
+                >
+                  <span className='text-2xl'>📰</span>
+                  <span>Go To News Banner</span>
+                  <span className='text-xl'>↓</span>
+                </button>
 
-                    {/* Loading Title */}
-                    <h3 className='text-lg font-semibold text-white mb-2'>
-                      Loading Your Account...
-                    </h3>
+                <button
+                  onClick={() => {
+                    if (!isConnected) {
+                      // Open wallet sidebar if not connected
+                      window.dispatchEvent(
+                        new CustomEvent('walletSidebarToggle', {
+                          detail: { isOpen: true, isExpanded: true },
+                        })
+                      );
+                      return;
+                    }
 
-                    {/* Loading Description */}
-                    <p className='text-white/70 text-sm mb-6'>
-                      Preparing game library and loading your progress data
-                    </p>
+                    const filterSection = document.getElementById('filter-games-section');
+                    if (filterSection) {
+                      filterSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      });
+                    }
+                  }}
+                  disabled={isConnected && firebaseLoading && !isInitialized}
+                  className={`px-8 py-4 font-bold rounded-xl transition-all duration-300 transform shadow-lg border-2 flex items-center space-x-3 ${isConnected && firebaseLoading && !isInitialized
+                      ? 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'
+                      : !isConnected
+                        ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white hover:scale-105 hover:shadow-yellow-500/25 border-white/20 hover:border-white/40'
+                        : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white hover:scale-105 hover:shadow-purple-500/25 border-white/20 hover:border-white/40'
+                    }`}
+                >
+                  {isConnected && firebaseLoading && !isInitialized ? (
+                    <>
+                      <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white'></div>
+                      <span>Loading...</span>
+                    </>
+                  ) : !isConnected ? (
+                    <>
+                      <span>🔗 Connect to Explore Games</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Explore Games</span>
+                      <span className='text-xl'>🔍</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
 
-                    {/* Animated Loading Dots */}
-                    <div className='flex justify-center items-center space-x-2'>
-                      <div className='animate-pulse bg-purple-400/30 rounded-full h-3 w-3'></div>
-                      <div
-                        className='animate-pulse bg-purple-400/50 rounded-full h-3 w-3'
-                        style={{ animationDelay: '0.3s' }}
-                      ></div>
-                      <div
-                        className='animate-pulse bg-purple-400/30 rounded-full h-3 w-3'
-                        style={{ animationDelay: '0.6s' }}
-                      ></div>
-                    </div>
+            {/* Wallet Not Connected State */}
+            {!isConnected && (
+              <div className='text-center py-16'>
+                {/* Wallet Icon */}
+                <div className='inline-block mb-6'>
+                  <div className='text-8xl mb-4 animate-bounce'>💼</div>
+                </div>
 
-                    {/* Progress Steps */}
-                    <div className='mt-6 space-y-2'>
-                      <div className='text-xs text-white/60'>• Loading account information</div>
-                      <div className='text-xs text-white/60'>• Fetching game statistics</div>
-                      <div className='text-xs text-white/60'>• Preparing game interfaces</div>
-                    </div>
-                  </div>
-                )}
+                {/* Title */}
+                <h3 className='text-2xl font-semibold text-white mb-2'>
+                  Connect Your Wallet
+                </h3>
 
-                {/* Main Content - Show only when wallet is connected AND account is initialized */}
-                {isConnected && isInitialized && (
-                  <>
+                {/* Description */}
+                <p className='text-white/70 text-sm mb-8 max-w-md mx-auto'>
+                  Connect your Stellar wallet to access the Nexus Web3 Playground, track your progress, and compete on the leaderboard!
+                </p>
+
+                {/* Connect Button */}
+                <button
+                  onClick={() => {
+                    // Dispatch wallet sidebar toggle event
+                    window.dispatchEvent(
+                      new CustomEvent('walletSidebarToggle', {
+                        detail: { isOpen: true, isExpanded: true },
+                      })
+                    );
+                  }}
+                  className='px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25 border-2 border-white/20 hover:border-white/40'
+                >
+                  🔗 Connect Wallet
+                </button>
+              </div>
+            )}
+
+            {/* Loading State */}
+            {isConnected && firebaseLoading && !isInitialized && (
+              <div className='text-center py-16'>
+                {/* Loading Spinner */}
+                <div className='inline-block'>
+                  <div className='animate-spin rounded-full h-16 w-16 border-b-2 border-purple-400 mb-4'></div>
+                </div>
+
+                {/* Loading Title */}
+                <h3 className='text-lg font-semibold text-white mb-2'>
+                  Loading Your Account...
+                </h3>
+
+                {/* Loading Description */}
+                <p className='text-white/70 text-sm mb-6'>
+                  Preparing game library and loading your progress data
+                </p>
+
+                {/* Animated Loading Dots */}
+                <div className='flex justify-center items-center space-x-2'>
+                  <div className='animate-pulse bg-purple-400/30 rounded-full h-3 w-3'></div>
+                  <div
+                    className='animate-pulse bg-purple-400/50 rounded-full h-3 w-3'
+                    style={{ animationDelay: '0.3s' }}
+                  ></div>
+                  <div
+                    className='animate-pulse bg-purple-400/30 rounded-full h-3 w-3'
+                    style={{ animationDelay: '0.6s' }}
+                  ></div>
+                </div>
+
+                {/* Progress Steps */}
+                <div className='mt-6 space-y-2'>
+                  <div className='text-xs text-white/60'>• Loading account information</div>
+                  <div className='text-xs text-white/60'>• Fetching game statistics</div>
+                  <div className='text-xs text-white/60'>• Preparing game interfaces</div>
+                </div>
+              </div>
+            )}
+
+            {/* Main Content - Show only when wallet is connected AND account is initialized */}
+            {isConnected && isInitialized && (
+              <>
                 {/* Featured Game Spotlight */}
                 <div className='mb-16'>
                   <div className='text-center mb-8'>
@@ -383,8 +381,8 @@ export default function MiniGameStore() {
                         <div>
                           <h3 className='text-4xl font-bold text-white mb-4'>
                             🌐 Web3 Basics Adventure | <br /> <span className='text-brand-300 text-2xl font-bold'>
-                          NEXUS Infinite Runner
-                          </span>
+                              NEXUS Infinite Runner
+                            </span>
                           </h3>
                           <p className='text-white/90 text-lg leading-relaxed mb-6'>
                             Embark on an epic journey through blockchain fundamentals. Learn smart
@@ -393,15 +391,32 @@ export default function MiniGameStore() {
                           </p>
                         </div>
 
-                        <div className='grid grid-cols-2 gap-4'>
-                          <div className='text-center p-3 bg-white/10 rounded-xl'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+                          <div className='relative text-center p-3 bg-white/10 rounded-xl'>
                             <div className='text-2xl mb-2'>⏱️</div>
-                            <div className='text-white font-semibold'><span className='text-cyan-400 font-bold'>Infinite</span></div>
+                            <div className='text-white font-semibold'>
+                              <span className='text-cyan-400 font-bold'>25mins</span>
+                            </div>
                             <div className='text-white/60 text-sm'>Duration</div>
                           </div>
-                          <div className='text-center p-3 bg-white/10 rounded-xl'>
+
+                          <div className='relative text-center p-3 bg-white/10 rounded-xl'>
+                            <div className='text-2xl mb-2'>🎮</div>
+                            <div className='text-white font-semibold'>
+                              <span className='text-white font-bold'>Lvls 5</span>
+                            </div>
+                            <div className='text-white/60 text-sm'>Levels</div>
+                          </div>
+
+                          <div className='relative text-center p-3 bg-white/10 rounded-xl'>
+                            <span className='absolute top-2 right-2 px-2 py-1 text-xs font-bold text-black bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse'>
+                              Coming Soon
+                            </span>
+
                             <div className='text-2xl mb-2'>🏆</div>
-                            <div className='text-white font-semibold'>50 XLM</div>
+                            <div className='text-white font-semibold'>
+                              50 XLM
+                            </div>
                             <div className='text-white/60 text-sm'>+ NFT Badge</div>
                           </div>
                         </div>
@@ -464,11 +479,10 @@ export default function MiniGameStore() {
                         <button
                           key={category.id}
                           onClick={() => setSelectedCategory(category.id)}
-                          className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 ${
-                            selectedCategory === category.id
+                          className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 ${selectedCategory === category.id
                               ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25'
                               : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
-                          }`}
+                            }`}
                         >
                           <span className='mr-2'>{category.name.split(' ')[0]}</span>
                           {category.name.split(' ').slice(1).join(' ')}
@@ -486,9 +500,8 @@ export default function MiniGameStore() {
                   {filteredGames.map(game => (
                     <div
                       key={game.id}
-                      className={`group relative bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl ${
-                        hoveredGame === game.id ? 'shadow-cyan-500/25' : 'shadow-lg'
-                      }`}
+                      className={`group relative bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl ${hoveredGame === game.id ? 'shadow-cyan-500/25' : 'shadow-lg'
+                        }`}
                       onMouseEnter={() => setHoveredGame(game.id)}
                       onMouseLeave={() => setHoveredGame(null)}
                     >
@@ -518,15 +531,14 @@ export default function MiniGameStore() {
                         {/* Status Badge */}
                         <div className='absolute top-4 right-4'>
                           <span
-                            className={`px-3 py-1 rounded-full text-xs font-bold text-white ${
-                              game.status === 'available'
+                            className={`px-3 py-1 rounded-full text-xs font-bold text-white ${game.status === 'available'
                                 ? 'bg-green-500/80'
                                 : game.status === 'beta'
                                   ? 'bg-blue-500/80'
                                   : game.status === 'development'
                                     ? 'bg-yellow-500/80'
                                     : 'bg-gray-500/80'
-                            }`}
+                              }`}
                           >
                             {game.status === 'available'
                               ? '✅ Available'
@@ -637,11 +649,10 @@ export default function MiniGameStore() {
                         {(game.status === 'available' || game.status === 'beta') && (
                           <button
                             onClick={() => handlePlayGame(game)}
-                            className={`w-full py-3 px-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 ${
-                              game.status === 'available'
+                            className={`w-full py-3 px-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 ${game.status === 'available'
                                 ? 'bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white shadow-lg hover:shadow-cyan-500/25'
                                 : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-blue-500/25'
-                            }`}
+                              }`}
                           >
                             {game.status === 'available' ? '🎮 Play Now' : '🧪 Try Beta'}
                           </button>
@@ -703,259 +714,256 @@ export default function MiniGameStore() {
                     </p>
                   </div>
                 )}
-                  </>
-                )}
+              </>
+            )}
 
-              {/* Epic Promotional Banner Carousel */}
-              <div id='news-banner-carousel' className='relative'>
-                <div className='relative h-96 rounded-3xl overflow-hidden shadow-2xl'>
-                  {PROMOTIONAL_BANNERS.map((banner, index) => (
-                    <div
-                      key={banner.id}
-                      className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-                        index === activePromo ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            {/* Epic Promotional Banner Carousel */}
+            <div id='news-banner-carousel' className='relative'>
+              <div className='relative h-96 rounded-3xl overflow-hidden shadow-2xl'>
+                {PROMOTIONAL_BANNERS.map((banner, index) => (
+                  <div
+                    key={banner.id}
+                    className={`absolute inset-0 transition-all duration-1000 ease-in-out ${index === activePromo ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                       }`}
-                    >
-                      <div
-                        className={`absolute inset-0 bg-gradient-to-r ${banner.gradient} opacity-90`}
-                      ></div>
-                      <div className='absolute inset-0 bg-black/20'></div>
+                  >
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-r ${banner.gradient} opacity-90`}
+                    ></div>
+                    <div className='absolute inset-0 bg-black/20'></div>
 
-                      {/* Background Image/Video */}
-                      <div className='absolute inset-0'>
-                        {banner.image.endsWith('.mp4') ? (
-                          <video
-                            src={banner.image}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className='w-full h-full object-cover opacity-30'
-                          />
-                        ) : (
-                          <Image
-                            src={banner.image}
-                            alt={banner.title}
-                            fill
-                            className='object-cover opacity-30'
-                          />
-                        )}
-                      </div>
+                    {/* Background Image/Video */}
+                    <div className='absolute inset-0'>
+                      {banner.image.endsWith('.mp4') ? (
+                        <video
+                          src={banner.image}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className='w-full h-full object-cover opacity-30'
+                        />
+                      ) : (
+                        <Image
+                          src={banner.image}
+                          alt={banner.title}
+                          fill
+                          className='object-cover opacity-30'
+                        />
+                      )}
+                    </div>
 
-                      {/* Content */}
-                      <div className='relative z-10 h-full flex items-center justify-center text-center p-8'>
-                        <div className='max-w-4xl'>
-                          {/* Badge */}
-                          {banner.badge && (
-                            <div className='mb-4'>
-                              <span
-                                className={`px-6 py-3 rounded-full font-bold text-lg shadow-lg ${
-                                  banner.id === 4
-                                    ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black animate-pulse'
-                                    : 'bg-white/20 text-white backdrop-blur-sm'
+                    {/* Content */}
+                    <div className='relative z-10 h-full flex items-center justify-center text-center p-8'>
+                      <div className='max-w-4xl'>
+                        {/* Badge */}
+                        {banner.badge && (
+                          <div className='mb-4'>
+                            <span
+                              className={`px-6 py-3 rounded-full font-bold text-lg shadow-lg ${banner.id === 4
+                                  ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black animate-pulse'
+                                  : 'bg-white/20 text-white backdrop-blur-sm'
                                 }`}
-                              >
-                                {banner.badge}
-                              </span>
-                            </div>
-                          )}
+                            >
+                              {banner.badge}
+                            </span>
+                          </div>
+                        )}
 
-                          <h3 className='text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-2xl'>
-                            {banner.title}
-                          </h3>
-                          <h4 className='text-2xl md:text-3xl font-semibold text-white/90 mb-4 drop-shadow-xl'>
-                            {banner.subtitle}
-                          </h4>
-                          <p className='text-lg md:text-xl text-white/80 mb-6 max-w-2xl mx-auto drop-shadow-lg'>
-                            {banner.description}
-                          </p>
+                        <h3 className='text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-2xl'>
+                          {banner.title}
+                        </h3>
+                        <h4 className='text-2xl md:text-3xl font-semibold text-white/90 mb-4 drop-shadow-xl'>
+                          {banner.subtitle}
+                        </h4>
+                        <p className='text-lg md:text-xl text-white/80 mb-6 max-w-2xl mx-auto drop-shadow-lg'>
+                          {banner.description}
+                        </p>
 
-                          {/* Player Count */}
-                          {/* <div className='mb-6 text-white/80 text-sm'>👥 {banner.players}</div> */}
+                        {/* Player Count */}
+                        {/* <div className='mb-6 text-white/80 text-sm'>👥 {banner.players}</div> */}
 
-                          {/* <button className="px-8 py-4 bg-white/20 hover:bg-white/30 text-white font-bold text-lg rounded-2xl border-2 border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl backdrop-blur-sm">
+                        {/* <button className="px-8 py-4 bg-white/20 hover:bg-white/30 text-white font-bold text-lg rounded-2xl border-2 border-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl backdrop-blur-sm">
                               {banner.cta} →
                             </button> */}
-                        </div>
                       </div>
                     </div>
-                  ))}
-
-                  {/* Navigation Dots */}
-                  <div className='absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3'>
-                    {PROMOTIONAL_BANNERS.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setActivePromo(index)}
-                        className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                          index === activePromo
-                            ? 'bg-white scale-125'
-                            : 'bg-white/50 hover:bg-white/75'
-                        }`}
-                      />
-                    ))}
                   </div>
+                ))}
+
+                {/* Navigation Dots */}
+                <div className='absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3'>
+                  {PROMOTIONAL_BANNERS.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setActivePromo(index)}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${index === activePromo
+                          ? 'bg-white scale-125'
+                          : 'bg-white/50 hover:bg-white/75'
+                        }`}
+                    />
+                  ))}
                 </div>
-              </div>
               </div>
             </div>
-          </main>
-
-          {/* Wallet Sidebar */}
-          <WalletSidebar
-            isOpen={walletSidebarOpen}
-            onToggle={() => {
-              const newOpenState = !walletSidebarOpen;
-              setWalletSidebarOpen(newOpenState);
-              // Always ensure it's expanded when opening
-              if (newOpenState) {
-                setWalletExpanded(true);
-              }
-            }}
-            showBanner={true}
-            hideFloatingButton={false}
-          />
-
-          {/* NEXUS PRIME Character */}
-          <NexusPrime 
-            currentPage='mini-games' 
-            walletConnected={isConnected}
-            autoOpen={false}
-            showDuringLoading={false}
-          />
-
-          {/* Footer */}
-          <div className='animate-fadeIn'>
-            <Footer />
           </div>
+        </div>
+      </main>
 
-          {/* Leaderboard Sidebar */}
-          <LeaderboardSidebar
-            isOpen={leaderboardSidebarOpen}
-            onClose={() => setLeaderboardSidebarOpen(false)}
-          />
+      {/* Wallet Sidebar */}
+      <WalletSidebar
+        isOpen={walletSidebarOpen}
+        onToggle={() => {
+          const newOpenState = !walletSidebarOpen;
+          setWalletSidebarOpen(newOpenState);
+          // Always ensure it's expanded when opening
+          if (newOpenState) {
+            setWalletExpanded(true);
+          }
+        }}
+        showBanner={true}
+        hideFloatingButton={false}
+      />
 
-          {/* User Profile Modal */}
-          <UserProfile isOpen={showUserProfile} onClose={() => setShowUserProfile(false)} />
+      {/* NEXUS PRIME Character */}
+      <NexusPrime
+        currentPage='mini-games'
+        walletConnected={isConnected}
+        autoOpen={false}
+        showDuringLoading={false}
+      />
 
-          {/* Account Status Indicator */}
-          <AccountStatusIndicator />
+      {/* Footer */}
+      <div className='animate-fadeIn'>
+        <Footer />
+      </div>
 
-          {/* Toast Container */}
-          <ToastContainer />
+      {/* Leaderboard Sidebar */}
+      <LeaderboardSidebar
+        isOpen={leaderboardSidebarOpen}
+        onClose={() => setLeaderboardSidebarOpen(false)}
+      />
 
-          {/* Enhanced Donation Modal with Game Info */}
-          {showDonationModal && (
-          <div className='fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4'>
-            <div className='bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl border border-white/20 shadow-2xl max-w-lg w-full p-8'>
-              <div className='text-center mb-6'>
-                <div className='text-5xl mb-4'>🚀</div>
-                <div className='flex items-center justify-center gap-3 mb-2'>
-                  <h3 className='text-2xl font-bold text-white'>Speed Up Game Development</h3>
-                </div>
-                <p className='text-white/70 text-sm'>
-                  Help us reach our funding goal faster and unlock exclusive rewards!
-                </p>
+      {/* User Profile Modal */}
+      <UserProfile isOpen={showUserProfile} onClose={() => setShowUserProfile(false)} />
+
+      {/* Account Status Indicator */}
+      <AccountStatusIndicator />
+
+      {/* Toast Container */}
+      <ToastContainer />
+
+      {/* Enhanced Donation Modal with Game Info */}
+      {showDonationModal && (
+        <div className='fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4'>
+          <div className='bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl border border-white/20 shadow-2xl max-w-lg w-full p-8'>
+            <div className='text-center mb-6'>
+              <div className='text-5xl mb-4'>🚀</div>
+              <div className='flex items-center justify-center gap-3 mb-2'>
+                <h3 className='text-2xl font-bold text-white'>Speed Up Game Development</h3>
               </div>
+              <p className='text-white/70 text-sm'>
+                Help us reach our funding goal faster and unlock exclusive rewards!
+              </p>
+            </div>
 
-              {/* Game Info Section */}
-              {(() => {
-                const game = MINI_GAMES.find(g => g.id === showDonationModal);
-                if (!game) return null;
-                const donationProgress = (game.currentDonations / game.donationGoal) * 100;
-                return (
-                  <div className='mb-6 p-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl border border-purple-400/20'>
-                    <div className='text-center mb-4'>
-                      <div className='text-3xl mb-2'>{game.icon}</div>
-                      <h4 className='text-xl font-semibold text-white mb-2'>{game.title}</h4>
+            {/* Game Info Section */}
+            {(() => {
+              const game = MINI_GAMES.find(g => g.id === showDonationModal);
+              if (!game) return null;
+              const donationProgress = (game.currentDonations / game.donationGoal) * 100;
+              return (
+                <div className='mb-6 p-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl border border-purple-400/20'>
+                  <div className='text-center mb-4'>
+                    <div className='text-3xl mb-2'>{game.icon}</div>
+                    <h4 className='text-xl font-semibold text-white mb-2'>{game.title}</h4>
 
-                      <div className='flex items-center justify-between text-sm text-white/80 mb-3'>
-                        <span>💰 Current: ${game.currentDonations.toLocaleString()}</span>
-                        <span>🎯 Goal: ${game.donationGoal.toLocaleString()}</span>
-                      </div>
-
-                      <div className='w-full bg-white/10 rounded-full h-3 mb-3'>
-                        <div
-                          className='h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500 shadow-lg'
-                          style={{
-                            width: `${Math.min(donationProgress, 100)}%`,
-                          }}
-                        ></div>
-                      </div>
-
-                      <p className='text-sm text-purple-200 font-medium mb-2'>
-                        {Math.round(donationProgress)}% funded
-                      </p>
-
-                      <p className='text-xs text-white/60'>
-                        Your donation helps accelerate development and unlock exclusive features!
-                      </p>
+                    <div className='flex items-center justify-between text-sm text-white/80 mb-3'>
+                      <span>💰 Current: ${game.currentDonations.toLocaleString()}</span>
+                      <span>🎯 Goal: ${game.donationGoal.toLocaleString()}</span>
                     </div>
-                  </div>
-                );
-              })()}
 
-              {/* Donation Form */}
-              <div className='space-y-4'>
-                <div>
-                  <label className='block text-white/80 text-sm font-medium mb-2'>
-                    Donation Amount (USD) <span className='px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full animate-pulse'>
+                    <div className='w-full bg-white/10 rounded-full h-3 mb-3'>
+                      <div
+                        className='h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500 shadow-lg'
+                        style={{
+                          width: `${Math.min(donationProgress, 100)}%`,
+                        }}
+                      ></div>
+                    </div>
+
+                    <p className='text-sm text-purple-200 font-medium mb-2'>
+                      {Math.round(donationProgress)}% funded
+                    </p>
+
+                    <p className='text-xs text-white/60'>
+                      Your donation helps accelerate development and unlock exclusive features!
+                    </p>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Donation Form */}
+            <div className='space-y-4'>
+              <div>
+                <label className='block text-white/80 text-sm font-medium mb-2'>
+                  Donation Amount (USD) <span className='px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full animate-pulse'>
                     🔜 COMING SOON
                   </span>
-                  </label>
-                  <input
-                    type='number'
-                    placeholder='Enter amount'
-                    disabled
-                    className='w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white/50 placeholder-white/40 cursor-not-allowed opacity-60'
-                  />
-                </div>
+                </label>
+                <input
+                  type='number'
+                  placeholder='Enter amount'
+                  disabled
+                  className='w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white/50 placeholder-white/40 cursor-not-allowed opacity-60'
+                />
+              </div>
 
-                <div className='flex space-x-3'>
-                  <button 
-                    disabled
-                    className='flex-1 py-3 px-4 bg-gradient-to-r from-purple-500/50 to-pink-500/50 text-white/50 font-semibold rounded-xl cursor-not-allowed opacity-60'
-                  >
-                    💝 Donate Now
-                  </button>
-                  <button
-                    onClick={closeDonationModal}
-                    className='flex-1 py-3 px-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all duration-300'
-                  >
-                    Cancel
-                  </button>
-                </div>
+              <div className='flex space-x-3'>
+                <button
+                  disabled
+                  className='flex-1 py-3 px-4 bg-gradient-to-r from-purple-500/50 to-pink-500/50 text-white/50 font-semibold rounded-xl cursor-not-allowed opacity-60'
+                >
+                  💝 Donate Now
+                </button>
+                <button
+                  onClick={closeDonationModal}
+                  className='flex-1 py-3 px-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all duration-300'
+                >
+                  Cancel
+                </button>
+              </div>
 
-                {/* Contact Section */}
-                <div className='pt-4 border-t border-white/10'>
-                  <p className='text-white/70 text-sm text-center mb-3'>
-                    💬 For official donation channels and inquiries:
-                  </p>
-                  <div className='flex gap-3'>
-                    <a
-                      href={DONATION_SOCIAL_LINKS.TELEGRAM}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='flex-1 py-3 px-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2'
-                    >
-                      <span>💬</span>
-                      <span>Telegram</span>
-                    </a>
-                    <a
-                      href={DONATION_SOCIAL_LINKS.DISCORD}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='flex-1 py-3 px-4 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2'
-                    >
-                      <span>💬</span>
-                      <span>Discord</span>
-                    </a>
-                  </div>
+              {/* Contact Section */}
+              <div className='pt-4 border-t border-white/10'>
+                <p className='text-white/70 text-sm text-center mb-3'>
+                  💬 For official donation channels and inquiries:
+                </p>
+                <div className='flex gap-3'>
+                  <a
+                    href={DONATION_SOCIAL_LINKS.TELEGRAM}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='flex-1 py-3 px-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2'
+                  >
+                    <span>💬</span>
+                    <span>Telegram</span>
+                  </a>
+                  <a
+                    href={DONATION_SOCIAL_LINKS.DISCORD}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='flex-1 py-3 px-4 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2'
+                  >
+                    <span>💬</span>
+                    <span>Discord</span>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-          )}
+        </div>
+      )}
     </div>
   );
 }
