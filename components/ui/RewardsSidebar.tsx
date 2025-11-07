@@ -299,9 +299,9 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
           </div>
 
           {/* Level Progress Info */}
-          <div className='flex-1 min-w-0'>
+          <div className='flex-1 min-w-0 text-center'>
             <div className='mb-4'>
-              <h3 className='text-2xl font-bold text-white mb-1'>Lvl: {level}</h3>
+              <h3 className='text-xl font-bold text-white mb-1'>Lvl: {level}</h3>
               <p className='text-sm text-gray-300'>
                 {expProgress.current} / {expProgress.next} XP
               </p>
