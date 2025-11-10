@@ -273,14 +273,14 @@ export const LeaderboardSidebar: React.FC<LeaderboardSidebarProps> = ({ isOpen, 
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className='fixed left-0 top-0 h-full w-96 bg-black/90 backdrop-blur-2xl border-r border-white/20 shadow-2xl z-50 overflow-hidden'
+        className='fixed left-0 top-0 h-full w-96 bg-black/90 backdrop-blur-2xl border-r border-white/20 shadow-2xl z-50 overflow-hidden flex flex-col'
       >
         {/* Enhanced background effects */}
         <div className='absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-cyan-500/5'></div>
         <div className='absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5'></div>
 
         {/* Header */}
-        <div className='relative z-10 flex items-center justify-between p-6 border-b border-white/10'>
+        <div className='relative z-10 flex items-center justify-between p-6 border-b border-white/10 flex-shrink-0'>
           <div>
             <h2 className='text-2xl font-bold text-white flex items-center space-x-3'>
               <span className='text-3xl'>🏆</span>
@@ -301,7 +301,7 @@ export const LeaderboardSidebar: React.FC<LeaderboardSidebarProps> = ({ isOpen, 
         </div>
 
         {/* Tabs */}
-        <div className='relative z-10 flex border-b border-white/10'>
+        <div className='relative z-10 flex border-b border-white/10 flex-shrink-0'>
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -321,12 +321,12 @@ export const LeaderboardSidebar: React.FC<LeaderboardSidebarProps> = ({ isOpen, 
         </div>
 
         {/* Content */}
-        <div className='relative z-10 p-6 overflow-y-auto h-2/3'>
+        <div className='relative z-10 p-6 overflow-y-auto flex-1 min-h-0 leaderboard-scrollbar'>
           {activeTab === 'global' ? renderGlobalLeaderboard() : renderAroundMeLeaderboard()}
         </div>
 
         {/* Footer */}
-        <div className='relative z-10 p-4 border-t border-white/10 bg-black/50'>
+        <div className='relative z-10 p-4 border-t border-white/10 bg-black/50 flex-shrink-0'>
           <div className='flex items-center justify-between'>
             <button
               onClick={refreshLeaderboard}
