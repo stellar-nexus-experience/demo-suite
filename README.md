@@ -285,7 +285,7 @@ cd stellar-nexus-experience
 npm install
 
 # Set up environment variables
-cp .env.example .env.local
+cp .env.local .env
 # Edit .env.local with your Firebase and Stellar configs
 
 # Start development server
