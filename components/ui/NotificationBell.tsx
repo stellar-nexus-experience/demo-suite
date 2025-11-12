@@ -84,6 +84,11 @@ export const NotificationBell: React.FC = () => {
         router.push(`/mini-games/${notification.data.gameId}`);
       }
     }
+    // ✅ AÑADIDO: Navegación para Logros
+     else if (notification.type === 'demo_completed' || notification.type === 'quest_completed') {
+      
+       //router.push('/profile/rewards') //eso es una ruta que se podria crear gorro
+    }
 
     setIsOpen(false);
   };
@@ -102,8 +107,14 @@ export const NotificationBell: React.FC = () => {
         return '😔';
       case 'challenge_expired':
         return '⏰';
+       // ✅ AÑADIDO: Notificación de Demo/Misión
+      case 'demo_completed':
+      case 'quest_completed':
+        return '🎖️'; // O '🏆' o '';  
       default:
         return '🔔';
+     
+      
     }
   };
 
@@ -121,6 +132,10 @@ export const NotificationBell: React.FC = () => {
         return 'from-red-500/20 to-pink-500/20 border-red-400/30';
       case 'challenge_expired':
         return 'from-gray-500/20 to-slate-500/20 border-gray-400/30';
+      // ✅ AÑADIDO: Notificación de Demostración/Misión
+      case 'demo_completed':
+      case 'quest_completed':
+        return 'from-yellow-600/20 to-purple-600/20 border-yellow-500/30'  
       default:
         return 'from-white/5 to-white/10 border-white/20';
     }
@@ -225,11 +240,29 @@ export const NotificationBell: React.FC = () => {
                         <p className='text-white/80 text-xs mb-2 break-words'>
                           {notification.message}
                         </p>
+                        
+                        <div className='flex items-center gap-2 flex-wrap'>
                         {notification.data?.pointsAmount && (
                           <div className='inline-flex items-center gap-1 text-xs font-semibold text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded'>
                             💰 {notification.data.pointsAmount} points
                           </div>
                         )}
+                        {/* Mostrar XP Ganado (NUEVO) */}
+                        {notification.data?.xpEarned && (
+                          <div className='inline-flex items-center gap-1 text-xs font-semibold text-green-400 bg-green-500/20 px-2 py-1 rounded'>
+                            ✨ {notification.data.xpEarned} XP
+                          </div>
+                        )}
+                        {/* Mostrar Insignia Ganada (NUEVO) */}
+                        {notification.data?.badgeName && (
+
+
+                           <div className='inline-flex items-center gap-1 text-xs font-semibold text-purple-400 bg-purple-500/20 px-2 py-1 rounded'>
+                            🏅 {notification.data.badgeName}
+                            </div>
+                        )}
+                        </div>
+
                         <div className='text-white/40 text-xs mt-2'>
                           {formatTimeAgo(notification.createdAt)}
                         </div>

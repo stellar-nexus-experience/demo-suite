@@ -1004,22 +1004,32 @@ export const ImmersiveDemoModal = ({
                               !transaction.hash.startsWith('release_') &&
                               !transaction.message.includes('(Simulated for demo)') && (
                                 <div className='flex space-x-1 flex-shrink-0'>
+                                  {transaction && transaction.hash && (
                                   <button
-                                    onClick={() => {
-                                      const explorerUrl = `https://stellar.expert/explorer/testnet/tx/${transaction.hash}`;
-                                      window.open(explorerUrl, '_blank', 'noopener,noreferrer');
-                                      addToast({
-                                        type: 'info',
-                                        title: '🌐 Opening Explorer',
-                                        message: 'Viewing transaction on Stellar Expert',
-                                        duration: 2000,
-                                      });
-                                    }}
-                                    className='px-1 sm:px-1.5 py-0.5 sm:py-1 bg-purple-500/20 border border-purple-400/30 text-purple-200 rounded text-xs hover:bg-purple-500/30 transition-all duration-300'
-                                    title='View on Stellar Expert'
+                                  onClick={() => {
+                                      // 🚩 CORRECCIÓN CRÍTICA: Usa ?? '' para manejar null/undefined como string vacío
+                                      const finalUrl = transaction.stellarExpertUrl ?? ''; 
+                                      
+                                      console.log("HASH en el Modal:", transaction.hash);
+                                      console.log("URL EXPERT en el Modal:", finalUrl); // Mostrará '' si está vacío
+                                      
+                                      // 1. Verificar si la URL REAL está presente (si no es una cadena vacía)
+                                      if (finalUrl) { 
+                                          window.open(finalUrl, '_blank', 'noopener,noreferrer');
+                                          // ... (Mostrar toast de éxito) ...
+                                      } else {
+                                          // 2. Si es una cadena vacía (aún no sincronizada), muestra el toast de error
+                                          addToast({
+                                              type: 'error', 
+                                              title: 'URL Not Yet Synced', 
+                                              message: 'Explorer link not yet available. Please wait a moment.' 
+                                          });
+                                      }
+                                  }}                                           
                                   >
-                                    🌐
+                                      🌐
                                   </button>
+                                  )}
                                   <button
                                     onClick={() => {
                                       navigator.clipboard.writeText(transaction.hash);

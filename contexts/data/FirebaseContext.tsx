@@ -31,6 +31,9 @@ interface DemoCard {
 import { useBadgeAnimation } from '../ui/BadgeAnimationContext';
 import { useToast } from '../ui/ToastContext';
 import { useTransactionHistory } from './TransactionContext';
+//Nuevo
+import { notificationService } from '@/lib/services/notification-service';
+
 
 
 interface FirebaseContextType {
@@ -320,7 +323,10 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       }
       
       // Add experience and points (experience is 2x points)
+      // 🎯 MODIFICACIÓN 1: Definir xpEarned aquí para la notificación
+      const xpEarned = pointsEarned * 2; //👀
       await accountService.addExperienceAndPoints(walletData.publicKey, pointsEarned * 2, pointsEarned);
+
 
       // Update demo stats for global tracking
       try {
@@ -329,9 +335,12 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
         console.error('FirebaseContext: Failed to update demo stats:', statsError);
         // Don't fail the demo completion if stats tracking fails
       }
+
+      
       
       // Award appropriate badge based on demo
       let badgeToAward = '';
+      let demoName = ''; 
       switch (demoId) {
         case 'hello-milestone':
           badgeToAward = 'escrow_expert';
@@ -349,6 +358,27 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       
       if (badgeToAward) {
         await accountService.addEarnedBadge(walletData.publicKey, badgeToAward);
+
+        // 🎯 INTEGRACIÓN DE NOTIFICACIÓN DE DEMOSTRACIÓN 🎯
+
+        // 1. Obtener la definición de la insignia usando la función importada
+        const badgeDefinition = getBadgeById(badgeToAward);
+
+        // 2. Obtener el nombre legible para la notificación
+        const badgeName = badgeDefinition?.name || badgeToAward;
+
+        // 3. Llamar al servicio de notificación (Asumiendo que notificationService está importado)
+        await notificationService.notifyDemoCompleted(
+          account.id,
+          demoId,
+          demoName, // Nombre legible
+          xpEarned,
+          pointsEarned,
+          badgeName // Nombre legible de la insignia
+        );
+        
+    
+
         
         // Show badge animation
         const badge = getBadgeById(badgeToAward);

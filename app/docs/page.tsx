@@ -268,7 +268,7 @@ export default function DocsPage() {
 
                           {/* Powered by Trustless Work */}
                           <div className='text-center mt-4'>
-                            <p className='text-brand-300/70 text-sm font-medium animate-pulse'>
+                            <p className='text-brand-300/70 text-sm font-medium '>
                               Powered by{' '}
                               <span className='text-brand-200 font-semibold'>Trustless Work</span>
                             </p>

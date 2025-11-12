@@ -102,34 +102,48 @@ export const HelloMilestoneDemo = ({
     return hash;
   };
 
-  // Helper function to create explorer URLs
   const createExplorerUrls = (txHash: string, isRealTransaction: boolean = false) => {
-    // Only create explorer URLs for real blockchain transactions
-    if (!isRealTransaction) {
-      return {
-        explorerUrl: null,
-        stellarExpertUrl: null,
-        horizonUrl: null,
-        accountUrl: walletData?.publicKey
-          ? `${API_ENDPOINTS.STELLAR_EXPERT.BASE_URL}/testnet/account/${walletData.publicKey}`
-          : null,
-      };
-    }
+  // Lógica de red, definida una sola vez y accesible en toda la función
+  const isTestnet = walletData?.network === 'TESTNET' || !walletData?.isMainnet; 
+  const networkSuffix = isTestnet ? 'testnet' : 'public'; 
 
-    const isTestnet = walletData?.network === 'TESTNET' || !walletData?.isMainnet;
-    const networkSuffix = isTestnet ? 'testnet' : 'public';
-
+  // 1. Caso de SIMULACIÓN (isRealTransaction es false)
+  // Devuelve valores nulos/simulados si no es una transacción real
+  if (!isRealTransaction) {
     return {
-      explorerUrl: `${API_ENDPOINTS.STELLAR_EXPERT.BASE_URL}/${networkSuffix}/tx/${txHash}`,
-      stellarExpertUrl: `${API_ENDPOINTS.STELLAR_EXPERT.BASE_URL}/${networkSuffix}/tx/${txHash}`,
-      horizonUrl: isTestnet
-        ? `${API_ENDPOINTS.HORIZON.TESTNET}/transactions/${txHash}`
-        : `${API_ENDPOINTS.HORIZON.MAINNET}/transactions/${txHash}`,
+      explorerUrl: null,       // URL nula para simulación
+      stellarExpertUrl: null,  // URL nula para simulación
+      horizonUrl: null,        // URL nula para simulación
       accountUrl: walletData?.publicKey
+        // PERO SÍ genera la URL de cuenta para simulación si es necesario
         ? `${API_ENDPOINTS.STELLAR_EXPERT.BASE_URL}/${networkSuffix}/account/${walletData.publicKey}`
         : null,
     };
+  }
+
+  // 2. Caso de TRANSACCIÓN REAL (isRealTransaction es true)
+  // Ahora, construimos las URLs reales usando las constantes globales:
+  return {
+    // URL de Horizon (explorador genérico)
+    explorerUrl: isTestnet
+        ? `${API_ENDPOINTS.HORIZON.TESTNET}/transactions/${txHash}`
+        : `${API_ENDPOINTS.HORIZON.MAINNET}/transactions/${txHash}`,
+
+    // URL de Stellar Expert (La clave que lee el modal)
+    stellarExpertUrl: `${API_ENDPOINTS.STELLAR_EXPERT.BASE_URL}/${networkSuffix}/tx/${txHash}`,
+    
+    // Otra referencia a Horizon (si es necesaria)
+    horizonUrl: isTestnet
+        ? `${API_ENDPOINTS.HORIZON.TESTNET}/transactions/${txHash}`
+        : `${API_ENDPOINTS.HORIZON.MAINNET}/transactions/${txHash}`,
+    
+    // URL de Cuenta de Stellar Expert
+    accountUrl: walletData?.publicKey
+        ? `${API_ENDPOINTS.STELLAR_EXPERT.BASE_URL}/${networkSuffix}/account/${walletData.publicKey}`
+        : null,
   };
+};
+      
 
   // Check if demo was already completed
   const isCompleted = (() => {
@@ -660,48 +674,65 @@ export const HelloMilestoneDemo = ({
             const realTxHash = transactionResult.hash;
 
             // Create proper explorer URLs for the real transaction
-            const realUrls = createExplorerUrls(realTxHash);
+            const realUrls = createExplorerUrls(realTxHash, true);
+            setTransactionDetails(prev => {
+              const simulatedEntry = prev[txHash]; 
+    
+              // 2. Preparamos una copia de trabajo del estado anterior.
+              const newState = { ...prev };
+              
+              // 3. Eliminamos explícitamente la clave antigua (hash simulado) de la copia.
+              if (simulatedEntry) {
+                  delete newState[txHash];
+              }
+    
+    // 4. Crea la entrada REAL
+              const realEntry = { 
+              // Usa los datos simulados como base, con fallback a objeto vacío
+              ...(simulatedEntry || {}), 
+              
+              // ⬇️ ¡SOBRESCRITURA DE DATOS VITALES CON NULLISH COALESCING! ⬇️
+              hash: realTxHash, // HASH REAL
+              // Usamos ?. y el fallback a null si realUrls?.explorerUrl es nulo/undefined
+              explorerUrl: realUrls?.explorerUrl ?? null, 
+              stellarExpertUrl: realUrls?.stellarExpertUrl ?? null, // URL REAL
+          };
+                        
+          // 5. Añade la entrada REAL con la clave REAL
+          newState[realTxHash] = realEntry;
 
-            // Update transaction details with real hash
-            setTransactionDetails(prev => ({
-              ...prev,
-              [txHash]: {
-                ...prev[txHash],
-                hash: realTxHash,
-                explorerUrl: realUrls.explorerUrl,
-                stellarExpertUrl: realUrls.stellarExpertUrl,
-              },
-            }));
+          // 6. Devuelve el nuevo estado.
+          return newState;
+          });
+            setTimeout(() => {
+    
+                  // 1. Update the transaction history with the real hash
+                  updateTransaction(
+                    realTxHash, // ✅ HASH REAL
+                    'success',
+                    `Escrow initialized successfully! Real transaction: ${realTxHash}`
+                  );
 
-            // Update the transaction history with the real hash
-            updateTransaction(
-              txHash,
-              'success',
-              `Escrow initialized successfully! Real transaction: ${realTxHash}`
-            );
-            addTransaction({
-              hash: realTxHash,
-              status: 'success',
-              message: 'Escrow initialized successfully!',
-              type: 'escrow',
-              demoId: 'hello-milestone',
-              amount: '10 USDC',
-              asset: 'USDC',
-            });
+                  // 2. Add transaction to the history (mantener para asegurar el contexto)
+                  addTransaction({
+                    hash: realTxHash,
+                    status: 'success',
+                    message: 'Escrow initialized successfully!',
+                    type: 'escrow',
+                    demoId: 'hello-milestone',
+                    amount: '10 USDC',
+                    asset: 'USDC',
 
-            // Clear timeout and mark as successful
-            clearTimeout(timeout);
-            setTransactionTimeouts(prev => {
-              const newTimeouts = { ...prev };
-              delete newTimeouts[txHash];
-              return newTimeouts;
-            });
-
-            updateTransactionStatusAndCheckCompletion(
-              txHash,
-              'success',
-              `Real blockchain transaction completed! Hash: ${realTxHash}`
-            );
+                  });
+                  
+                  // 3. LLAMAR A LA FUNCIÓN DE COMPLETACIÓN FINAL CON LOS 3 ARGUMENTOS CORREGIDOS
+                  updateTransactionStatusAndCheckCompletion(
+                     realTxHash, 
+                    'success', 
+                    'Escrow initialized successfully!'
+                );
+                  
+            }, 3000); // ⬅️ Retardo de 3 segundos
 
             // Clear from pending transactions
             setPendingTransactions(prev => {
@@ -1420,7 +1451,7 @@ export const HelloMilestoneDemo = ({
                         <div className='flex items-center space-x-2'>
                           {/* Auto-completion countdown */}
                           <div className='text-xs text-blue-300 bg-blue-500/20 px-2 py-1 rounded flex items-center space-x-1'>
-                            <div className='w-2 h-2 bg-blue-400 rounded-full animate-pulse'></div>
+                            <div className='w-2 h-2 bg-blue-400 rounded-full '></div>
                             <span>
                               Auto-completing in {autoCompleteCountdown['initialize'] || 5}s...
                             </span>

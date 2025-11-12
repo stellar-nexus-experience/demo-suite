@@ -25,6 +25,8 @@ import { AccountStatusIndicator } from '@/components/ui/AccountStatusIndicator';
 import { LeaderboardSidebar } from '@/components/ui/LeaderboardSidebar';
 import { QuestAndReferralSection } from '@/components/ui/quest/QuestAndReferralSection';
 import { TOP_BADGES } from '@/utils/constants/demos';
+import { useTransactionHistory } from '@/contexts/data/TransactionContext';
+import React, {  useCallback } from 'react';
 import { 
   DemoSelector, 
   HeroSection, 
@@ -35,7 +37,9 @@ import { DEMO_CARDS } from '@/utils/constants/demos';
 
 export default function HomePageContent() {
   const { isConnected } = useGlobalWallet();
+  const { transactions } = useTransactionHistory();
   // Removed unused authentication variables
+  const activeTx = transactions ? Object.values(transactions).slice(-1)[0] : null;
   const {
     account,
     demoStats,
@@ -86,6 +90,8 @@ export default function HomePageContent() {
   } | null>(null);
   const [showImmersiveDemo, setShowImmersiveDemo] = useState(false);
   const [showTechTree, setShowTechTree] = useState(false);
+  //Nuevo estado de Contol.
+  const [isTechTreeProcessing, setIsTechTreeProcessing] = useState(false);
 
   // Authentication modals
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -111,6 +117,7 @@ export default function HomePageContent() {
     const handleOpenLeaderboard = () => {
       setLeaderboardSidebarOpen(true);
     };
+    
 
     window.addEventListener('walletSidebarToggle', handleWalletSidebarToggle as EventListener);
     window.addEventListener('openUserProfile', handleOpenUserProfile);
@@ -198,7 +205,33 @@ export default function HomePageContent() {
   const handleFeedbackClose = () => {
     setShowFeedbackModal(false);
     setFeedbackDemoData(null);
+
   };
+
+  const onTechTreeClick = useCallback(() => {
+  if (showTechTree || isTechTreeProcessing) {
+    // Si ya está abierto o en proceso, ignora el clic (Idempotencia)
+    return;
+  }
+  
+  // 1. Establecer el estado de procesamiento inmediatamente
+  setIsTechTreeProcessing(true);
+  
+  // 2. Abrir el modal
+  setShowTechTree(true);
+  
+  
+  setTimeout(() => {
+    setIsTechTreeProcessing(false);
+  }, 500); // 500ms recomendado para mayor seguridad
+  
+}, [showTechTree, isTechTreeProcessing])
+
+const onCloseTechTree = useCallback(() => {
+      setShowTechTree(false);
+      setIsTechTreeProcessing(false); // Asegurar que se restablezca el estado de procesamiento
+    }, []);
+  
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-neutral-900 via-brand-900 to-neutral-900 relative overflow-hidden'>
@@ -264,22 +297,29 @@ export default function HomePageContent() {
           walletSidebarOpen && walletExpanded ? 'mr-96' : walletSidebarOpen ? 'mr-20' : 'mr-0'
         } ${!walletSidebarOpen ? 'pb-32' : 'pb-8'}`}
       >
+        
+        
             {/* Hero Section */}
             <HeroSection
-              isVideoPlaying={false}
-              miniGamesUnlocked={miniGamesUnlocked}
-              onTutorialClick={() => {
-                const tutorialSection = document.getElementById('interactive-tutorial');
-                if (tutorialSection) {
-                  tutorialSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start',
-                  });
-                }
-              }}
-              onTechTreeClick={() => setShowTechTree(true)}
-              isConnected={isConnected}
-              isLoadingAccount={firebaseLoading && !isInitialized}
+                isVideoPlaying={false}
+                miniGamesUnlocked={miniGamesUnlocked}
+                onTutorialClick={() => {
+                    const tutorialSection = document.getElementById('interactive-tutorial');
+                    if (tutorialSection) {
+                        tutorialSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start',
+                        });
+                    }
+                }}
+                // ✅ 1. USAR EL HANDLER CON useCallback Y LÓGICA DE CONTROL ✅
+                onTechTreeClick={onTechTreeClick}
+                
+                // ✅ 2. AÑADIR LA PROP DE DESHABILITACIÓN PARA CONTROLAR EL BOTÓN Y EL TOOLTIP ✅
+                isTechTreeDisabled={showTechTree || isTechTreeProcessing} 
+                
+                isConnected={isConnected}
+                isLoadingAccount={firebaseLoading && !isInitialized}
             />
 
             {/* Demo Cards Section - with fade-in animation */}
@@ -430,24 +470,30 @@ export default function HomePageContent() {
           demoTitle={DEMO_CARDS.find(d => d.id === activeDemo)?.title || 'Demo'}
           demoDescription={DEMO_CARDS.find(d => d.id === activeDemo)?.subtitle || 'Demo Description'}
           estimatedTime={
-            activeDemo === 'hello-milestone' ? 1 : activeDemo === 'dispute-resolution' ? 3 : 2
+              activeDemo === 'hello-milestone' ? 1 : activeDemo === 'dispute-resolution' ? 3 : 2
           }
           demoColor={DEMO_CARDS.find(d => d.id === activeDemo)?.color || 'from-brand-500 to-brand-400'}
           onDemoComplete={handleDemoComplete}
-        >
+          
+          {...(activeTx ? { transaction: activeTx } : {})} 
+      >
+          
           {activeDemo === 'hello-milestone' && (
-            <HelloMilestoneDemo onDemoComplete={handleDemoComplete} />
+              <HelloMilestoneDemo onDemoComplete={handleDemoComplete} />
           )}
           {activeDemo === 'dispute-resolution' && <DisputeResolutionDemo />}
           {activeDemo === 'milestone-voting' && <MilestoneVotingDemo />}
           {activeDemo === 'micro-marketplace' && (
-            <MicroTaskMarketplaceDemo onDemoComplete={handleDemoComplete} />
+              <MicroTaskMarketplaceDemo onDemoComplete={handleDemoComplete} />
           )}
-        </ImmersiveDemoModal>
+      </ImmersiveDemoModal>
       )}
 
       {/* Tech Tree Modal */}
-      <TechTreeModal isOpen={showTechTree} onClose={() => setShowTechTree(false)} />
+      <TechTreeModal 
+          isOpen={showTechTree} 
+          onClose={onCloseTechTree} 
+      />
 
       {/* Authentication Modal */}
       <AuthModal

@@ -16,7 +16,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { Account, TransactionRecord, DemoStats, MandatoryFeedback, GameScore, COLLECTIONS } from './firebase-types';
-
+import { cleanObject } from '../../contexts/data/TransactionContext';
 // Helper function to convert Firestore timestamps to Date objects
 const convertTimestamps = (data: any): any => {
   if (!data) return data;
@@ -261,25 +261,35 @@ export const accountService = {
     status: 'success' | 'failed',
     message: string
   ): Promise<void> {
-    // Find the transaction in the transactions collection
+    
+    // 1. Define la referencia a la colección y la consulta (query)
     const transactionsRef = collection(db, COLLECTIONS.TRANSACTIONS);
     const q = query(
       transactionsRef,
       where('walletAddress', '==', walletAddress),
       where('hash', '==', transactionHash)
     );
-
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      const transactionDoc = querySnapshot.docs[0];
-      await updateDoc(transactionDoc.ref, {
-        status,
-        message,
-        timestamp: serverTimestamp(),
-      });
+    
+    // 2. Ejecutar la consulta
+    const querySnapshot = await getDocs(q); 
+    
+    
+    if (querySnapshot.empty) {
+        console.warn('Transaction not found to update:', transactionHash);
+        return;
     }
-  },
 
+    // 4. Crear y limpiar el objeto de actualización
+    // ⬇️ OBJETO DE ACTUALIZACIÓN LIMPIO ⬇️
+    const updateData = cleanObject({ status, message });
+    
+    
+    querySnapshot.forEach(async (doc) => {
+        
+        await updateDoc(doc.ref, updateData);
+    });
+}
+,
   // Get user's transaction history
   async getUserTransactions(
     walletAddress: string,

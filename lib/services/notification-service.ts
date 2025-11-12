@@ -19,7 +19,9 @@ export type NotificationType =
   | 'challenge_completed' 
   | 'challenge_won' 
   | 'challenge_lost'
-  | 'challenge_expired';
+  | 'challenge_expired'
+  | 'demo_completed' // ✅ NUEVO
+  | 'quest_completed'; // ✅ NUEVO
 
 export interface Notification {
   id: string;
@@ -35,9 +37,18 @@ export interface Notification {
     fromUsername?: string;
     pointsAmount?: number;
     gameId?: string;
+    //CAMPOS PARA DEMOS/MISSIONS/REWARDS ✅
+    xpEarned?: number;
+    pointsEarned?: number;
+    badgeId?: string;
+    demoName?: string;
+    questName?: string;
+    badgeName?: string; 
+    
     [key: string]: any;
   };
 }
+    
 
 class NotificationService {
   private notificationsCollection = 'notifications';
@@ -305,7 +316,76 @@ class NotificationService {
       );
     }
   }
-}
+
+  
+
+  /**
+   * Notify demo completed
+   */
+  async notifyDemoCompleted(
+    userId: string,
+    demoId: string,
+    demoName: string,
+    xpEarned: number,
+    pointsEarned: number,
+    badgeName?: string
+  ): Promise<string | null> {
+    try {
+      const badgeText = badgeName ? ` and unlocked the ${badgeName} badge` : '';
+      const message = `You completed the '${demoName}' demo! You earned ${xpEarned} XP and ${pointsEarned} points${badgeText}.`;
+
+      return this.createNotification(
+        userId,
+        'demo_completed',
+        '🏆 ¡Demo Completed!',
+        message,
+        {
+          demoId,
+          xpEarned,
+          pointsEarned,
+          badgeName,
+          demoName,
+        }
+      );
+    } catch (error) {
+      console.error('Error en notifyDemoCompleted:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Notify quest completed
+   */
+  async notifyQuestCompleted(
+    userId: string,
+    questId: string,
+    questName: string,
+    xpEarned: number,
+    pointsEarned: number,
+    badgeName?: string
+  ): Promise<string | null> {
+    try {
+      const badgemessage = badgeName ?  `and unlocked the ${badgeName} badge` : '';
+      const message = `You completed the mission: ${questName}! You earned ${xpEarned} XP and ${pointsEarned} points${badgemessage}.`;
+
+      return this.createNotification(
+        userId,
+        'quest_completed',
+        '✅🫡¡Misión Completed!',
+        message,
+        {
+          questId,
+          xpEarned,
+          pointsEarned,
+          badgeName,
+          questName,
+        }
+      );
+    } catch (error) {
+      console.error('Error en notifyQuestCompleted:', error);
+      return null;
+    }
+  }
+} 
 
 export const notificationService = new NotificationService();
-

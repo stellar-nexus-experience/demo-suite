@@ -9,6 +9,10 @@ import {
 import { db } from '@/lib/firebase/firebase';
 import { doc, updateDoc, arrayUnion, increment } from 'firebase/firestore';
 
+// ✅ AÑADIDO: Importar notificationService
+import { notificationService } from '@/lib/services/notification-service'; 
+import { getBadgeById } from '@/lib/firebase/firebase-types';
+
 export class QuestService {
   /**
    * Get all available quests for a user based on their completed badges
@@ -127,6 +131,8 @@ export class QuestService {
         updatedAt: new Date(),
       };
 
+      let badgeName = '';
+
       // Add badge if quest rewards one
       if (quest.rewards.badgeId) {
         updateData.badgesEarned = arrayUnion(quest.rewards.badgeId);
@@ -134,6 +140,21 @@ export class QuestService {
 
       await updateDoc(accountRef, updateData);
 
+      //🎯 INTEGRACIÓN DE NOTIFICACIÓN DE MISIÓN 🎯// 👀
+      try {
+        await notificationService.notifyQuestCompleted(
+          account.id,
+          questId,
+          quest.title, // Nombre de la misión
+          quest.rewards.experience,
+          quest.rewards.points,
+          badgeName // Nombre legible de la insignia (puede ser '')
+        );
+        } catch (notificationError) {
+        // No interrumpir el flujo principal si la notificación falla🚫
+        console.error('QuestService: Failed to send quest notification:', notificationError);
+      }
+            
       return {
         success: true,
         message: `Quest "${quest.title}" completed! Earned ${quest.rewards.experience} XP and ${quest.rewards.points} points.`,
@@ -144,6 +165,7 @@ export class QuestService {
       return { success: false, message: 'Failed to complete quest' };
     }
   }
+
 
   /**
    * Update quest progress for multi-step quests
