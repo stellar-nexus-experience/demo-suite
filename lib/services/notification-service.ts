@@ -317,7 +317,7 @@ class NotificationService {
     }
   }
 
-  //  NUEVOS MÉTODOS DE NOTIFICACIÓN (DEMO Y QUEST) ✅
+  
 
   /**
    * Notify demo completed
@@ -331,13 +331,13 @@ class NotificationService {
     badgeName?: string
   ): Promise<string | null> {
     try {
-      const badgeText = badgeName ? ` y desbloqueaste la insignia ${badgeName}` : '';
-      const message = `¡Completaste la demostración '${demoName}'! Ganaste ${xpEarned} XP y ${pointsEarned} puntos${badgeText}.`;
+      const badgeText = badgeName ? ` and unlocked the ${badgeName} badge` : '';
+      const message = `You completed the '${demoName}' demo! You earned ${xpEarned} XP and ${pointsEarned} points${badgeText}.`;
 
       return this.createNotification(
         userId,
         'demo_completed',
-        '🏆 ¡Demostración Completa!',
+        '🏆 ¡Demo Completed!',
         message,
         {
           demoId,
@@ -365,13 +365,13 @@ class NotificationService {
     badgeName?: string
   ): Promise<string | null> {
     try {
-      const badgeText = badgeName ? ` y desbloqueaste la insignia ${badgeName}` : '';
-      const message = `¡Completaste la misión '${questName}'! Ganaste ${xpEarned} XP y ${pointsEarned} puntos${badgeText}.`;
+      const badgemessage = badgeName ?  `and unlocked the ${badgeName} badge` : '';
+      const message = `You completed the mission: ${questName}! You earned ${xpEarned} XP and ${pointsEarned} points${badgemessage}.`;
 
       return this.createNotification(
         userId,
         'quest_completed',
-        '✅🫡¡Misión Completada!',
+        '✅🫡¡Misión Completed!',
         message,
         {
           questId,

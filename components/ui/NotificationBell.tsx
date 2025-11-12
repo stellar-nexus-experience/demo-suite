@@ -107,7 +107,7 @@ export const NotificationBell: React.FC = () => {
         return '😔';
       case 'challenge_expired':
         return '⏰';
-       // ✅ AÑADIDO: Notificación de Demostración/Misión
+       // ✅ AÑADIDO: Notificación de Demo/Misión
       case 'demo_completed':
       case 'quest_completed':
         return '🎖️'; // O '🏆' o '';  
