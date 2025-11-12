@@ -140,7 +140,7 @@ export class QuestService {
 
       await updateDoc(accountRef, updateData);
 
-      //🎯 INTEGRACIÓN DE NOTIFICACIÓN DE MISIÓN 🎯//
+      //🎯 INTEGRACIÓN DE NOTIFICACIÓN DE MISIÓN 🎯// 👀
       try {
         await notificationService.notifyQuestCompleted(
           account.id,
