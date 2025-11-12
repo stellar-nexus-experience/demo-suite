@@ -7,9 +7,11 @@ interface HeroSectionProps {
   isVideoPlaying: boolean;
   miniGamesUnlocked: boolean;
   onTutorialClick: () => void;
-  onTechTreeClick: () => void;
   isConnected: boolean;
   isLoadingAccount?: boolean;
+  onTechTreeClick: () => void;
+  // ✅ NUEVA PROP REQUERIDA ✅
+  isTechTreeDisabled: boolean
 }
 
 export const HeroSection = ({
@@ -18,6 +20,7 @@ export const HeroSection = ({
   onTutorialClick,
   onTechTreeClick,
   isConnected,
+  isTechTreeDisabled,
   isLoadingAccount = false,
 }: HeroSectionProps) => {
   return (
@@ -122,8 +125,19 @@ export const HeroSection = ({
             <Tooltip content='Explore the Trustless Work Tech Tree'>
               <button
                 onClick={onTechTreeClick}
-                disabled={false}
-                className='w-full md:w-auto px-6 md:px-8 py-4 font-bold rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 bg-gradient-to-r from-brand-500/20 to-accent-500/20 hover:from-brand-800/50 hover:to-accent-800/50 text-white transform hover:scale-105 shadow-lg hover:shadow-xl border-2 border-white/20 hover:border-white/40'
+                
+                disabled={isTechTreeDisabled} 
+                className={`
+                  w-full md:w-auto px-6 md:px-8 py-4 font-bold rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 
+                  text-white shadow-lg border-2 border-white/20 
+                  
+                  // ✅ 2. ESTILOS CONDICIONALES BASADOS EN EL ESTADO ✅
+                  ${
+                    isTechTreeDisabled 
+                      ? 'opacity-50 cursor-not-allowed transform scale-100' // Estado Deshabilitado
+                      : 'bg-gradient-to-r from-brand-500/20 to-accent-500/20 hover:from-brand-800/50 hover:to-accent-800/50 transform hover:scale-105 hover:shadow-xl hover:border-white/40' // Estado Habilitado
+                  }
+                `}
               >
                 <span className='text-center md:text-left'>Trustless Work Tech Tree</span>
                 <span className='text-xl'>
@@ -143,14 +157,14 @@ export const HeroSection = ({
               </button>
             </Tooltip>
 
-            <div className={`relative w-full md:w-auto ${miniGamesUnlocked ? 'animate-pulse hover:animate-none cursor-pointer' : ''}`}>
+            <div className={`relative w-full md:w-auto ${miniGamesUnlocked ? ' hover:animate-none cursor-pointer' : ''}`}>
               {/* Wave Effect - Only show when unlocked */}
               {miniGamesUnlocked && (
                 <>
                   {/* Pulsing Ring Animation */}
-                  <div className='absolute -inset-4 rounded-2xl bg-gradient-to-r from-brand-500/30 to-accent-500/30 blur-lg animate-ping opacity-75'></div>
-                  <div className='absolute -inset-2 rounded-xl bg-gradient-to-r from-brand-400/40 to-accent-400/40 blur-md animate-pulse opacity-60'></div>
-                  <div className='absolute -inset-1 rounded-lg bg-gradient-to-r from-brand-300/50 to-accent-300/50 blur-sm animate-pulse opacity-40'></div>
+                  <div className='absolute -inset-4 rounded-2xl bg-gradient-to-r from-brand-500/30 to-accent-500/30 blur-lg opacity-75'></div>
+                  <div className='absolute -inset-2 rounded-xl bg-gradient-to-r from-brand-400/40 to-accent-400/40 blur-md opacity-60'></div>
+                  <div className='absolute -inset-1 rounded-lg bg-gradient-to-r from-brand-300/50 to-accent-300/50 blur-sm opacity-40'></div>
                 </>
               )}
 
@@ -173,7 +187,7 @@ export const HeroSection = ({
                   }}
                   className={`relative w-full md:w-auto px-6 md:px-8 py-4 font-bold rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 transform shadow-lg border-2 ${
                     miniGamesUnlocked
-                      ? 'bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-600 hover:to-accent-600 text-white hover:scale-105 hover:shadow-xl border-white/20 hover:border-white/40 cursor-pointer hover:animate-none'
+                      ? '!animate-none bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-600 hover:to-accent-600 text-white hover:scale-105 hover:shadow-xl border-white/20 hover:border-white/40 cursor-pointer '
                       : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'
                   }`}
                   title={
@@ -214,7 +228,7 @@ export const HeroSection = ({
 
         {/* Powered by Trustless Work */}
         <div className='text-center mt-4'>
-          <p className='text-brand-300/70 text-sm font-medium animate-pulse'>
+          <p className='text-brand-300/70 text-sm font-medium '>
             Powered by <span className='text-brand-200 font-semibold'>Trustless Work</span>
           </p>
         </div>

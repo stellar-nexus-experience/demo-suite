@@ -21,6 +21,20 @@ export interface TransactionStatus {
   badgeId?: string;
 }
 
+
+export function cleanObject<T extends Record<string, any>>(obj: T): T {
+  const newObj = { ...obj };
+  Object.keys(newObj).forEach(key => {
+    // Si el valor es estrictamente undefined, elimínalo del objeto
+    if (newObj[key] === undefined) {
+      delete newObj[key];
+    }
+  });
+  return newObj;
+}
+
+
+
 interface TransactionContextType {
   transactions: TransactionStatus[];
   addTransaction: (transaction: Omit<TransactionStatus, 'timestamp'>) => Promise<TransactionStatus>;
@@ -99,26 +113,31 @@ export const TransactionProvider = ({ children }: TransactionProviderProps) => {
     setTransactions(prev => [newTransaction, ...prev]);
 
     // Persist to Firebase
-    if (walletData?.publicKey) {
-      try {
-        await accountService.addTransaction(walletData.publicKey, {
-          id: newTransaction.hash,
-          hash: newTransaction.hash,
-          status: newTransaction.status,
-          message: newTransaction.message,
-          type: newTransaction.type,
-          demoId: newTransaction.demoId,
-          amount: newTransaction.amount,
-          asset: newTransaction.asset,
-          explorerUrl: newTransaction.explorerUrl,
-          stellarExpertUrl: newTransaction.stellarExpertUrl,
-          points: newTransaction.points,
-          badgeId: newTransaction.badgeId,
-        });
-      } catch (error) {
-        console.error('Failed to save transaction to Firebase:', error);
-      }
-    }
+     if (walletData?.publicKey) {
+  try {
+    const rawPayload = {
+      id: newTransaction.hash,
+      hash: newTransaction.hash,
+      status: newTransaction.status,
+      message: newTransaction.message,
+      type: newTransaction.type,
+      demoId: newTransaction.demoId,
+      amount: newTransaction.amount,
+      asset: newTransaction.asset,
+      explorerUrl: newTransaction.explorerUrl,
+      stellarExpertUrl: newTransaction.stellarExpertUrl,
+      points: newTransaction.points,
+      badgeId: newTransaction.badgeId,
+    };
+
+    // ⬇️ APLICA LA LIMPIEZA AQUÍ ⬇️
+    const transactionPayload = cleanObject(rawPayload); 
+    
+    await accountService.addTransaction(walletData.publicKey, transactionPayload);
+  } catch (error) {
+    console.error('Failed to save transaction to Firebase:', error);
+  }
+}
 
     return newTransaction;
   };

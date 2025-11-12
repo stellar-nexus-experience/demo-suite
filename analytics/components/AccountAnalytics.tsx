@@ -136,7 +136,7 @@ export const AccountAnalytics: React.FC<AccountAnalyticsProps> = ({ className = 
   if (loading) {
     return (
       <div className={`p-6 ${themeClasses.container} ${className}`}>
-        <div className='animate-pulse space-y-4'>
+        <div className='space-y-4'>
           <div
             className={`h-6 ${theme === 'light' ? 'bg-gray-200' : 'bg-white/10'} rounded w-1/3`}
           ></div>
