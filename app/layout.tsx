@@ -1,11 +1,11 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import Script from 'next/script';
 import './globals.css';
 import { config } from '@/lib/config';
 import { suppressHydrationWarning } from '@/lib/utils/suppress-hydration';
 import { RootProviders } from './root';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -94,20 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className} suppressHydrationWarning={true}>
         {/* Google Analytics */}
         {config.analytics.enabled && config.analytics.id && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${config.analytics.id}`}
-              strategy='afterInteractive'
-            />
-            <Script id='google-analytics' strategy='afterInteractive'>
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${config.analytics.id}');
-              `}
-            </Script>
-          </>
+          <GoogleAnalytics measurementId={config.analytics.id} />
         )}
         <RootProviders>{children}</RootProviders>
       </body>
