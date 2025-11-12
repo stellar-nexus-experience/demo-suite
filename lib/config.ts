@@ -71,13 +71,13 @@ export const config = {
     sessionSecret: process.env.SESSION_SECRET,
   },
 
-  // Analytics & Monitoring (using defaults since not in client-env)
+  // Analytics & Monitoring
   analytics: {
-    enabled: false,
-    id: '',
+    enabled: clientEnv.NEXT_PUBLIC_ANALYTICS_ENABLED,
+    id: clientEnv.NEXT_PUBLIC_ANALYTICS_ID,
     errorReporting: {
-      enabled: false,
-      endpoint: '',
+      enabled: clientEnv.NEXT_PUBLIC_ERROR_REPORTING_ENABLED,
+      endpoint: clientEnv.NEXT_PUBLIC_ERROR_REPORTING_API_KEY,
     },
   },
 

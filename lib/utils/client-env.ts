@@ -42,6 +42,20 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_EMAILJS_SERVICE_ID: z.string().optional(),
   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: z.string().optional(),
   NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: z.string().optional(),
+
+  // Analytics Configuration
+  NEXT_PUBLIC_ANALYTICS_ENABLED: z
+    .string()
+    .optional()
+    .transform(val => val === 'true')
+    .default(() => false),
+  NEXT_PUBLIC_ANALYTICS_ID: z.string().optional().default(''),
+  NEXT_PUBLIC_ERROR_REPORTING_ENABLED: z
+    .string()
+    .optional()
+    .transform(val => val === 'true')
+    .default(() => false),
+  NEXT_PUBLIC_ERROR_REPORTING_API_KEY: z.string().optional().default(''),
 });
 
 // Parse and validate client-side environment variables
