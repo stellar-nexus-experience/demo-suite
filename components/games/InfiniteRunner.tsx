@@ -22,7 +22,7 @@ interface Obstacle {
   y: number;
   width: number;
   height: number;
-  type: 'cactus' | 'bird' | 'rock' | 'blockchain' | 'crypto' | 'drone' | 'satellite' | 'meteor';
+  type: 'cactus' | 'bird' | 'rock' | 'blockchain' | 'martian' | 'drone' | 'satellite' | 'meteor';
   verticalSpeed?: number; // For moving enemies
   amplitude?: number; // For wave motion
   phase?: number; // For wave motion offset
@@ -1119,7 +1119,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
         
         // Add new obstacle types at higher levels
         if (level >= 2) obstacleTypes.push('bird', 'blockchain', 'drone');
-        if (level >= 3) obstacleTypes.push('crypto', 'satellite');
+        if (level >= 3) obstacleTypes.push('martian', 'satellite');
         if (level >= 4) obstacleTypes.push('meteor');
 
         const type = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
@@ -1580,19 +1580,66 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
             <line x1="25" y1="25" x2="40" y2="40" stroke="#FFFFFF" strokeWidth="1" />
           </g>
         );
-      case 'crypto':
+      case 'martian':
         return (
           <g key={obs.id} transform={`translate(${obs.x}, ${obs.y})`}>
-            {/* Outer glow */}
-            <circle cx="25" cy="25" r="27" className="fill-yellow-300" opacity="0.3" />
-            {/* Main coin */}
-            <circle cx="25" cy="25" r="25" className="fill-yellow-500" stroke="#FFA500" strokeWidth="3" />
-            {/* Inner circle */}
-            <circle cx="25" cy="25" r="22" className="fill-yellow-400" stroke="#FFD700" strokeWidth="2" />
-            {/* Bitcoin symbol */}
-            <text x="25" y="35" textAnchor="middle" className="fill-orange-600 font-bold" style={{ fontSize: '28px' }}>₿</text>
-            {/* Shine effect */}
-            <ellipse cx="18" cy="15" rx="8" ry="12" className="fill-white" opacity="0.3" />
+            {/* Martian Alien - Mars themed */}
+            {/* Head - large oval */}
+            <ellipse cx="25" cy="15" rx="18" ry="20" className="fill-red-700" stroke="#8B4513" strokeWidth="2" />
+            <ellipse cx="25" cy="12" rx="15" ry="18" className="fill-red-600" />
+            
+            {/* Large eyes - glowing */}
+            <ellipse cx="18" cy="10" rx="6" ry="8" className="fill-black" />
+            <ellipse cx="32" cy="10" rx="6" ry="8" className="fill-black" />
+            <ellipse cx="18" cy="9" rx="4" ry="6" className="fill-cyan-400" opacity="0.8">
+              <animate attributeName="opacity" values="0.8;1;0.8" dur="1.5s" repeatCount="indefinite" />
+            </ellipse>
+            <ellipse cx="32" cy="9" rx="4" ry="6" className="fill-cyan-400" opacity="0.8">
+              <animate attributeName="opacity" values="0.8;1;0.8" dur="1.5s" repeatCount="indefinite" />
+            </ellipse>
+            <circle cx="18" cy="8" r="2" className="fill-white" />
+            <circle cx="32" cy="8" r="2" className="fill-white" />
+            
+            {/* Small nose/mouth */}
+            <ellipse cx="25" cy="18" rx="3" ry="2" className="fill-red-800" />
+            <line x1="22" y1="18" x2="28" y2="18" stroke="#8B4513" strokeWidth="1.5" />
+            
+            {/* Antenna on head */}
+            <line x1="25" y1="0" x2="25" y2="-5" stroke="#8B4513" strokeWidth="2" />
+            <circle cx="25" cy="-5" r="3" className="fill-red-500">
+              <animate attributeName="opacity" values="0.8;1;0.8" dur="1s" repeatCount="indefinite" />
+            </circle>
+            
+            {/* Body - smaller oval */}
+            <ellipse cx="25" cy="35" rx="14" ry="12" className="fill-red-800" stroke="#8B4513" strokeWidth="2" />
+            <ellipse cx="25" cy="33" rx="12" ry="10" className="fill-red-700" />
+            
+            {/* Arms - extended outward */}
+            <ellipse cx="8" cy="32" rx="6" ry="10" className="fill-red-700" />
+            <ellipse cx="42" cy="32" rx="6" ry="10" className="fill-red-700" />
+            {/* Hands */}
+            <circle cx="5" cy="35" r="3" className="fill-red-800" />
+            <circle cx="45" cy="35" r="3" className="fill-red-800" />
+            
+            {/* Legs */}
+            <ellipse cx="18" cy="45" rx="5" ry="8" className="fill-red-800" />
+            <ellipse cx="32" cy="45" rx="5" ry="8" className="fill-red-800" />
+            {/* Feet */}
+            <ellipse cx="18" cy="52" rx="6" ry="3" className="fill-red-900" />
+            <ellipse cx="32" cy="52" rx="6" ry="3" className="fill-red-900" />
+            
+            {/* Dust cloud effect around feet (Mars dust) */}
+            <ellipse cx="18" cy="55" rx="8" ry="4" className="fill-orange-800" opacity="0.4">
+              <animate attributeName="opacity" values="0.4;0.6;0.4" dur="1.5s" repeatCount="indefinite" />
+            </ellipse>
+            <ellipse cx="32" cy="55" rx="8" ry="4" className="fill-orange-800" opacity="0.4">
+              <animate attributeName="opacity" values="0.4;0.6;0.4" dur="1.5s" repeatCount="indefinite" />
+            </ellipse>
+            
+            {/* Chest detail - simple pattern */}
+            <circle cx="20" cy="33" r="2" className="fill-red-900" />
+            <circle cx="25" cy="33" r="2" className="fill-red-900" />
+            <circle cx="30" cy="33" r="2" className="fill-red-900" />
           </g>
         );
       case 'drone':
@@ -1848,11 +1895,11 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
             {/* Invulnerability shield */}
             {Date.now() < invulnerableUntil && (
               <g>
-                <circle cx="25" cy="25" r="35" className="fill-cyan-400" opacity="0.2">
+                <circle cx="25" cy="20" r="35" className="fill-cyan-400" opacity="0.2">
                   <animate attributeName="r" from="30" to="40" dur="1s" repeatCount="indefinite" />
                   <animate attributeName="opacity" from="0.3" to="0.1" dur="1s" repeatCount="indefinite" />
                 </circle>
-                <circle cx="25" cy="25" r="32" stroke="#00FFFF" strokeWidth="2" fill="none" opacity="0.6">
+                <circle cx="25" cy="20" r="32" stroke="#00FFFF" strokeWidth="2" fill="none" opacity="0.6">
                   <animate attributeName="r" from="28" to="38" dur="1.5s" repeatCount="indefinite" />
                   <animate attributeName="opacity" from="0.8" to="0.2" dur="1.5s" repeatCount="indefinite" />
                 </circle>
@@ -1907,7 +1954,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
                   <animate attributeName="cx" values="22;25;22" dur="0.45s" repeatCount="indefinite" />
                 </circle>
                 {/* Speed trail effect */}
-                <ellipse cx="-5" cy="15" rx="8" ry="12" className="fill-cyan-400" opacity="0.3">
+                <ellipse cx="-5" cy="10" rx="8" ry="12" className="fill-cyan-400" opacity="0.3">
                   <animate attributeName="opacity" values="0.3;0.1;0.3" dur="0.3s" repeatCount="indefinite" />
                 </ellipse>
               </g>
@@ -1918,19 +1965,19 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
                 {isPoweredUp && (
                   <g>
                     {/* Outer energy ring - purple neon glow */}
-                    <circle cx="25" cy="25" r="40" className="fill-purple-400" opacity="0.2">
+                    <circle cx="25" cy="20" r="40" className="fill-purple-400" opacity="0.2">
                       <animate attributeName="r" values="40;45;40" dur="1.2s" repeatCount="indefinite" />
                       <animate attributeName="opacity" values="0.2;0.35;0.2" dur="1.2s" repeatCount="indefinite" />
                     </circle>
                     
                     {/* Middle energy ring - magenta */}
-                    <circle cx="25" cy="25" r="35" className="fill-fuchsia-500" opacity="0.25">
+                    <circle cx="25" cy="20" r="35" className="fill-fuchsia-500" opacity="0.25">
                       <animate attributeName="r" values="35;38;35" dur="1s" repeatCount="indefinite" />
                       <animate attributeName="opacity" values="0.25;0.4;0.25" dur="1s" repeatCount="indefinite" />
                     </circle>
                     
                     {/* Inner power ring - bright neon purple */}
-                    <circle cx="25" cy="25" r="32" stroke="#A855F7" strokeWidth="2" fill="none" opacity="0.7">
+                    <circle cx="25" cy="20" r="32" stroke="#A855F7" strokeWidth="2" fill="none" opacity="0.7">
                       <animate attributeName="r" values="30;34;30" dur="0.8s" repeatCount="indefinite" />
                       <animate attributeName="opacity" values="0.7;1;0.7" dur="0.8s" repeatCount="indefinite" />
                     </circle>
@@ -1938,46 +1985,46 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
                     {/* Rotating energy particles */}
                     <g>
                       {/* Particle 1 - Purple */}
-                      <circle cx="45" cy="25" r="3" className="fill-purple-400" opacity="0.9">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="3s" repeatCount="indefinite" />
+                      <circle cx="45" cy="20" r="3" className="fill-purple-400" opacity="0.9">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 20" to="360 25 20" dur="3s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.5s" repeatCount="indefinite" />
                       </circle>
                       {/* Particle glow 1 */}
-                      <circle cx="45" cy="25" r="5" className="fill-purple-300" opacity="0.5">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="3s" repeatCount="indefinite" />
+                      <circle cx="45" cy="20" r="5" className="fill-purple-300" opacity="0.5">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 20" to="360 25 20" dur="3s" repeatCount="indefinite" />
                         <animate attributeName="r" values="5;7;5" dur="1.5s" repeatCount="indefinite" />
                       </circle>
                       
                       {/* Particle 2 - Pink */}
-                      <circle cx="5" cy="25" r="3" className="fill-pink-400" opacity="0.9">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="3s" repeatCount="indefinite" />
+                      <circle cx="5" cy="20" r="3" className="fill-pink-400" opacity="0.9">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 20" to="360 25 20" dur="3s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.5s" repeatCount="indefinite" />
                       </circle>
                       {/* Particle glow 2 */}
-                      <circle cx="5" cy="25" r="5" className="fill-pink-300" opacity="0.5">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="3s" repeatCount="indefinite" />
+                      <circle cx="5" cy="20" r="5" className="fill-pink-300" opacity="0.5">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 20" to="360 25 20" dur="3s" repeatCount="indefinite" />
                         <animate attributeName="r" values="5;7;5" dur="1.5s" repeatCount="indefinite" />
                       </circle>
                       
                       {/* Particle 3 - Violet */}
-                      <circle cx="25" cy="5" r="3" className="fill-violet-400" opacity="0.9">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="3s" repeatCount="indefinite" />
+                      <circle cx="25" cy="0" r="3" className="fill-violet-400" opacity="0.9">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 20" to="360 25 20" dur="3s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.5s" repeatCount="indefinite" />
                       </circle>
                       {/* Particle glow 3 */}
-                      <circle cx="25" cy="5" r="5" className="fill-violet-300" opacity="0.5">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="3s" repeatCount="indefinite" />
+                      <circle cx="25" cy="0" r="5" className="fill-violet-300" opacity="0.5">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 20" to="360 25 20" dur="3s" repeatCount="indefinite" />
                         <animate attributeName="r" values="5;7;5" dur="1.5s" repeatCount="indefinite" />
                       </circle>
                       
                       {/* Particle 4 - Fuchsia */}
-                      <circle cx="25" cy="45" r="3" className="fill-fuchsia-400" opacity="0.9">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="3s" repeatCount="indefinite" />
+                      <circle cx="25" cy="40" r="3" className="fill-fuchsia-400" opacity="0.9">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 20" to="360 25 20" dur="3s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.5s" repeatCount="indefinite" />
                       </circle>
                       {/* Particle glow 4 */}
-                      <circle cx="25" cy="45" r="5" className="fill-fuchsia-300" opacity="0.5">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="3s" repeatCount="indefinite" />
+                      <circle cx="25" cy="40" r="5" className="fill-fuchsia-300" opacity="0.5">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 20" to="360 25 20" dur="3s" repeatCount="indefinite" />
                         <animate attributeName="r" values="5;7;5" dur="1.5s" repeatCount="indefinite" />
                       </circle>
                     </g>
@@ -1985,51 +2032,51 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
                     {/* Counter-rotating energy particles (faster) */}
                     <g>
                       {/* Diagonal particle 1 */}
-                      <circle cx="40" cy="10" r="2.5" className="fill-purple-300" opacity="0.9">
-                        <animateTransform attributeName="transform" type="rotate" from="360 25 25" to="0 25 25" dur="2s" repeatCount="indefinite" />
+                      <circle cx="40" cy="5" r="2.5" className="fill-purple-300" opacity="0.9">
+                        <animateTransform attributeName="transform" type="rotate" from="360 25 20" to="0 25 20" dur="2s" repeatCount="indefinite" />
                       </circle>
                       {/* Diagonal particle 2 */}
-                      <circle cx="10" cy="40" r="2.5" className="fill-pink-300" opacity="0.9">
-                        <animateTransform attributeName="transform" type="rotate" from="360 25 25" to="0 25 25" dur="2s" repeatCount="indefinite" />
+                      <circle cx="10" cy="35" r="2.5" className="fill-pink-300" opacity="0.9">
+                        <animateTransform attributeName="transform" type="rotate" from="360 25 20" to="0 25 20" dur="2s" repeatCount="indefinite" />
                       </circle>
                       {/* Diagonal particle 3 */}
-                      <circle cx="40" cy="40" r="2.5" className="fill-fuchsia-300" opacity="0.9">
-                        <animateTransform attributeName="transform" type="rotate" from="360 25 25" to="0 25 25" dur="2s" repeatCount="indefinite" />
+                      <circle cx="40" cy="35" r="2.5" className="fill-fuchsia-300" opacity="0.9">
+                        <animateTransform attributeName="transform" type="rotate" from="360 25 20" to="0 25 20" dur="2s" repeatCount="indefinite" />
                       </circle>
                       {/* Diagonal particle 4 */}
-                      <circle cx="10" cy="10" r="2.5" className="fill-violet-300" opacity="0.9">
-                        <animateTransform attributeName="transform" type="rotate" from="360 25 25" to="0 25 25" dur="2s" repeatCount="indefinite" />
+                      <circle cx="10" cy="5" r="2.5" className="fill-violet-300" opacity="0.9">
+                        <animateTransform attributeName="transform" type="rotate" from="360 25 20" to="0 25 20" dur="2s" repeatCount="indefinite" />
                       </circle>
                     </g>
                     
                     {/* Floating sparkles around character */}
                     <g>
-                      <circle cx="15" cy="10" r="1.5" className="fill-white" opacity="0.9">
-                        <animate attributeName="cy" values="10;5;10" dur="2s" repeatCount="indefinite" />
+                      <circle cx="15" cy="5" r="1.5" className="fill-white" opacity="0.9">
+                        <animate attributeName="cy" values="5;0;5" dur="2s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" repeatCount="indefinite" />
                       </circle>
-                      <circle cx="35" cy="15" r="1.5" className="fill-cyan-200" opacity="0.9">
-                        <animate attributeName="cy" values="15;10;15" dur="1.8s" repeatCount="indefinite" />
+                      <circle cx="35" cy="10" r="1.5" className="fill-cyan-200" opacity="0.9">
+                        <animate attributeName="cy" values="10;5;10" dur="1.8s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.8s" repeatCount="indefinite" />
                       </circle>
-                      <circle cx="10" cy="30" r="1.5" className="fill-white" opacity="0.9">
-                        <animate attributeName="cy" values="30;25;30" dur="2.2s" repeatCount="indefinite" />
+                      <circle cx="10" cy="25" r="1.5" className="fill-white" opacity="0.9">
+                        <animate attributeName="cy" values="25;20;25" dur="2.2s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2.2s" repeatCount="indefinite" />
                       </circle>
-                      <circle cx="40" cy="30" r="1.5" className="fill-purple-200" opacity="0.9">
-                        <animate attributeName="cy" values="30;35;30" dur="1.9s" repeatCount="indefinite" />
+                      <circle cx="40" cy="25" r="1.5" className="fill-purple-200" opacity="0.9">
+                        <animate attributeName="cy" values="25;30;25" dur="1.9s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.9s" repeatCount="indefinite" />
                       </circle>
-                      <circle cx="25" cy="8" r="1.5" className="fill-pink-200" opacity="0.9">
-                        <animate attributeName="cy" values="8;3;8" dur="2.1s" repeatCount="indefinite" />
+                      <circle cx="25" cy="3" r="1.5" className="fill-pink-200" opacity="0.9">
+                        <animate attributeName="cy" values="3;-2;3" dur="2.1s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2.1s" repeatCount="indefinite" />
                       </circle>
                     </g>
                     
                     {/* Energy burst effect - Star shape */}
                     <g opacity="0.4">
-                      <path d="M 25 15 L 27 20 L 32 20 L 28 24 L 30 29 L 25 26 L 20 29 L 22 24 L 18 20 L 23 20 Z" className="fill-purple-400">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="4s" repeatCount="indefinite" />
+                      <path d="M 25 10 L 27 15 L 32 15 L 28 19 L 30 24 L 25 21 L 20 24 L 22 19 L 18 15 L 23 15 Z" className="fill-purple-400">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 20" to="360 25 20" dur="4s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.4;0.7;0.4" dur="2s" repeatCount="indefinite" />
                       </path>
                     </g>
