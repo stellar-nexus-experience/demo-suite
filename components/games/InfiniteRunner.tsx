@@ -1,13 +1,36 @@
 'use client';
 
+// React & Next.js
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+
+// Contexts & Services
 import { useAccount } from '@/contexts/auth/AccountContext';
 import { useToast } from '@/contexts/ui/ToastContext';
 import { accountService } from '@/lib/services/account-service';
 import { gameSocialService } from '@/lib/services/game-social-service';
 import { gameScoresService } from '@/lib/firebase/firebase-service';
-import Image from 'next/image';
+
+// Constants
+import {
+  GAME_PHYSICS,
+  SPEED_CONFIGS,
+  GAME_COSTS,
+  THEMES,
+  ANIMATION_CONFIG,
+  AUDIO_CONFIG,
+  SCORING_CONFIG,
+  TIMING_CONFIG,
+  OBSTACLE_CONFIG,
+  COIN_CONFIG,
+  POWER_UP_CONFIG,
+  QUIZ_QUESTIONS,
+  type SpeedMode,
+  type ThemeType,
+} from '@/utils/constants/games/infinite-runner';
+
+// Components
 import GameSidebar from './GameSidebar';
 
 interface InfiniteRunnerProps {
@@ -56,7 +79,6 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
   const [showControls, setShowControls] = useState(false); // For collapsible controls
   
   // Speed/Difficulty mode
-  type SpeedMode = 'snail' | 'casual' | 'coffee' | 'rocket' | 'lightspeed';
   const [speedMode, setSpeedMode] = useState<SpeedMode>('coffee');
   const [showSpeedSelector, setShowSpeedSelector] = useState(false);
   
@@ -100,13 +122,13 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
   const [progressSaved, setProgressSaved] = useState(false);
 
   // Player state
-  const [playerY, setPlayerY] = useState(300);
+  const [playerY, setPlayerY] = useState<number>(GAME_PHYSICS.GROUND_Y);
   const [playerVelocity, setPlayerVelocity] = useState(0);
   const [isJumping, setIsJumping] = useState(false);
   const [isDucking, setIsDucking] = useState(false);
-  const [jumpCount, setJumpCount] = useState(0); // For double jump
-  const [isPoweredUp, setIsPoweredUp] = useState(false); // Power-up transformation state
-  const [runningFrame, setRunningFrame] = useState(0); // For running animation (0-6)
+  const [jumpCount, setJumpCount] = useState(0);
+  const [isPoweredUp, setIsPoweredUp] = useState(false);
+  const [runningFrame, setRunningFrame] = useState(0);
 
   // Game speed
   const [gameSpeed, setGameSpeed] = useState(5);
@@ -119,7 +141,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
 
   // Background
   const [bgOffset, setBgOffset] = useState(0);
-  const [theme, setTheme] = useState<'day' | 'sunset' | 'night' | 'cyber'>('day');
+  const [theme, setTheme] = useState<ThemeType>('day');
   const [bgImageOffset, setBgImageOffset] = useState(0);
 
   // Web3 Quiz state
@@ -149,404 +171,22 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
   const frameCountRef = useRef(0);
   const lastFrameTimeRef = useRef<number>(0); // For delta time calculation
 
-  // Constants
-  const GRAVITY = 0.6;
-  const JUMP_FORCE = -12;
-  const DOUBLE_JUMP_FORCE = -11; // Slightly less powerful second jump
-  const GROUND_Y = 300;
-  const PLAYER_X = 100;
-  const PLAYER_WIDTH = 50;
-  const PLAYER_HEIGHT = 50;
-  const DUCKING_HEIGHT = 20; // Make ducking more effective (lower to ground)
-  const MAX_JUMPS = 2; // Allow double jump
-  const TARGET_FPS = 60; // Target frame rate for consistent gameplay
-  
-  // Speed mode configuration - normalized for 60 FPS
-  const SPEED_CONFIGS = {
-    snail: { 
-      baseSpeed: 3, 
-      label: '🐌 Snail Mail', 
-      description: 'Perfect for beginners or a chill vibe'
-    },
-    casual: { 
-      baseSpeed: 4.5, 
-      label: '🚶 Casual Stroll', 
-      description: 'Nice and easy, no rush'
-    },
-    coffee: { 
-      baseSpeed: 6, 
-      label: '☕ Coffee Break', 
-      description: 'Just right - recommended!'
-    },
-    rocket: { 
-      baseSpeed: 8, 
-      label: '🚀 Rocket Fuel', 
-      description: 'Fast-paced action for pros'
-    },
-    lightspeed: { 
-      baseSpeed: 10, 
-      label: '⚡ Lightspeed', 
-      description: 'Insane mode - are you ready?'
-    }
-  };
+  // Extract constants for easier access
+  const {
+    GRAVITY,
+    JUMP_FORCE,
+    DOUBLE_JUMP_FORCE,
+    GROUND_Y,
+    PLAYER_X,
+    PLAYER_WIDTH,
+    PLAYER_HEIGHT,
+    MAX_JUMPS,
+    TARGET_FPS,
+  } = GAME_PHYSICS;
 
-  // Web3 Quiz Questions
-  const quizQuestions = [
-    {
-      question: "What is a blockchain?",
-      options: [
-        "A type of cryptocurrency",
-        "A distributed ledger technology",
-        "A cloud storage service",
-        "A social media platform"
-      ],
-      correctAnswer: 1,
-      explanation: "A blockchain is a distributed ledger technology that records transactions across multiple computers."
-    },
-    {
-      question: "What does 'DeFi' stand for?",
-      options: [
-        "Digital Finance",
-        "Decentralized Finance",
-        "Defined Finance",
-        "Delegated Finance"
-      ],
-      correctAnswer: 1,
-      explanation: "DeFi stands for Decentralized Finance, which refers to financial services built on blockchain."
-    },
-    {
-      question: "What is a smart contract?",
-      options: [
-        "A legal document",
-        "Self-executing code on blockchain",
-        "A trading bot",
-        "A wallet app"
-      ],
-      correctAnswer: 1,
-      explanation: "A smart contract is self-executing code that runs on a blockchain when conditions are met."
-    },
-    {
-      question: "What is the purpose of a wallet in crypto?",
-      options: [
-        "To mine cryptocurrency",
-        "To store and manage private keys",
-        "To validate transactions",
-        "To create new tokens"
-      ],
-      correctAnswer: 1,
-      explanation: "A crypto wallet stores and manages your private keys, allowing you to control your assets."
-    },
-    {
-      question: "What does 'gas fee' refer to?",
-      options: [
-        "Mining reward",
-        "Transaction cost on blockchain",
-        "Staking reward",
-        "Exchange fee"
-      ],
-      correctAnswer: 1,
-      explanation: "Gas fees are the transaction costs paid to validators/miners for processing blockchain transactions."
-    },
-    {
-      question: "What is an NFT?",
-      options: [
-        "Non-Fungible Token",
-        "New Finance Technology",
-        "Network File Transfer",
-        "Node Function Test"
-      ],
-      correctAnswer: 0,
-      explanation: "NFT stands for Non-Fungible Token, a unique digital asset stored on a blockchain."
-    },
-    {
-      question: "What consensus mechanism does Bitcoin use?",
-      options: [
-        "Proof of Stake",
-        "Delegated Proof of Stake",
-        "Proof of Work",
-        "Proof of Authority"
-      ],
-      correctAnswer: 2,
-      explanation: "Bitcoin uses Proof of Work (PoW), where miners solve complex mathematical puzzles to validate transactions."
-    },
-    {
-      question: "What is a DAO?",
-      options: [
-        "Digital Asset Operation",
-        "Decentralized Autonomous Organization",
-        "Data Access Object",
-        "Distributed Application Order"
-      ],
-      correctAnswer: 1,
-      explanation: "A DAO is a Decentralized Autonomous Organization, governed by smart contracts and community voting."
-    },
-    {
-      question: "What does 'HODL' mean in crypto?",
-      options: [
-        "Hold On for Dear Life",
-        "High Order Digital Ledger",
-        "Heavily Optimized Data Link",
-        "Hybrid Online Decentralized Loan"
-      ],
-      correctAnswer: 0,
-      explanation: "HODL means 'Hold On for Dear Life', a term for holding crypto long-term despite volatility."
-    },
-    {
-      question: "What is Layer 2 in blockchain?",
-      options: [
-        "Second generation blockchain",
-        "Scaling solution built on top of Layer 1",
-        "Mining difficulty level",
-        "Security protocol"
-      ],
-      correctAnswer: 1,
-      explanation: "Layer 2 refers to scaling solutions built on top of the main blockchain (Layer 1) to increase speed and reduce costs."
-    },
-    {
-      question: "What is staking in crypto?",
-      options: [
-        "Trading on margin",
-        "Mining with special hardware",
-        "Locking tokens to secure network and earn rewards",
-        "Selling tokens at high prices"
-      ],
-      correctAnswer: 2,
-      explanation: "Staking involves locking up cryptocurrency to help secure a blockchain network and earn rewards in return."
-    },
-    {
-      question: "What is a dApp?",
-      options: [
-        "Digital Application Protocol",
-        "Decentralized Application",
-        "Data Access Point",
-        "Distributed API"
-      ],
-      correctAnswer: 1,
-      explanation: "A dApp is a Decentralized Application that runs on a blockchain network instead of centralized servers."
-    },
-    {
-      question: "What does 'Web3' refer to?",
-      options: [
-        "The third version of the internet",
-        "Decentralized internet based on blockchain",
-        "A web development framework",
-        "World Wide Web version 3"
-      ],
-      correctAnswer: 1,
-      explanation: "Web3 refers to the vision of a decentralized internet built on blockchain technology with user ownership."
-    },
-    {
-      question: "What is tokenomics?",
-      options: [
-        "Token creation process",
-        "Economic model of a cryptocurrency",
-        "Token exchange rates",
-        "Mining economics"
-      ],
-      correctAnswer: 1,
-      explanation: "Tokenomics refers to the economic model and incentive structure of a cryptocurrency or token."
-    },
-    {
-      question: "What is a liquidity pool?",
-      options: [
-        "A pool of miners",
-        "Collection of locked tokens for trading",
-        "Water supply for cooling",
-        "Investment fund"
-      ],
-      correctAnswer: 1,
-      explanation: "A liquidity pool is a collection of tokens locked in a smart contract to facilitate decentralized trading."
-    },
-    {
-      question: "What does 'APY' stand for in DeFi?",
-      options: [
-        "Annual Percentage Yield",
-        "Automated Payment Yield",
-        "Average Price Year",
-        "Asset Performance Yearly"
-      ],
-      correctAnswer: 0,
-      explanation: "APY stands for Annual Percentage Yield, showing the yearly return on staked or deposited crypto."
-    },
-    {
-      question: "What is a private key?",
-      options: [
-        "Password for exchange accounts",
-        "Secret code to access your crypto",
-        "Mining difficulty setting",
-        "Network encryption key"
-      ],
-      correctAnswer: 1,
-      explanation: "A private key is a secret cryptographic code that proves ownership and allows you to access your cryptocurrency."
-    },
-    {
-      question: "What is an oracle in blockchain?",
-      options: [
-        "A prediction market",
-        "A data feed connecting blockchain to real-world data",
-        "A type of smart contract",
-        "A consensus mechanism"
-      ],
-      correctAnswer: 1,
-      explanation: "An oracle is a service that provides external real-world data to smart contracts on the blockchain."
-    },
-    {
-      question: "What does 'burning' tokens mean?",
-      options: [
-        "Selling tokens quickly",
-        "Permanently removing tokens from circulation",
-        "Converting to another token",
-        "Staking for long periods"
-      ],
-      correctAnswer: 1,
-      explanation: "Burning tokens means permanently removing them from circulation by sending them to an inaccessible address."
-    },
-    {
-      question: "What is a flash loan?",
-      options: [
-        "Quick approval loan",
-        "Uncollateralized loan that must be repaid in same transaction",
-        "Instant crypto purchase",
-        "Emergency funding mechanism"
-      ],
-      correctAnswer: 1,
-      explanation: "A flash loan is an uncollateralized DeFi loan that must be borrowed and repaid within a single transaction block."
-    },
-    {
-      question: "What is the Stellar Consensus Protocol (SCP)?",
-      options: [
-        "Proof of Work system",
-        "Federated Byzantine Agreement mechanism",
-        "Proof of Stake variant",
-        "Mining algorithm"
-      ],
-      correctAnswer: 1,
-      explanation: "SCP is a Federated Byzantine Agreement consensus mechanism that enables fast, secure transactions on Stellar."
-    },
-    {
-      question: "What are lumens (XLM) on Stellar?",
-      options: [
-        "Smart contract language",
-        "Native cryptocurrency of Stellar network",
-        "Mining rewards",
-        "Transaction validators"
-      ],
-      correctAnswer: 1,
-      explanation: "Lumens (XLM) are the native cryptocurrency of the Stellar network, used for transactions and anti-spam measures."
-    },
-    {
-      question: "What is a seed phrase?",
-      options: [
-        "Password hint",
-        "12-24 word backup for wallet recovery",
-        "Transaction ID",
-        "Smart contract code"
-      ],
-      correctAnswer: 1,
-      explanation: "A seed phrase is a sequence of 12-24 words that can restore your wallet and access to your crypto assets."
-    },
-    {
-      question: "What is impermanent loss?",
-      options: [
-        "Temporary network downtime",
-        "Loss from providing liquidity due to price changes",
-        "Failed transaction fees",
-        "Exchange rate fluctuation"
-      ],
-      correctAnswer: 1,
-      explanation: "Impermanent loss occurs when providing liquidity to a pool and the token prices change compared to holding them."
-    },
-    {
-      question: "What is a testnet?",
-      options: [
-        "Security audit system",
-        "Network for testing without real money",
-        "Mining difficulty test",
-        "Speed testing tool"
-      ],
-      correctAnswer: 1,
-      explanation: "A testnet is a separate blockchain network used for testing and development without using real cryptocurrency."
-    },
-    {
-      question: "What does 'DYOR' mean?",
-      options: [
-        "Distribute Your Own Rewards",
-        "Do Your Own Research",
-        "Deploy Your Own Resource",
-        "Develop Your Own Rules"
-      ],
-      correctAnswer: 1,
-      explanation: "DYOR means 'Do Your Own Research', reminding people to research before investing in crypto projects."
-    },
-    {
-      question: "What is a whale in crypto?",
-      options: [
-        "Large mining operation",
-        "Individual/entity holding large amounts of crypto",
-        "Market manipulation bot",
-        "Exchange platform"
-      ],
-      correctAnswer: 1,
-      explanation: "A whale is an individual or entity that holds a very large amount of cryptocurrency, able to influence market prices."
-    },
-    {
-      question: "What is yield farming?",
-      options: [
-        "Mining cryptocurrency",
-        "Earning rewards by providing liquidity",
-        "Creating new tokens",
-        "Trading strategies"
-      ],
-      correctAnswer: 1,
-      explanation: "Yield farming involves providing liquidity to DeFi protocols to earn interest, fees, or token rewards."
-    },
-    {
-      question: "What is cross-chain?",
-      options: [
-        "Multiple wallets",
-        "Interoperability between different blockchains",
-        "Chain of transactions",
-        "Mining pools"
-      ],
-      correctAnswer: 1,
-      explanation: "Cross-chain refers to the ability to transfer assets and data between different blockchain networks."
-    },
-    {
-      question: "What is a validator?",
-      options: [
-        "Code auditor",
-        "Node that validates transactions in PoS networks",
-        "Wallet security check",
-        "Smart contract tester"
-      ],
-      correctAnswer: 1,
-      explanation: "A validator is a node in a Proof of Stake network that validates transactions and creates new blocks."
-    }
-  ];
-
-  // Theme colors based on level - Space theme
-  const themes = {
-    day: {
-      bg: 'from-slate-800 via-slate-700 to-slate-900',
-      ground: 'fill-gray-700',
-      accent: 'fill-gray-900',
-    },
-    sunset: {
-      bg: 'from-blue-900 via-indigo-900 to-slate-900',
-      ground: 'fill-blue-900',
-      accent: 'fill-indigo-950',
-    },
-    night: {
-      bg: 'from-black via-slate-950 to-black',
-      ground: 'fill-gray-800',
-      accent: 'fill-black',
-    },
-    cyber: {
-      bg: 'from-purple-900 via-pink-900 to-slate-900',
-      ground: 'fill-purple-900',
-      accent: 'fill-pink-950',
-    },
-  };
+  // Use imported constants
+  const quizQuestions = QUIZ_QUESTIONS;
+  const themes = THEMES;
 
   // Save game progress
   const saveGameProgress = useCallback(async (finalScore: number, finalLevel: number, earnedXP: number) => {
@@ -557,8 +197,8 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
     setIsSavingProgress(true);
 
     try {
-      // Calculate points: 1 point per 10 score
-      const pointsEarned = Math.floor(finalScore / 10);
+      // Calculate points using constant
+      const pointsEarned = Math.floor(finalScore / SCORING_CONFIG.POINTS_PER_SCORE);
       
       // Save to account
       await accountService.addExperienceAndPoints(account.id, earnedXP, pointsEarned);
@@ -607,42 +247,42 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
   useEffect(() => {
     setIsMounted(true);
     
-    // Initialize audio
+    // Initialize audio using constants
     if (typeof window !== 'undefined') {
-      menuMusicRef.current = new Audio('/sounds/infiniteRunner/game.mp3');
-      menuMusicRef.current.loop = true;
-      menuMusicRef.current.volume = 0.3;
+      menuMusicRef.current = new Audio(AUDIO_CONFIG.MENU_MUSIC.path);
+      menuMusicRef.current.loop = AUDIO_CONFIG.MENU_MUSIC.loop;
+      menuMusicRef.current.volume = AUDIO_CONFIG.MENU_MUSIC.volume;
       
-      winSoundRef.current = new Audio('/sounds/infiniteRunner/win.mp3');
-      winSoundRef.current.volume = 0.5;
+      winSoundRef.current = new Audio(AUDIO_CONFIG.WIN_SOUND.path);
+      winSoundRef.current.volume = AUDIO_CONFIG.WIN_SOUND.volume;
       
-      jumpSoundRef.current = new Audio('/sounds/infiniteRunner/jump.mp3');
-      jumpSoundRef.current.volume = 0.4;
+      jumpSoundRef.current = new Audio(AUDIO_CONFIG.JUMP_SOUND.path);
+      jumpSoundRef.current.volume = AUDIO_CONFIG.JUMP_SOUND.volume;
       
-      levelUpSoundRef.current = new Audio('/sounds/infiniteRunner/levelup.mp3');
-      levelUpSoundRef.current.volume = 0.6;
+      levelUpSoundRef.current = new Audio(AUDIO_CONFIG.LEVEL_UP_SOUND.path);
+      levelUpSoundRef.current.volume = AUDIO_CONFIG.LEVEL_UP_SOUND.volume;
       
-      gameOverSoundRef.current = new Audio('/sounds/infiniteRunner/gameover.mp3');
-      gameOverSoundRef.current.volume = 0.5;
+      gameOverSoundRef.current = new Audio(AUDIO_CONFIG.GAME_OVER_SOUND.path);
+      gameOverSoundRef.current.volume = AUDIO_CONFIG.GAME_OVER_SOUND.volume;
       
-      hitSoundRef.current = new Audio('/sounds/infiniteRunner/hit.mp3');
-      hitSoundRef.current.volume = 0.5;
+      hitSoundRef.current = new Audio(AUDIO_CONFIG.HIT_SOUND.path);
+      hitSoundRef.current.volume = AUDIO_CONFIG.HIT_SOUND.volume;
       
-      grabCoinSoundRef.current = new Audio('/sounds/infiniteRunner/grabcoin.mp3');
-      grabCoinSoundRef.current.volume = 0.4;
+      grabCoinSoundRef.current = new Audio(AUDIO_CONFIG.GRAB_COIN_SOUND.path);
+      grabCoinSoundRef.current.volume = AUDIO_CONFIG.GRAB_COIN_SOUND.volume;
       
-      extraLifeSoundRef.current = new Audio('/sounds/infiniteRunner/extralife.mp3');
-      extraLifeSoundRef.current.volume = 0.6;
+      extraLifeSoundRef.current = new Audio(AUDIO_CONFIG.EXTRA_LIFE_SOUND.path);
+      extraLifeSoundRef.current.volume = AUDIO_CONFIG.EXTRA_LIFE_SOUND.volume;
       
-      groundSlamSoundRef.current = new Audio('/sounds/infiniteRunner/groundslam.mp3');
-      groundSlamSoundRef.current.volume = 0.5;
+      groundSlamSoundRef.current = new Audio(AUDIO_CONFIG.GROUND_SLAM_SOUND.path);
+      groundSlamSoundRef.current.volume = AUDIO_CONFIG.GROUND_SLAM_SOUND.volume;
       
-      plasmaBallSoundRef.current = new Audio('/sounds/infiniteRunner/plasmaball.mp3');
-      plasmaBallSoundRef.current.volume = 0.4;
+      plasmaBallSoundRef.current = new Audio(AUDIO_CONFIG.PLASMA_BALL_SOUND.path);
+      plasmaBallSoundRef.current.volume = AUDIO_CONFIG.PLASMA_BALL_SOUND.volume;
       
-      safeZoneSoundRef.current = new Audio('/sounds/infiniteRunner/safezone.mp3');
-      safeZoneSoundRef.current.loop = true;
-      safeZoneSoundRef.current.volume = 0.3;
+      safeZoneSoundRef.current = new Audio(AUDIO_CONFIG.SAFE_ZONE_SOUND.path);
+      safeZoneSoundRef.current.loop = AUDIO_CONFIG.SAFE_ZONE_SOUND.loop;
+      safeZoneSoundRef.current.volume = AUDIO_CONFIG.SAFE_ZONE_SOUND.volume;
     }
     
     return () => {
@@ -780,8 +420,8 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
   useEffect(() => {
     if (gameState !== 'playing') return;
     
-    const animationSpeed = 100; // milliseconds per frame (adjust for faster/slower animation)
-    const totalFrames = 7; // We have 7 frames: 1.png through 7.png
+    const animationSpeed = ANIMATION_CONFIG.RUNNING_FRAME_SPEED;
+    const totalFrames = ANIMATION_CONFIG.TOTAL_RUNNING_FRAMES;
     
     const interval = setInterval(() => {
       setRunningFrame(prev => (prev + 1) % totalFrames);
@@ -820,8 +460,8 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
     // Check immediately
     checkInvulnerability();
 
-    // Check every 100ms to ensure sound stops when invulnerability ends
-    const interval = setInterval(checkInvulnerability, 100);
+    // Check at configured interval to ensure sound stops when invulnerability ends
+    const interval = setInterval(checkInvulnerability, TIMING_CONFIG.SAFE_ZONE_CHECK_INTERVAL_MS);
 
     return () => {
       clearInterval(interval);
@@ -860,7 +500,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
       return;
     }
 
-    const GAME_COST = isReplay ? 100 : 250; // Initial game cost reduced!
+    const GAME_COST = isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL;
     const currentPoints = account.totalPoints || account.profile?.totalPoints || 0;
     
     if (currentPoints < GAME_COST) {
@@ -929,8 +569,8 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
     frameCountRef.current = 0;
     lastFrameTimeRef.current = 0;
     
-    // Give player 5 seconds of invulnerability at start
-    setInvulnerableUntil(Date.now() + 5000);
+    // Give player initial invulnerability at start
+    setInvulnerableUntil(Date.now() + TIMING_CONFIG.INITIAL_INVULNERABILITY_MS);
     
             // Play win sound when starting game
             if (winSoundRef.current) {
@@ -1078,10 +718,10 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
           const shouldIncrement = frameCountRef.current % level === 0;
           const newScore = shouldIncrement ? s + 1 : s;
           
-          // Level up at 1000, 2000, 3000, 4000, 5000, etc.
-          // Check if we've crossed a 1000-point threshold (handles cases where score jumps past exact multiples)
-          const currentThreshold = Math.floor(newScore / 1000);
-          const lastThreshold = Math.floor(lastLevelUpScore / 1000);
+          // Level up at configured threshold
+          // Check if we've crossed the threshold (handles cases where score jumps past exact multiples)
+          const currentThreshold = Math.floor(newScore / SCORING_CONFIG.LEVEL_UP_THRESHOLD);
+          const lastThreshold = Math.floor(lastLevelUpScore / SCORING_CONFIG.LEVEL_UP_THRESHOLD);
           
           if (newScore > 0 && currentThreshold > lastThreshold) {
             setLastLevelUpScore(newScore);
@@ -1111,8 +751,11 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
       
       lastObstacleRef.current += 1;
       // Add randomness to obstacle interval for more variety
-      const baseInterval = Math.max(60 - level * 5, 30);
-      const obstacleInterval = baseInterval + Math.floor(Math.random() * 20) - 10; // ±10 frames variation
+      const baseInterval = Math.max(
+        OBSTACLE_CONFIG.BASE_INTERVAL - level * OBSTACLE_CONFIG.INTERVAL_DECREASE_PER_LEVEL,
+        OBSTACLE_CONFIG.MIN_INTERVAL
+      );
+      const obstacleInterval = baseInterval + Math.floor(Math.random() * OBSTACLE_CONFIG.RANDOM_VARIATION) - (OBSTACLE_CONFIG.RANDOM_VARIATION / 2);
       if (lastObstacleRef.current > obstacleInterval && !isInvulnerable) {
         lastObstacleRef.current = 0;
         const obstacleTypes: Obstacle['type'][] = ['cactus', 'rock'];
@@ -1149,15 +792,18 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
           yPos = GROUND_Y - 150 - Math.random() * 80; // Much more variation
           verticalSpeed = 1.5 + Math.random() * 2.5; // Variable speed
           amplitude = 20 + Math.random() * 30;
-        } else if (type === 'blockchain' || type === 'crypto') {
+        } else if (type === 'blockchain') {
+          // Mid-height obstacles with variation
+          yPos = GROUND_Y - 30 - Math.random() * 40;
+        } else if (type === 'martian') {
           // Mid-height obstacles with variation
           yPos = GROUND_Y - 30 - Math.random() * 40;
         }
         
         // Add size variation for more unpredictability
-        const sizeVariation = 0.8 + Math.random() * 0.4; // 80% to 120% of base size
-        const baseWidth = type === 'blockchain' || type === 'crypto' ? 50 : type === 'satellite' ? 40 : 30;
-        const baseHeight = type === 'blockchain' || type === 'crypto' ? 50 : type === 'satellite' ? 40 : isFlying ? 30 : 40;
+        const sizeVariation = OBSTACLE_CONFIG.SIZE_VARIATION_MIN + Math.random() * (OBSTACLE_CONFIG.SIZE_VARIATION_MAX - OBSTACLE_CONFIG.SIZE_VARIATION_MIN);
+        const baseWidth = (type === 'blockchain' || type === 'martian') ? 50 : (type === 'satellite' ? 40 : 30);
+        const baseHeight = (type === 'blockchain' || type === 'martian') ? 50 : (type === 'satellite' ? 40 : isFlying ? 30 : 40);
         
         setObstacles(obs => [
           ...obs,
@@ -1178,7 +824,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
       // Spawn coins (only if not in safe zone) with random intervals
       if (!isInSafeZone) {
         lastCoinRef.current += 1;
-        const coinInterval = 80 + Math.floor(Math.random() * 40); // 80-120 frames variation
+        const coinInterval = COIN_CONFIG.BASE_INTERVAL + Math.floor(Math.random() * COIN_CONFIG.RANDOM_VARIATION);
         if (lastCoinRef.current > coinInterval) {
           lastCoinRef.current = 0;
           setCoins(c => [
@@ -1186,7 +832,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
             {
               id: coinIdRef.current++,
               x: 800,
-              y: GROUND_Y - 50 - Math.random() * 120, // More height variation
+              y: GROUND_Y - COIN_CONFIG.BASE_HEIGHT_OFFSET - Math.random() * COIN_CONFIG.HEIGHT_VARIATION,
               collected: false,
             },
           ]);
@@ -1196,8 +842,8 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
       // Spawn power-ups (only once per level, after safe zone ends)
       if (!powerUpSpawnedThisLevel && !isInSafeZone) {
         lastPowerUpRef.current += 1;
-        // Spawn after 150-250 frames into the level (after safe zone)
-        const powerUpInterval = 150 + Math.random() * 100;
+        // Spawn after configured delay into the level (after safe zone)
+        const powerUpInterval = POWER_UP_CONFIG.SPAWN_DELAY_MIN + Math.random() * (POWER_UP_CONFIG.SPAWN_DELAY_MAX - POWER_UP_CONFIG.SPAWN_DELAY_MIN);
         if (lastPowerUpRef.current > powerUpInterval) {
           setPowerUpSpawnedThisLevel(true);
           lastPowerUpRef.current = 0;
@@ -1206,7 +852,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
             {
               id: powerUpIdRef.current++,
               x: 800,
-              y: GROUND_Y - 60, // Just above ground
+              y: GROUND_Y - POWER_UP_CONFIG.HEIGHT_OFFSET,
               collected: false,
               type: 'grow',
             },
@@ -1281,8 +927,8 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
         if (isPoweredUp) {
           // If powered up, lose power-up instead of dying
           setIsPoweredUp(false);
-          // Give 2 seconds invulnerability after losing power-up
-          setInvulnerableUntil(Date.now() + 2000);
+          // Give invulnerability after losing power-up
+          setInvulnerableUntil(Date.now() + TIMING_CONFIG.POWER_UP_LOST_INVULNERABILITY_MS);
           // Add visual feedback
           addToast({
             type: 'warning',
@@ -1305,8 +951,8 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
           if (score > highScore) {
             setHighScore(score);
           }
-          // Calculate XP earned (1 XP per 10 score)
-          const earnedXP = Math.floor(score / 10);
+          // Calculate XP earned using constant
+          const earnedXP = Math.floor(score / SCORING_CONFIG.XP_PER_SCORE);
           setXpEarned(earnedXP);
           
           // Save progress automatically
@@ -1340,11 +986,11 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
             playerBottom > coin.y
           ) {
             setScore(s => {
-              const newScore = s + 50;
+              const newScore = s + SCORING_CONFIG.COIN_VALUE;
               
               // Check if collecting this coin causes a level-up threshold crossing
-              const currentThreshold = Math.floor(newScore / 1000);
-              const lastThreshold = Math.floor(lastLevelUpScore / 1000);
+              const currentThreshold = Math.floor(newScore / SCORING_CONFIG.LEVEL_UP_THRESHOLD);
+              const lastThreshold = Math.floor(lastLevelUpScore / SCORING_CONFIG.LEVEL_UP_THRESHOLD);
               
               if (newScore > 0 && currentThreshold > lastThreshold) {
                 setLastLevelUpScore(newScore);
@@ -2197,14 +1843,14 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
               <div className='bg-gradient-to-r from-purple-600/30 to-pink-600/30 rounded-xl p-4 mb-4 border-2 border-purple-400/50'>
                 <div className='flex items-center justify-between'>
                   <div className='text-white/80 text-sm font-semibold'>💰 Cost:</div>
-                  <div className='text-yellow-400 font-bold text-2xl'>250 Points</div>
+                  <div className='text-yellow-400 font-bold text-2xl'>{GAME_COSTS.INITIAL} Points</div>
                 </div>
                 {account && (() => {
                   const currentPoints = account.totalPoints || account.profile?.totalPoints || 0;
                   return (
                     <div className='flex items-center justify-between mt-2 pt-2 border-t border-white/20'>
                       <div className='text-white/80 text-sm'>Balance:</div>
-                      <div className={`font-bold text-xl ${currentPoints >= 250 ? 'text-green-400' : 'text-red-400'}`}>
+                      <div className={`font-bold text-xl ${currentPoints >= GAME_COSTS.INITIAL ? 'text-green-400' : 'text-red-400'}`}>
                         {currentPoints} pts
                       </div>
                     </div>
@@ -2215,14 +1861,14 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
               {/* Start Button */}
               <button
                 onClick={() => {
-                  if (!account || (account.totalPoints || account.profile?.totalPoints || 0) < 250) {
+                  if (!account || (account.totalPoints || account.profile?.totalPoints || 0) < GAME_COSTS.INITIAL) {
                     return;
                   }
                   setShowStartConfirmation(true);
                 }}
-                disabled={!account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < 250)}
+                disabled={!account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < GAME_COSTS.INITIAL)}
                 className={`w-full px-10 py-5 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:from-cyan-400 hover:via-purple-400 hover:to-pink-400 text-white font-bold text-2xl rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-cyan-500/50 ${
-                  !account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < 250) 
+                  !account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < GAME_COSTS.INITIAL) 
                     ? 'opacity-50 cursor-not-allowed animate-none' 
                     : 'animate-pulse'
                 }`}
@@ -2236,9 +1882,9 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
                   🔒 Connect wallet to play
                 </p>
               )}
-              {account && (account.totalPoints || account.profile?.totalPoints || 0) < 250 && (
+              {account && (account.totalPoints || account.profile?.totalPoints || 0) < GAME_COSTS.INITIAL && (
                 <p className='text-red-300 text-xs mt-3'>
-                  💰 Need {250 - (account.totalPoints || account.profile?.totalPoints || 0)} more points
+                  💰 Need {GAME_COSTS.INITIAL - (account.totalPoints || account.profile?.totalPoints || 0)} more points
                 </p>
               )}
             </div>
@@ -2293,8 +1939,8 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
                                 setBgOffset(0);
                                 setBgImageOffset(0);
 
-                                // Give 4 seconds of invulnerability after level up
-                                setInvulnerableUntil(Date.now() + 4000);
+                                // Give invulnerability after level up
+                                setInvulnerableUntil(Date.now() + TIMING_CONFIG.LEVEL_UP_INVULNERABILITY_MS);
                                 
                                 // Clear existing obstacles for fair start
                                 setObstacles([]);
@@ -2319,8 +1965,8 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
                                 return newLevel;
                               });
                             } else {
-                              // Wrong answer - still give 2 seconds safe zone to resume
-                              setInvulnerableUntil(Date.now() + 2000);
+                              // Wrong answer - still give safe zone to resume
+                              setInvulnerableUntil(Date.now() + TIMING_CONFIG.WRONG_ANSWER_INVULNERABILITY_MS);
                             }
                           }}
                           className='w-full p-3 text-left rounded-lg border-2 border-white/20 hover:border-cyan-400/50 bg-white/5 hover:bg-cyan-500/20 text-white text-sm font-medium transition-all duration-200 transform hover:scale-102'
@@ -2460,7 +2106,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
                   return (
                     <div className='flex items-center justify-between mt-2 pt-2 border-t border-white/20'>
                       <div className='text-white/80 text-xs'>Balance:</div>
-                      <div className={`font-bold text-lg ${currentPoints >= 100 ? 'text-green-400' : 'text-red-400'}`}>
+                      <div className={`font-bold text-lg ${currentPoints >= GAME_COSTS.REPLAY ? 'text-green-400' : 'text-red-400'}`}>
                         {currentPoints} pts
                       </div>
                     </div>
@@ -2472,14 +2118,14 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
               <div className='space-y-2'>
                 <button
                   onClick={() => {
-                    if (!account || (account.totalPoints || account.profile?.totalPoints || 0) < 100) {
+                    if (!account || (account.totalPoints || account.profile?.totalPoints || 0) < GAME_COSTS.REPLAY) {
                       return;
                     }
                     setShowReplayConfirmation(true);
                   }}
-                  disabled={!account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < 100)}
+                  disabled={!account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < GAME_COSTS.REPLAY)}
                   className={`w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white font-bold text-lg rounded-xl transition-all duration-200 transform hover:scale-105 ${
-                    !account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < 100)
+                    !account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < GAME_COSTS.REPLAY)
                       ? 'opacity-50 cursor-not-allowed'
                       : ''
                   }`}
@@ -2491,9 +2137,9 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
                     🔒 Connect wallet
                   </p>
                 )}
-                {account && (account.totalPoints || account.profile?.totalPoints || 0) < 100 && (
+                {account && (account.totalPoints || account.profile?.totalPoints || 0) < GAME_COSTS.REPLAY && (
                   <p className='text-red-300 text-xs text-center'>
-                    💰 Need {100 - (account.totalPoints || account.profile?.totalPoints || 0)} more pts
+                    💰 Need {GAME_COSTS.REPLAY - (account.totalPoints || account.profile?.totalPoints || 0)} more pts
                   </p>
                 )}
                 <button
@@ -2550,7 +2196,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
               {/* Points Cost Info */}
               <div className='bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl p-4 mb-6 border border-yellow-400/30'>
                 <div className='text-yellow-300 text-sm mb-2'>💰 Entry Cost</div>
-                <div className='text-white text-3xl font-bold mb-1'>250 Points</div>
+                <div className='text-white text-3xl font-bold mb-1'>{GAME_COSTS.INITIAL} Points</div>
                 <div className='text-white/70 text-xs'>
                   Your current balance: {account?.totalPoints || account?.profile?.totalPoints || 0} points
                 </div>
@@ -2558,7 +2204,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
 
               {/* Description */}
               <p className='text-white/80 text-sm mb-4 leading-relaxed'>
-                Starting this game will deduct 250 points from your account. You'll earn XP and rewards based on your performance!
+                Starting this game will deduct {GAME_COSTS.INITIAL} points from your account. You'll earn XP and rewards based on your performance!
               </p>
 
               {/* Speed Mode Selector */}
@@ -2630,7 +2276,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
               {/* Points Cost Info */}
               <div className='bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-2xl p-4 mb-6 border border-green-400/30'>
                 <div className='text-green-300 text-sm mb-2'>💰 Replay Cost</div>
-                <div className='text-white text-3xl font-bold mb-1'>100 Points</div>
+                <div className='text-white text-3xl font-bold mb-1'>{GAME_COSTS.REPLAY} Points</div>
                 <div className='text-white/70 text-xs'>
                   Your current balance: {account?.totalPoints || account?.profile?.totalPoints || 0} points
                 </div>
@@ -2638,7 +2284,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
 
               {/* Description */}
               <p className='text-white/80 text-sm mb-4 leading-relaxed'>
-                Playing again will deduct 100 points from your account. Try to beat your high score of {highScore} points!
+                Playing again will deduct {GAME_COSTS.REPLAY} points from your account. Try to beat your high score of {highScore} points!
               </p>
 
               {/* Speed Mode Selector */}
