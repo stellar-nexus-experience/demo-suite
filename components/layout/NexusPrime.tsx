@@ -88,7 +88,7 @@ export const NexusPrime: React.FC<NexusPrimeProps> = ({
     },
     'mini-games': {
       welcome:
-        'Welcome to the Gaming Station, adventurer! 🎮 Epic Web3 learning games await you!',
+        'Welcome to the Nexus Playground, adventurer! 🎮 Epic Web3 learning games await you!',
       loading:
         'Preparing your gaming arsenal... Get ready to level up your blockchain skills! 🚀',
       games: {

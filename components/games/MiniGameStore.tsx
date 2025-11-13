@@ -38,6 +38,16 @@ export default function MiniGameStore() {
   const [walletExpanded, setWalletExpanded] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [leaderboardSidebarOpen, setLeaderboardSidebarOpen] = useState(false);
+  // Get single feature badge for each game
+  const getGameFeature = (gameId: string): string => {
+    const featureMap: Record<string, string> = {
+      'web3-basics-adventure': 'Web3 Basics',
+      'escrow-puzzle-master': 'Escrow Systems',
+      'defi-trading-arena': 'Liquidity Pools',
+      'nft-creation': 'Design Tools',
+    };
+    return featureMap[gameId] || '';
+  };
 
   // Listen for wallet sidebar state changes
   useEffect(() => {
@@ -160,8 +170,6 @@ export default function MiniGameStore() {
                       height={300}
                       className='drop-shadow-2xl animate-pulse opacity-10'
                     />
-                    {/* Glowing Orb Effect */}
-                    <div className='absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 blur-xl scale-110 animate-ping'></div>
                   </div>
                 </div>
 
@@ -169,7 +177,7 @@ export default function MiniGameStore() {
                   className='text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 drop-shadow-2xl mb-6 animate-pulse'
                   style={{ marginTop: '-200px' }}
                 >
-                  GAMING STATION
+                  NEXUS PLAYGROUND
                 </h1>
 
                 <h2 className='text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 drop-shadow-xl mb-8'>
@@ -184,11 +192,6 @@ export default function MiniGameStore() {
                 <span className='text-yellow-400 font-bold'>BUILD</span>
               </p>
 
-              <p className='text-lg text-white/80 max-w-3xl mx-auto mb-8'>
-                Master blockchain technology through epic gaming adventures. Complete quests,
-                earn crypto rewards, and unlock secret missions while building the future of
-                web3!
-              </p>
 
               {/* Navigation Buttons */}
               <div className='flex justify-center gap-6 mb-12'>
@@ -337,12 +340,6 @@ export default function MiniGameStore() {
                 {/* Featured Game Spotlight */}
                 <div className='mb-16'>
                   <div className='text-center mb-8'>
-                    <h2 className='text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 mb-4'>
-                      🌟 FEATURED GAME OF THE WEEK 🌟
-                    </h2>
-                    <p className='text-white/80 text-lg'>
-                      Experience the most popular web3 learning adventure!
-                    </p>
                   </div>
 
                   <div className='relative bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 backdrop-blur-xl border border-yellow-400/30 rounded-3xl p-8 shadow-2xl'>
@@ -380,8 +377,8 @@ export default function MiniGameStore() {
                       <div className='space-y-6'>
                         <div>
                           <h3 className='text-4xl font-bold text-white mb-4'>
-                            🌐 Web3 Basics Adventure | <br /> <span className='text-brand-300 text-2xl font-bold'>
-                              NEXUS Infinite Runner
+                           <span className='text-brand-300 text-2xl font-bold'>NEXUS</span> Infinite Runner <br /> <span className='text-brand-300 text-2xl font-bold'>
+                              
                             </span>
                           </h3>
                           <p className='text-white/90 text-lg leading-relaxed mb-6'>
@@ -395,7 +392,7 @@ export default function MiniGameStore() {
                           <div className='relative text-center p-3 bg-white/10 rounded-xl'>
                             <div className='text-2xl mb-2'>⏱️</div>
                             <div className='text-white font-semibold'>
-                              <span className='text-cyan-400 font-bold'>25mins</span>
+                              <span className='text-cyan-400 font-bold'>15-20mins</span>
                             </div>
                             <div className='text-white/60 text-sm'>Duration</div>
                           </div>
@@ -418,21 +415,6 @@ export default function MiniGameStore() {
                               50 XLM
                             </div>
                             <div className='text-white/60 text-sm'>+ NFT Badge</div>
-                          </div>
-                        </div>
-
-                        <div>
-                          <div className='text-white/80 text-sm mb-3'>🎯 Key Learning Areas:</div>
-                          <div className='flex flex-wrap gap-2'>
-                            <span className='px-3 py-1 bg-cyan-500/20 text-cyan-300 text-sm rounded-full border border-cyan-400/30'>
-                              Smart Contracts
-                            </span>
-                            <span className='px-3 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full border border-purple-400/30'>
-                              Wallet Security
-                            </span>
-                            <span className='px-3 py-1 bg-pink-500/20 text-pink-300 text-sm rounded-full border border-pink-400/30'>
-                              DeFi Basics
-                            </span>
                           </div>
                         </div>
 
@@ -528,27 +510,14 @@ export default function MiniGameStore() {
                         {/* Overlay Effects */}
                         <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent'></div>
 
-                        {/* Status Badge */}
-                        <div className='absolute top-4 right-4'>
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-bold text-white ${game.status === 'available'
-                                ? 'bg-green-500/80'
-                                : game.status === 'beta'
-                                  ? 'bg-blue-500/80'
-                                  : game.status === 'development'
-                                    ? 'bg-yellow-500/80'
-                                    : 'bg-gray-500/80'
-                              }`}
-                          >
-                            {game.status === 'available'
-                              ? '✅ Available'
-                              : game.status === 'beta'
-                                ? '🧪 Beta'
-                                : game.status === 'development'
-                                  ? '🚧 Dev'
-                                  : '⏳ Soon'}
-                          </span>
-                        </div>
+                        {/* Feature Badge */}
+                        {getGameFeature(game.id) && (
+                          <div className='absolute top-4 right-4'>
+                            <span className='px-3 py-1 rounded-full text-xs font-bold text-white bg-cyan-500/80 backdrop-blur-sm'>
+                              🎯 {getGameFeature(game.id)}
+                            </span>
+                          </div>
+                        )}
 
                         {/* Difficulty Badge */}
                         <div className='absolute top-4 left-4'>
@@ -592,40 +561,6 @@ export default function MiniGameStore() {
                           {game.shortDescription}
                         </p>
 
-                        {/* Game Stats */}
-                        <div className='grid grid-cols-2 gap-3 mb-4'>
-                          <div className='text-center p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-300'>
-                            <div className='text-xs text-white/60 mb-1'>⏱️ Time</div>
-                            <div className='text-sm text-white font-semibold'>
-                              {game.estimatedTime}
-                            </div>
-                          </div>
-                          <div className='text-center p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors duration-300'>
-                            <div className='text-xs text-white/60 mb-1'>🏆 Rewards</div>
-                            <div className='text-sm text-white font-semibold'>{game.rewards}</div>
-                          </div>
-                        </div>
-
-                        {/* Features Preview */}
-                        <div className='mb-4'>
-                          <div className='text-xs text-white/60 mb-2'>🎯 Key Features:</div>
-                          <div className='flex flex-wrap gap-1'>
-                            {game.features.slice(0, 2).map((feature, index) => (
-                              <span
-                                key={index}
-                                className='px-2 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded-full border border-cyan-400/30'
-                              >
-                                {feature}
-                              </span>
-                            ))}
-                            {game.features.length > 2 && (
-                              <span className='px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full border border-purple-400/30'>
-                                +{game.features.length - 2} more
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
                         {/* Progress Bar for Development Games */}
                         {game.status !== 'available' && (
                           <div className='mb-4'>
@@ -659,8 +594,8 @@ export default function MiniGameStore() {
                         )}
                       </div>
 
-                      {/* Donate Button - Outside the Blur/Opacity Effects */}
-                      {game.status !== 'available' && game.donationGoal > 0 && (
+                      {/* Donate Button - Hidden for Escrow Puzzle Master */}
+                      {game.status !== 'available' && game.donationGoal > 0 && game.id !== 'escrow-puzzle-master' && (
                         <div className='p-6 pt-0'>
                           <button
                             onClick={() => handleDonate(game)}
@@ -719,7 +654,7 @@ export default function MiniGameStore() {
 
             {/* Epic Promotional Banner Carousel */}
             <div id='news-banner-carousel' className='relative'>
-              <div className='relative h-96 rounded-3xl overflow-hidden shadow-2xl'>
+              <div className='relative h-[350px] rounded-3xl overflow-hidden shadow-2xl -mb-[100px]'>
                 {PROMOTIONAL_BANNERS.map((banner, index) => (
                   <div
                     key={banner.id}
@@ -753,22 +688,9 @@ export default function MiniGameStore() {
                     </div>
 
                     {/* Content */}
-                    <div className='relative z-10 h-full flex items-center justify-center text-center p-8'>
+                    <div className='relative z-10 h-full flex items-center justify-center text-center '>
                       <div className='max-w-4xl'>
-                        {/* Badge */}
-                        {banner.badge && (
-                          <div className='mb-4'>
-                            <span
-                              className={`px-6 py-3 rounded-full font-bold text-lg shadow-lg ${banner.id === 4
-                                  ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black animate-pulse'
-                                  : 'bg-white/20 text-white backdrop-blur-sm'
-                                }`}
-                            >
-                              {banner.badge}
-                            </span>
-                          </div>
-                        )}
-
+                        
                         <h3 className='text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-2xl'>
                           {banner.title}
                         </h3>

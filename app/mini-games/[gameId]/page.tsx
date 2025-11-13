@@ -12,6 +12,7 @@ import RetroArcadeSidebar from '@/components/ui/RetroArcadeSidebar';
 import { LeaderboardSection } from '@/components/home/LeaderboardSection';
 import { LeaderboardSidebar } from '@/components/ui/LeaderboardSidebar';
 import InfiniteRunner from '@/components/games/InfiniteRunner';
+import EscrowPuzzleMaster from '@/components/games/EscrowPuzzleMaster';
 import Image from 'next/image';
 
 // Game data with detailed information - synced with MiniGameStore
@@ -63,22 +64,22 @@ const gameLibrary = {
     title: 'Escrow Puzzle Master',
     subtitle: 'Master the Art of Trustless Transactions',
     description:
-      'Solve complex escrow puzzles while learning Stellar blockchain fundamentals. Complete challenges, unlock achievements, and become a DeFi expert!',
-    icon: '⭐',
-    status: 'development',
+      'Match escrow mechanics steps in this memory puzzle game! Learn how Trustless Work escrow contracts work by matching steps with their descriptions. Complete all pairs to master the escrow flow!',
+    icon: '🔐',
+    status: 'beta',
     category: 'blockchain',
     difficulty: 'Intermediate',
-    estimatedTime: '4-5 hours',
-    rewards: '100 XLM + Expert Badge',
+    estimatedTime: '10-15 minutes',
+    rewards: '60 XLM + Expert Badge',
     currentPlayers: 0,
     rating: 0,
     thumbnail: '/images/games/escrow-puzzle-master.png',
-    progress: 0,
-    estimatedRelease: 'TBA',
+    progress: 30,
+    estimatedRelease: 'Beta Available',
     donationGoal: 15000,
     currentDonations: 0,
-    features: ['Escrow Systems', 'Multi-Sig Wallets', 'Trustless Transactions', 'Stellar Network'],
-    achievements: ['Escrow Master', 'Trust Guardian', 'Stellar Expert', 'Security Champion'],
+    features: ['Escrow Systems', 'Trustless Transactions', 'Stellar Network', 'Memory Challenge'],
+    achievements: ['Escrow Master', 'Trust Guardian', 'Stellar Expert', 'Memory Champion'],
     developers: [
       {
         name: 'Stellar Development Team',
@@ -276,7 +277,7 @@ export default function GamePage() {
         >
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
         </svg>
-        <span className='font-bold text-xs md:text-sm hidden sm:inline'>Back to Arcade</span>
+        <span className='font-bold text-xs md:text-sm hidden sm:inline'>Back to Games Explorer</span>
         <span className='font-bold text-xs sm:hidden'>Back</span>
       </button>
 
@@ -374,7 +375,11 @@ export default function GamePage() {
                     <div className='mt-10'>
                       {/* Game Container */}
                       <div className='relative' style={{ height: 'calc(100vh - 200px)', minHeight: '600px' }}>
-                        <InfiniteRunner gameId={gameId} gameTitle={game.title} embedded={true} />
+                        {gameId === 'web3-basics-adventure' ? (
+                          <InfiniteRunner gameId={gameId} gameTitle={game.title} embedded={true} />
+                        ) : gameId === 'escrow-puzzle-master' ? (
+                          <EscrowPuzzleMaster />
+                        ) : null}
                       </div>
                     </div>
                   </>
