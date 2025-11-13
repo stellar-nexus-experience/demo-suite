@@ -90,9 +90,8 @@ export const PROMOTIONAL_BANNERS: PromotionalBanner[] = [
 // Enhanced game categories
 export const GAME_CATEGORIES: GameCategory[] = [
   { id: 'all', name: '🎮 All Games', count: 8 },
-  { id: 'available', name: '✅ Available', count: 3 },
   { id: 'beta', name: '🧪 Beta', count: 2 },
-  { id: 'development', name: '🚧 In Development', count: 2 },
+  { id: 'development', name: '🚧 In Development', count: 1 },
   { id: 'coming-soon', name: '⏳ Coming Soon', count: 1 },
 ];
 
@@ -148,7 +147,7 @@ export const MINI_GAMES: MiniGame[] = [
       'Enter the competitive world of DeFi trading! Learn liquidity pools, yield farming, and automated market making while competing for top rankings.',
     shortDescription: 'Compete in DeFi trading challenges',
     icon: '📈',
-    status: 'development',
+    status: 'coming-soon',
     category: 'defi',
     difficulty: 'Advanced',
     estimatedTime: '6-8 hours',

@@ -277,7 +277,7 @@ export default function GamePage() {
         >
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
         </svg>
-        <span className='font-bold text-xs md:text-sm hidden sm:inline'>Back to Games Explorer</span>
+        <span className='font-bold text-xs md:text-sm hidden sm:inline'>Back to Nexus Playground</span>
         <span className='font-bold text-xs sm:hidden'>Back</span>
       </button>
 
