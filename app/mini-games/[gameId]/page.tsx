@@ -7,12 +7,10 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { NexusPrime } from '@/components/layout/NexusPrime';
 import XboxStyleConsole from '@/components/ui/XboxStyleConsole';
 import RetroArcadeSidebar from '@/components/ui/RetroArcadeSidebar';
 import { LeaderboardSection } from '@/components/home/LeaderboardSection';
 import { LeaderboardSidebar } from '@/components/ui/LeaderboardSidebar';
-import { useGlobalWallet } from '@/contexts/wallet/WalletContext';
 import InfiniteRunner from '@/components/games/InfiniteRunner';
 import Image from 'next/image';
 
@@ -165,7 +163,6 @@ const gameLibrary = {
 export default function GamePage() {
   const params = useParams();
   const router = useRouter();
-  const { isConnected } = useGlobalWallet();
   const gameId = params?.gameId as string;
   const game = gameLibrary[gameId as keyof typeof gameLibrary];
 
@@ -380,11 +377,6 @@ export default function GamePage() {
                         <InfiniteRunner gameId={gameId} gameTitle={game.title} embedded={true} />
                       </div>
                     </div>
-
-                    {/* Leaderboard Section - Added for game detail page */}
-                    <div className='mt-16 mb-16'>
-                      <LeaderboardSection onOpenLeaderboard={() => setLeaderboardSidebarOpen(true)} />
-                    </div>
                   </>
                 )}
 
@@ -503,20 +495,6 @@ export default function GamePage() {
           </div>
         </div>
       </main>
-
-      {/* Nexus Prime */}
-      <NexusPrime 
-        currentPage='mini-games' 
-        walletConnected={isConnected}
-        autoOpen={false}
-        gameId={gameId}
-      />
-
-      {/* Leaderboard Sidebar */}
-      <LeaderboardSidebar
-        isOpen={leaderboardSidebarOpen}
-        onClose={() => setLeaderboardSidebarOpen(false)}
-      />
 
       {/* Hide footer for beta games (where game is shown) */}
       {game.status !== 'beta' && game.status !== 'available' && <Footer />}

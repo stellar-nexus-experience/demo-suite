@@ -1768,46 +1768,6 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
             background: 'transparent'
           }}
         >
-          {/* Overlay stars for depth */}
-          <g id="background" opacity="0.4">
-            {/* Close bright stars - faster movement for parallax */}
-            {[...Array(20)].map((_, i) => (
-              <g key={`bright-star-${i}`}>
-                <circle
-                  cx={(bgOffset * 0.7 + i * 120) % 1000}
-                  cy={20 + (i * 31) % 250}
-                  r={1.5 + (i % 2) * 0.5}
-                  className="fill-white"
-                  opacity="0.9"
-                >
-                  <animate attributeName="opacity" values="0.9;0.4;0.9" dur={`${1 + (i % 3) * 0.5}s`} repeatCount="indefinite" />
-                </circle>
-                {/* Star glow */}
-                <circle
-                  cx={(bgOffset * 0.7 + i * 120) % 1000}
-                  cy={20 + (i * 31) % 250}
-                  r={3 + (i % 2)}
-                  className="fill-white"
-                  opacity="0.3"
-                >
-                  <animate attributeName="r" values={`${3 + (i % 2)};${5 + (i % 2)};${3 + (i % 2)}`} dur={`${1 + (i % 3) * 0.5}s`} repeatCount="indefinite" />
-                </circle>
-              </g>
-            ))}
-            
-            {/* Shooting stars occasionally */}
-            {score % 500 < 50 && (
-              <g>
-                <line x1={bgOffset % 800} y1="50" x2={(bgOffset % 800) + 60} y2="80" stroke="#FFFFFF" strokeWidth="2" opacity="0.8">
-                  <animate attributeName="opacity" values="0;0.8;0" dur="0.5s" repeatCount="1" />
-                </line>
-                <circle cx={bgOffset % 800} cy="50" r="3" className="fill-white" opacity="0.9">
-                  <animate attributeName="opacity" values="0;0.9;0" dur="0.5s" repeatCount="1" />
-                </circle>
-              </g>
-            )}
-          </g>
-
           {/* Ground */}
           <rect x="0" y={GROUND_Y + PLAYER_HEIGHT} width="800" height="100" className={currentTheme.ground} />
           <rect x="0" y={GROUND_Y + PLAYER_HEIGHT + 10} width="800" height="90" className={currentTheme.accent} />
