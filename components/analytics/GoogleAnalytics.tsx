@@ -9,25 +9,25 @@ interface GoogleAnalyticsProps {
 
 export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
   useEffect(() => {
-    // Debug logging (only in development)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[Google Analytics] Initializing with ID:', measurementId);
-      console.log('[Google Analytics] Script will load from:', `https://www.googletagmanager.com/gtag/js?id=${measurementId}`);
-    }
+    // Debug logging (always log for troubleshooting)
+    console.log('[Google Analytics] Initializing with ID:', measurementId);
+    console.log('[Google Analytics] Script will load from:', `https://www.googletagmanager.com/gtag/js?id=${measurementId}`);
   }, [measurementId]);
 
   if (!measurementId || measurementId.trim() === '') {
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('[Google Analytics] No measurement ID provided. Check your NEXT_PUBLIC_ANALYTICS_ID environment variable.');
-    }
+    console.warn('[Google Analytics] No measurement ID provided. Check your NEXT_PUBLIC_ANALYTICS_ID environment variable.');
     return null;
   }
 
   // Validate GA4 ID format (should start with G-)
+  // GA4 measurement IDs follow the format: G-XXXXXXXXXX (alphanumeric after G-)
+  // Note: The validation is a warning only - Google Analytics will handle invalid IDs
   if (!measurementId.startsWith('G-')) {
     console.warn(
-      '[Google Analytics] Invalid measurement ID format. GA4 IDs should start with "G-".',
-      'Current ID:', measurementId
+      '[Google Analytics] Warning: Measurement ID does not start with "G-".',
+      'GA4 measurement IDs should start with "G-" (e.g., G-XXXXXXXXXX).',
+      'Current ID:', measurementId,
+      'If this is a valid GA4 ID from your Google Analytics dashboard, you can ignore this warning.'
     );
   }
 

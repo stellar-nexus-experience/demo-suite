@@ -47,13 +47,13 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_ANALYTICS_ENABLED: z
     .string()
     .optional()
-    .transform(val => val === 'true')
+    .transform(val => val?.toLowerCase() === 'true' || val === '1')
     .default(() => false),
   NEXT_PUBLIC_ANALYTICS_ID: z.string().optional().default(''),
   NEXT_PUBLIC_ERROR_REPORTING_ENABLED: z
     .string()
     .optional()
-    .transform(val => val === 'true')
+    .transform(val => val?.toLowerCase() === 'true' || val === '1')
     .default(() => false),
   NEXT_PUBLIC_ERROR_REPORTING_API_KEY: z.string().optional().default(''),
 });

@@ -89,6 +89,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     suppressHydrationWarning();
   }
 
+  // Debug analytics configuration
+  if (config.development.isDevelopment) {
+    console.log('[Analytics Config]', {
+      enabled: config.analytics.enabled,
+      id: config.analytics.id,
+      hasId: !!config.analytics.id,
+      willRender: config.analytics.enabled && !!config.analytics.id,
+    });
+  }
+
   return (
     <html lang='en' className='scroll-smooth'>
       <body className={inter.className} suppressHydrationWarning={true}>
