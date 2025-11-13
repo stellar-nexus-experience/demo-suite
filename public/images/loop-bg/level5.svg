@@ -1,0 +1,143 @@
+<svg width="2000" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="moonSpace" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#0a0a1a;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#E8E8E8;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#E8E8E8;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#E8E8E8;stop-opacity:0" />
+    </radialGradient>
+    <radialGradient id="earthGlow" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#4A90E2;stop-opacity:0" />
+    </radialGradient>
+    <radialGradient id="starShine" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:0" />
+    </radialGradient>
+    <linearGradient id="moonSurface" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#C0C0C0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#A0A0A0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#808080;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Deep space with moon -->
+  <rect width="2000" height="400" fill="url(#moonSpace)"/>
+  
+  <!-- Distant Earth (blue glow) -->
+  <circle cx="1800" cy="100" r="40" fill="#2A5A8A" opacity="0.6">
+    <animate attributeName="opacity" values="0.5;0.7;0.5" dur="5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="1800" cy="100" r="50" fill="url(#earthGlow)"/>
+  <circle cx="1800" cy="100" r="60" fill="url(#earthGlow)" opacity="0.3"/>
+  
+  <!-- Moon in background (large, distant) -->
+  <circle cx="500" cy="200" r="100" fill="#D3D3D3" opacity="0.3">
+    <animate attributeName="opacity" values="0.2;0.4;0.2" dur="6s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="500" cy="200" r="110" fill="url(#moonGlow)" opacity="0.2"/>
+  <circle cx="1500" cy="180" r="90" fill="#D3D3D3" opacity="0.3">
+    <animate attributeName="opacity" values="0.2;0.35;0.2" dur="7s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="1500" cy="180" r="100" fill="url(#moonGlow)" opacity="0.2"/>
+  
+  <!-- Moon craters (background) -->
+  <g id="moon-craters-bg" opacity="0.2">
+    <circle cx="480" cy="190" r="15" fill="#B0B0B0"/>
+    <circle cx="520" cy="210" r="12" fill="#B0B0B0"/>
+    <circle cx="1480" cy="170" r="14" fill="#B0B0B0"/>
+    <circle cx="1520" cy="190" r="11" fill="#B0B0B0"/>
+  </g>
+  
+  <!-- Brilliant star field -->
+  <g id="moon-stars" opacity="1">
+    <!-- Small stars -->
+    <circle cx="80" cy="50" r="1" fill="#FFFFFF"/>
+    <circle cx="180" cy="80" r="1.2" fill="#FFFFFF"/>
+    <circle cx="320" cy="40" r="1" fill="#FFFFFF"/>
+    <circle cx="450" cy="70" r="1.3" fill="#FFFFFF"/>
+    <circle cx="620" cy="55" r="1" fill="#FFFFFF"/>
+    <circle cx="780" cy="85" r="1.2" fill="#FFFFFF"/>
+    <circle cx="920" cy="45" r="1" fill="#FFFFFF"/>
+    <circle cx="1080" cy="75" r="1.3" fill="#FFFFFF"/>
+    <circle cx="1220" cy="60" r="1" fill="#FFFFFF"/>
+    <circle cx="1380" cy="90" r="1.2" fill="#FFFFFF"/>
+    <circle cx="1520" cy="50" r="1" fill="#FFFFFF"/>
+    <circle cx="1680" cy="80" r="1.3" fill="#FFFFFF"/>
+    <circle cx="1820" cy="65" r="1" fill="#FFFFFF"/>
+    <circle cx="1980" cy="95" r="1.2" fill="#FFFFFF"/>
+    
+    <!-- Medium stars -->
+    <circle cx="200" cy="120" r="2" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="600" cy="140" r="2.2" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1000" cy="130" r="2" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1400" cy="150" r="2.2" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1800" cy="125" r="2" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.6s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Bright stars with glow -->
+    <g>
+      <circle cx="400" cy="160" r="3.5" fill="#FFFFFF" opacity="1">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="400" cy="160" r="6" fill="url(#starShine)" opacity="0.7"/>
+      <circle cx="800" cy="170" r="4" fill="#FFFFFF" opacity="1">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2.7s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="800" cy="170" r="7" fill="url(#starShine)" opacity="0.7"/>
+      <circle cx="1200" cy="165" r="3.5" fill="#FFFFFF" opacity="1">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="3.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="1200" cy="165" r="6" fill="url(#starShine)" opacity="0.7"/>
+      <circle cx="1600" cy="175" r="4" fill="#FFFFFF" opacity="1">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2.9s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="1600" cy="175" r="7" fill="url(#starShine)" opacity="0.7"/>
+    </g>
+  </g>
+  
+  <!-- Moon surface/ground -->
+  <rect y="300" width="2000" height="100" fill="url(#moonSurface)"/>
+  
+  <!-- Moon surface texture (craters and dust) -->
+  <g id="moon-surface-texture" opacity="0.6">
+    <!-- Craters -->
+    <ellipse cx="150" cy="340" rx="30" ry="12" fill="#909090"/>
+    <ellipse cx="150" cy="340" rx="25" ry="10" fill="#A0A0A0"/>
+    <ellipse cx="500" cy="360" rx="35" ry="14" fill="#909090"/>
+    <ellipse cx="500" cy="360" rx="28" ry="11" fill="#A0A0A0"/>
+    <ellipse cx="850" cy="350" rx="32" ry="13" fill="#909090"/>
+    <ellipse cx="850" cy="350" rx="26" ry="10" fill="#A0A0A0"/>
+    <ellipse cx="1200" cy="365" rx="38" ry="15" fill="#909090"/>
+    <ellipse cx="1200" cy="365" rx="30" ry="12" fill="#A0A0A0"/>
+    <ellipse cx="1550" cy="355" rx="33" ry="13" fill="#909090"/>
+    <ellipse cx="1550" cy="355" rx="27" ry="11" fill="#A0A0A0"/>
+    <ellipse cx="1900" cy="370" rx="31" ry="12" fill="#909090"/>
+    <ellipse cx="1900" cy="370" rx="25" ry="10" fill="#A0A0A0"/>
+    
+    <!-- Moon dust patches -->
+    <ellipse cx="300" cy="380" rx="50" ry="8" fill="#707070" opacity="0.5"/>
+    <ellipse cx="700" cy="375" rx="45" ry="7" fill="#707070" opacity="0.5"/>
+    <ellipse cx="1100" cy="385" rx="55" ry="9" fill="#707070" opacity="0.5"/>
+    <ellipse cx="1500" cy="378" rx="48" ry="8" fill="#707070" opacity="0.5"/>
+    <ellipse cx="1850" cy="382" rx="52" ry="8" fill="#707070" opacity="0.5"/>
+  </g>
+  
+  <!-- Moon surface highlights -->
+  <rect y="300" width="2000" height="2" fill="#E0E0E0" opacity="0.6"/>
+</svg>
+

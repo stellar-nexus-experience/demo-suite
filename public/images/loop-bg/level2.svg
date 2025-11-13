@@ -1,0 +1,103 @@
+<svg width="2000" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="spaceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#000428;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#004e92;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000428;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="starGlow" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:0" />
+    </radialGradient>
+    <radialGradient id="planetGlow" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#4A90E2;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Deep space background -->
+  <rect width="2000" height="400" fill="url(#spaceGradient)"/>
+  
+  <!-- Distant stars (small, bright) -->
+  <g id="stars-distant" opacity="0.9">
+    <circle cx="50" cy="50" r="1" fill="#FFFFFF"/>
+    <circle cx="150" cy="80" r="1.5" fill="#FFFFFF"/>
+    <circle cx="280" cy="45" r="1" fill="#FFFFFF"/>
+    <circle cx="420" cy="120" r="1.2" fill="#FFFFFF"/>
+    <circle cx="580" cy="35" r="1" fill="#FFFFFF"/>
+    <circle cx="720" cy="95" r="1.5" fill="#FFFFFF"/>
+    <circle cx="850" cy="60" r="1" fill="#FFFFFF"/>
+    <circle cx="1020" cy="110" r="1.3" fill="#FFFFFF"/>
+    <circle cx="1180" cy="40" r="1" fill="#FFFFFF"/>
+    <circle cx="1320" cy="85" r="1.5" fill="#FFFFFF"/>
+    <circle cx="1480" cy="55" r="1" fill="#FFFFFF"/>
+    <circle cx="1620" cy="100" r="1.2" fill="#FFFFFF"/>
+    <circle cx="1780" cy="70" r="1" fill="#FFFFFF"/>
+    <circle cx="1950" cy="50" r="1.5" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Medium stars (twinkling) -->
+  <g id="stars-medium" opacity="0.8">
+    <circle cx="100" cy="150" r="2" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="350" cy="180" r="2.5" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="600" cy="160" r="2" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="900" cy="190" r="2.5" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1200" cy="170" r="2" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1500" cy="155" r="2.5" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1800" cy="185" r="2" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.9s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Large bright stars -->
+  <g id="stars-bright" opacity="1">
+    <circle cx="200" cy="200" r="3" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="200" cy="200" r="5" fill="url(#starGlow)" opacity="0.5"/>
+    <circle cx="700" cy="220" r="3.5" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="700" cy="220" r="6" fill="url(#starGlow)" opacity="0.5"/>
+    <circle cx="1400" cy="210" r="3" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1400" cy="210" r="5" fill="url(#starGlow)" opacity="0.5"/>
+    <circle cx="1900" cy="200" r="3.5" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1900" cy="200" r="6" fill="url(#starGlow)" opacity="0.5"/>
+  </g>
+  
+  <!-- Distant planet/nebula -->
+  <ellipse cx="500" cy="250" rx="120" ry="60" fill="#2A4A6A" opacity="0.4"/>
+  <ellipse cx="500" cy="250" rx="140" ry="70" fill="url(#planetGlow)" opacity="0.3"/>
+  <ellipse cx="1500" cy="260" rx="100" ry="50" fill="#2A4A6A" opacity="0.4"/>
+  <ellipse cx="1500" cy="260" rx="120" ry="60" fill="url(#planetGlow)" opacity="0.3"/>
+  
+  <!-- Space platform/ground -->
+  <rect y="320" width="2000" height="80" fill="#1a1a2e" opacity="0.8"/>
+  <rect y="320" width="2000" height="3" fill="#4A90E2" opacity="0.6"/>
+  
+  <!-- Space platform details -->
+  <g opacity="0.4">
+    <rect x="100" y="340" width="200" height="2" fill="#4A90E2"/>
+    <rect x="500" y="350" width="180" height="2" fill="#4A90E2"/>
+    <rect x="900" y="345" width="220" height="2" fill="#4A90E2"/>
+    <rect x="1300" y="355" width="190" height="2" fill="#4A90E2"/>
+    <rect x="1700" y="340" width="210" height="2" fill="#4A90E2"/>
+  </g>
+</svg>
+

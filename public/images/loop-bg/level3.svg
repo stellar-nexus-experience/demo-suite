@@ -1,0 +1,83 @@
+<svg width="2000" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="marsSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#A0522D;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#CD853F;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="marsSun" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#FF6347;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF6347;stop-opacity:0.3" />
+    </radialGradient>
+    <radialGradient id="marsGlow" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#FF4500;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#FF4500;stop-opacity:0" />
+    </radialGradient>
+    <linearGradient id="marsGround" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#654321;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Mars sky -->
+  <rect width="2000" height="400" fill="url(#marsSky)"/>
+  
+  <!-- Mars sun (reddish) -->
+  <circle cx="400" cy="90" r="35" fill="#FF6347" opacity="0.8">
+    <animate attributeName="opacity" values="0.7;0.9;0.7" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="400" cy="90" r="50" fill="url(#marsSun)"/>
+  <circle cx="400" cy="90" r="70" fill="url(#marsGlow)" opacity="0.4"/>
+  
+  <!-- Dust clouds/particles -->
+  <g id="mars-dust" opacity="0.5">
+    <ellipse cx="150" cy="150" rx="80" ry="40" fill="#A0522D" opacity="0.4">
+      <animate attributeName="cx" values="150;160;150" dur="5s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="600" cy="180" rx="90" ry="45" fill="#8B4513" opacity="0.4">
+      <animate attributeName="cx" values="600;610;600" dur="6s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="1100" cy="160" rx="75" ry="38" fill="#A0522D" opacity="0.4">
+      <animate attributeName="cx" values="1100;1110;1100" dur="5.5s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="1600" cy="190" rx="85" ry="42" fill="#8B4513" opacity="0.4">
+      <animate attributeName="cx" values="1600;1610;1600" dur="5.8s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="1950" cy="170" rx="70" ry="35" fill="#A0522D" opacity="0.4">
+      <animate attributeName="cx" values="1950;1960;1950" dur="6.2s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+  
+  <!-- Mars rocks/hills in background -->
+  <g id="mars-hills" opacity="0.6">
+    <path d="M 0 280 Q 200 250, 400 280 T 800 280" fill="#654321" opacity="0.5"/>
+    <path d="M 400 280 Q 600 260, 800 280 T 1200 280" fill="#654321" opacity="0.5"/>
+    <path d="M 800 280 Q 1000 270, 1200 280 T 1600 280" fill="#654321" opacity="0.5"/>
+    <path d="M 1200 280 Q 1400 265, 1600 280 T 2000 280" fill="#654321" opacity="0.5"/>
+  </g>
+  
+  <!-- Mars surface/ground -->
+  <rect y="280" width="2000" height="120" fill="url(#marsGround)"/>
+  
+  <!-- Mars surface texture -->
+  <g id="mars-texture" opacity="0.4">
+    <ellipse cx="100" cy="320" rx="40" ry="15" fill="#5C3A21"/>
+    <ellipse cx="350" cy="340" rx="50" ry="18" fill="#5C3A21"/>
+    <ellipse cx="650" cy="330" rx="45" ry="16" fill="#5C3A21"/>
+    <ellipse cx="950" cy="350" rx="55" ry="20" fill="#5C3A21"/>
+    <ellipse cx="1300" cy="325" rx="48" ry="17" fill="#5C3A21"/>
+    <ellipse cx="1650" cy="345" rx="52" ry="19" fill="#5C3A21"/>
+    <ellipse cx="1950" cy="335" rx="43" ry="15" fill="#5C3A21"/>
+  </g>
+  
+  <!-- Mars rocks -->
+  <g id="mars-rocks" opacity="0.7">
+    <ellipse cx="200" cy="360" rx="25" ry="12" fill="#4A2C1A"/>
+    <ellipse cx="550" cy="370" rx="30" ry="14" fill="#4A2C1A"/>
+    <ellipse cx="900" cy="365" rx="28" ry="13" fill="#4A2C1A"/>
+    <ellipse cx="1250" cy="375" rx="32" ry="15" fill="#4A2C1A"/>
+    <ellipse cx="1700" cy="360" rx="27" ry="12" fill="#4A2C1A"/>
+  </g>
+</svg>
+

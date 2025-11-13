@@ -1674,7 +1674,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
   const getBackgroundImage = () => {
     // Use level 1-5, cycling back to level 5 for higher levels
     const bgLevel = Math.min(level, 5);
-    return `/images/loop-bg/level${bgLevel}.jpg`;
+    return `/images/loop-bg/level${bgLevel}.svg`;
   };
 
   // Prevent hydration issues - only render on client

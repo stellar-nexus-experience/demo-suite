@@ -1,0 +1,138 @@
+<svg width="2000" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="deepSpace" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0a0a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="starBright" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFFFFF;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:0" />
+    </radialGradient>
+    <radialGradient id="nebulaGlow" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#9D4EDD;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#9D4EDD;stop-opacity:0" />
+    </radialGradient>
+    <linearGradient id="stationGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#6BA3E8;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#4A90E2;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Deep space background -->
+  <rect width="2000" height="400" fill="url(#deepSpace)"/>
+  
+  <!-- Nebula clouds -->
+  <g id="nebula" opacity="0.5">
+    <ellipse cx="300" cy="150" rx="200" ry="80" fill="#7B2CBF" opacity="0.3">
+      <animate attributeName="opacity" values="0.2;0.4;0.2" dur="8s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="300" cy="150" rx="220" ry="90" fill="url(#nebulaGlow)"/>
+    <ellipse cx="1000" cy="180" rx="180" ry="70" fill="#5A1A9F" opacity="0.3">
+      <animate attributeName="opacity" values="0.2;0.35;0.2" dur="7s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="1000" cy="180" rx="200" ry="80" fill="url(#nebulaGlow)"/>
+    <ellipse cx="1700" cy="160" rx="190" ry="75" fill="#6B22AF" opacity="0.3">
+      <animate attributeName="opacity" values="0.2;0.4;0.2" dur="8.5s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="1700" cy="160" rx="210" ry="85" fill="url(#nebulaGlow)"/>
+  </g>
+  
+  <!-- Dense star field -->
+  <g id="starfield-dense" opacity="1">
+    <!-- Small stars -->
+    <circle cx="50" cy="40" r="0.8" fill="#FFFFFF"/>
+    <circle cx="120" cy="70" r="1" fill="#FFFFFF"/>
+    <circle cx="200" cy="30" r="0.8" fill="#FFFFFF"/>
+    <circle cx="280" cy="60" r="1.2" fill="#FFFFFF"/>
+    <circle cx="380" cy="45" r="0.8" fill="#FFFFFF"/>
+    <circle cx="480" cy="75" r="1" fill="#FFFFFF"/>
+    <circle cx="580" cy="35" r="0.8" fill="#FFFFFF"/>
+    <circle cx="680" cy="65" r="1.2" fill="#FFFFFF"/>
+    <circle cx="780" cy="50" r="0.8" fill="#FFFFFF"/>
+    <circle cx="880" cy="80" r="1" fill="#FFFFFF"/>
+    <circle cx="980" cy="40" r="0.8" fill="#FFFFFF"/>
+    <circle cx="1080" cy="70" r="1.2" fill="#FFFFFF"/>
+    <circle cx="1180" cy="55" r="0.8" fill="#FFFFFF"/>
+    <circle cx="1280" cy="85" r="1" fill="#FFFFFF"/>
+    <circle cx="1380" cy="45" r="0.8" fill="#FFFFFF"/>
+    <circle cx="1480" cy="75" r="1.2" fill="#FFFFFF"/>
+    <circle cx="1580" cy="60" r="0.8" fill="#FFFFFF"/>
+    <circle cx="1680" cy="90" r="1" fill="#FFFFFF"/>
+    <circle cx="1780" cy="50" r="0.8" fill="#FFFFFF"/>
+    <circle cx="1880" cy="80" r="1.2" fill="#FFFFFF"/>
+    <circle cx="1980" cy="65" r="0.8" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Bright twinkling stars -->
+  <g id="stars-twinkling">
+    <circle cx="150" cy="120" r="2.5" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="150" cy="120" r="4" fill="url(#starBright)" opacity="0.6"/>
+    <circle cx="450" cy="140" r="3" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="450" cy="140" r="5" fill="url(#starBright)" opacity="0.6"/>
+    <circle cx="750" cy="130" r="2.5" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="750" cy="130" r="4" fill="url(#starBright)" opacity="0.6"/>
+    <circle cx="1100" cy="150" r="3" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1100" cy="150" r="5" fill="url(#starBright)" opacity="0.6"/>
+    <circle cx="1450" cy="125" r="2.5" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1450" cy="125" r="4" fill="url(#starBright)" opacity="0.6"/>
+    <circle cx="1850" cy="135" r="3" fill="#FFFFFF" opacity="0.9">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="1.9s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1850" cy="135" r="5" fill="url(#starBright)" opacity="0.6"/>
+  </g>
+  
+  <!-- Space station elements (simplified) -->
+  <g id="space-station" opacity="0.7">
+    <!-- Station platform -->
+    <rect x="0" y="320" width="2000" height="80" fill="url(#stationGradient)"/>
+    <rect x="0" y="320" width="2000" height="2" fill="#6BA3E8" opacity="0.9"/>
+    
+    <!-- Station lights/details -->
+    <g opacity="0.8">
+      <circle cx="100" cy="360" r="3" fill="#FFFFFF">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="400" cy="365" r="2.5" fill="#FFFFFF">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="700" cy="362" r="3" fill="#FFFFFF">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="1000" cy="368" r="2.5" fill="#FFFFFF">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="1300" cy="360" r="3" fill="#FFFFFF">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.7s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="1600" cy="365" r="2.5" fill="#FFFFFF">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="1900" cy="362" r="3" fill="#FFFFFF">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    
+    <!-- Station panels -->
+    <g opacity="0.5">
+      <rect x="200" y="340" width="150" height="3" fill="#5A7FC8"/>
+      <rect x="600" y="350" width="180" height="3" fill="#5A7FC8"/>
+      <rect x="1000" y="345" width="160" height="3" fill="#5A7FC8"/>
+      <rect x="1400" y="355" width="170" height="3" fill="#5A7FC8"/>
+      <rect x="1800" y="348" width="155" height="3" fill="#5A7FC8"/>
+    </g>
+  </g>
+</svg>
+
