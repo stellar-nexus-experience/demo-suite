@@ -2,7 +2,8 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getFirestore, connectFirestoreEmulator, Firestore } from 'firebase/firestore';
 import { getAuth, connectAuthEmulator, Auth } from 'firebase/auth';
-import { getAnalytics, isSupported } from 'firebase/analytics';
+// Firebase Analytics is disabled - we use direct Google Analytics instead
+// import { getAnalytics, isSupported } from 'firebase/analytics';
 
 // Get Firebase configuration from environment variables
 function getFirebaseConfig() {
@@ -100,10 +101,13 @@ if (
 }
 
 // Initialize Analytics
-if (typeof window !== 'undefined' && app) {
-  isSupported().then(supported => {
-    if (supported) {
-      getAnalytics(app);
-    }
-  });
-}
+// NOTE: Firebase Analytics is disabled - we use direct Google Analytics instead
+// via the GoogleAnalytics component in app/layout.tsx
+// Uncomment below if you want to use Firebase Analytics instead:
+// if (typeof window !== 'undefined' && app) {
+//   isSupported().then(supported => {
+//     if (supported) {
+//       getAnalytics(app);
+//     }
+//   });
+// }
