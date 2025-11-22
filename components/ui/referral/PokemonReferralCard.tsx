@@ -6,9 +6,10 @@ import { useToast } from '@/contexts/ui/ToastContext';
 import { BadgeEmblem } from '@/components/ui/badges/BadgeEmblem';
 import { UserAvatar } from '@/components/ui/navigation/UserAvatar';
 import { leaderboardService } from '@/lib/services/leaderboard-service';
+import { UserAccount } from '@/utils/types/account';
 
 interface PokemonReferralCardProps {
-  account: Account | null;
+  account:UserAccount  | null;
   className?: string;
 }
 
@@ -150,10 +151,10 @@ export const PokemonReferralCard: React.FC<PokemonReferralCardProps> = ({
   const currentLayout = layoutOptions[selectedLayout];
 
   // Get earned badges for display
-  const earnedBadges = Array.isArray(account.badgesEarned)
-    ? account.badgesEarned
-    : account.badgesEarned && typeof account.badgesEarned === 'object'
-      ? Object.values(account.badgesEarned)
+  const earnedBadges = Array.isArray(account.badges)
+    ? account.badges
+    : account.badges && typeof account.badges === 'object'
+      ? Object.values(account.badges)
       : [];
 
   const handleShare = async (platform: 'twitter' | 'discord' | 'linkedin' | 'copy') => {

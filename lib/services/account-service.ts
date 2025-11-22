@@ -18,6 +18,7 @@ import {
 import { db } from '../firebase/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import { UserAccount } from '@/utils/types/account';
+import { REFERRAL_REWARDS } from '../../utils/constants/referral/constants';
 import { getBadgeById } from '../firebase/firebase-types';
 // Removed unused service imports
 
@@ -33,44 +34,55 @@ export class AccountService {
 
   // Create new account - matches the structure used in firebase-service.ts
   async createAccount(
-    walletAddress: string,
-    publicKey: string,
-    network: string
-  ): Promise<any> {
-    // Use wallet address as account ID (matches Firebase example structure)
-    const accountId = walletAddress;
+  walletAddress: string,
+  publicKey: string,
+  network: string
+): Promise<any> {
+  // Use wallet address as account ID (matches Firebase example structure)
+  const accountId = walletAddress;
 
-    const now = Timestamp.now();
+  const now = Timestamp.now();
 
-    // Match the exact structure from firebase-service.ts and Firebase example
-    const newAccount = {
-      id: accountId,
-      displayName: 'Anonymous User', // Default display name
-      walletAddress,
-      network: network.toUpperCase(), // Match "TESTNET" format from example
-      level: 1,
-      experience: 0,
-      totalPoints: 0,
-      demosCompleted: [],
-      badgesEarned: [],
-      clappedDemos: [],
-      completedQuests: [],
-      questProgress: {},
-      createdAt: now,
-      updatedAt: now,
-      lastLoginAt: now,
-      stats: {
-        totalPoints: 0, // Will be updated when badges are earned
-        lastActiveDate: new Date().toISOString().split('T')[0],
-      },
-    };
+  // ===============================================
+  // 🎯 PASO CRUCIAL: Generar el código de referido
+  // Últimos 8 caracteres del walletAddress, en mayúsculas.
+  const referralCode = walletAddress.slice(-8).toUpperCase(); 
+  // ===============================================
 
-    await setDoc(doc(db, 'accounts', accountId), newAccount);
+  // Match the exact structure from firebase-service.ts and Firebase example
+  const newAccount = {
+    id: accountId,
+    displayName: 'Anonymous User', // Default display name
+    walletAddress,
+    network: network.toUpperCase(), // Match "TESTNET" format from example
+    level: 1,
+    experience: 0,
+    totalPoints: 0,
+    
+    // 👇 CAMPO NUEVO AÑADIDO (referralCode) 👇
+    referralCode: referralCode,
+    // 👆 CAMPO NUEVO AÑADIDO (referralCode) 👆
+    
+    demosCompleted: [],
+    badgesEarned: [],
+    clappedDemos: [],
+    completedQuests: [],
+    questProgress: {},
+    createdAt: now,
+    updatedAt: now,
+    lastLoginAt: now,
+    stats: {
+      totalPoints: 0, // Will be updated when badges are earned
+      lastActiveDate: new Date().toISOString().split('T')[0],
+    },
+  };
 
-    // Points tracking is done in the account document itself (no separate pointsTransactions collection)
+  await setDoc(doc(db, 'accounts', accountId), newAccount);
 
-    return newAccount;
-  }
+  // Points tracking is done in the account document itself (no separate pointsTransactions collection)
+
+  return newAccount;
+}
 
   // Get account by wallet address
   async getAccountByWallet(walletAddress: string): Promise<UserAccount | null> {
@@ -97,6 +109,37 @@ export class AccountService {
     return docSnap.data() as UserAccount;
   }
 
+
+  async getAccountByReferralCode(referralCode: string): Promise<UserAccount | null> {
+    
+    
+    const accountsRef = collection(db, 'accounts');
+    
+    // Crea la consulta para buscar el código en el campo 'referralCode'
+    const q = query(
+      accountsRef, 
+      where('referralCode', '==', referralCode), 
+      limit(1) 
+    );
+    
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.empty) {
+      return null;
+    }
+    
+    // Devuelve la primera cuenta encontrada.
+    const accountDoc = querySnapshot.docs[0];
+    
+
+    return { 
+     
+      walletAddress: accountDoc.id, 
+      
+      ...accountDoc.data() 
+    } as UserAccount; 
+  }
+
   // Update account
   async updateAccount(accountId: string, updates: Partial<UserAccount>): Promise<void> {
     const accountRef = doc(db, 'accounts', accountId);
@@ -105,6 +148,21 @@ export class AccountService {
       updatedAt: serverTimestamp(),
     });
   }
+
+  async incrementReferralStats(walletAddress: string): Promise<void> {
+  // Asegúrate de importar doc, updateDoc, increment, serverTimestamp y REFERRAL_REWARDS.
+  const accountRef = doc(db, 'accounts', walletAddress);
+
+  // Usamos las constantes de recompensa del referidor
+  const referrerPoints = REFERRAL_REWARDS.REFERRER_POINTS;
+
+  await updateDoc(accountRef, {
+    // Nuevos campos en el esquema:
+    referralsCount: increment(1), // Suma 1 al contador
+    totalReferralPoints: increment(referrerPoints), // Suma los puntos ganados
+    updatedAt: serverTimestamp(),
+  });
+}
 
   // Update last login
   async updateLastLogin(accountId: string): Promise<void> {
