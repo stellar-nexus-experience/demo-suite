@@ -45,10 +45,17 @@ export interface UserAccount {
   updatedAt: Timestamp;
   lastLoginAt: Timestamp;
 
+  referralCode?: string; // Hacemos opcional para cuentas antiguas.
+
+  // Campos de Referido (Quién te refirió a TI)
+  referredBy?: string; // WalletAddress del referidor.
+  referredAt?: Timestamp; // Fecha en que se aplicó el código.
+
   // Root-level fields for backward compatibility with old Account type
   level?: number;
   experience?: number;
   totalPoints?: number;
+  displayName?: string;
 
   // Profile information
   profile: {
@@ -83,8 +90,14 @@ export interface UserAccount {
     totalPointsEarned: number;
     totalTimeSpent: number; // in minutes
     streakDays: number;
-    lastActiveDate: string; // YYYY-MM-DD format
+    lastActiveDate: string; 
+    referralsCount?: number;      
+  totalReferralPoints?: number;
   };
+
+    // ========================================================
+    // 👆 ESTADÍSTICAS DEL REFERIDOR AÑADIDAS AQUÍ 👆
+    // ================================================
 
   // Settings
   settings: {
