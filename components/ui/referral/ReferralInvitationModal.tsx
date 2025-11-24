@@ -69,7 +69,7 @@ const ApplyCodeView: React.FC<ApplyCodeViewProps> = ({
 
     return (
         <div className="space-y-4">
-            <p className="text-white/70 text-sm">
+            <p className="text-white text-sm">
                 Enter your friend's 8-character code to receive your welcome bonus. 🎮
             </p>
             <input
@@ -79,7 +79,7 @@ const ApplyCodeView: React.FC<ApplyCodeViewProps> = ({
                 onChange={e => setCode(e.target.value.toUpperCase().slice(0, 8))}
                 maxLength={8}
                
-                className='w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300'
+                className='w-full px-4 py-3 bg-white/10 border border-white rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300'
                 disabled={loading || isAlreadyReferred} 
             />
 
@@ -87,7 +87,7 @@ const ApplyCodeView: React.FC<ApplyCodeViewProps> = ({
                 onClick={handleApply}
                 // Usa isAlreadyReferred, NO account.referredBy
                 disabled={loading || code.length !== 8 || isAlreadyReferred} 
-                className='w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl transition disabled:opacity-50'
+                className='w-full bg-cyan-400 hover:bg-cyan-600 text-black br-cyan-300 font-semibold py-3 px-4 rounded-xl transition disabled:opacity-50'
             >
                 {/* Usa isAlreadyReferred, NO account.referredBy */}
                 {isAlreadyReferred 
@@ -96,7 +96,7 @@ const ApplyCodeView: React.FC<ApplyCodeViewProps> = ({
                 }
             </button>
             
-            {statusMessage && <p className={`mt-3 text-sm font-medium ${statusMessage.startsWith('✅') ? 'text-green-400' : 'text-red-400'}`}>{statusMessage}</p>}
+            {statusMessage && <p className={`mt-3 text-sm font-medium ${statusMessage.startsWith('✅') ? 'text-green-400' : 'text-gray-500'}`}>{statusMessage}</p>}
         </div>
     );
 };
@@ -155,22 +155,26 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
               <h2 className='text-xl font-bold'>Referral Center</h2>
               
               {/* AÑADIR ESTE BOTÓN DE CIERRE */}
-              <button
-                  onClick={onClose} // Llama a la prop de cierre
-                  className='text-white hover:text-gray-400 focus:outline-none'
-              >
-                 
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-              </button>
+              
           </div>
           <div className='flex border-b border-white/20 mb-6'>
+          <button
+              onClick={onClose} // Llama a la prop de cierre
+              // Clases clave para posicionamiento: 'absolute top-4 right-4'
+              // La 'X' se moverá al punto top-4 y right-4 de su contenedor 'relative' más cercano
+              className='absolute top-4 right-4 text-white hover:text-gray-400 focus:outline-none p-1 rounded-full bg-white/10'
+              aria-label="Cerrar modal"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+          </button>
+          
             <button
               onClick={() => setActiveTab('card')}
               className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
                 activeTab === 'card'
-                  ? 'text-white border-b-2 border-blue-500'
+                  ? 'text-white border-b-2 border-cyan-500'
                   : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -180,7 +184,7 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
               onClick={() => setActiveTab('email')}
               className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
                 activeTab === 'email'
-                  ? 'text-white border-b-2 border-blue-500'
+                  ? 'text-white border-b-2 border-cyan-500'
                   : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -189,16 +193,17 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
             
             {/* 3. Botón de la nueva pestaña (APPLY CODE) */}
             {showApplyCodeTab && (
-              <button
-                onClick={() => setActiveTab('apply-code')}
-                className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
-                  activeTab === 'apply-code'
-                    ? 'text-white border-b-2 border-blue-500'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                ➕ Apply Code
+                   <button
+                    onClick={() => setActiveTab('apply-code')}
+                    className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
+                      activeTab === 'apply-code'
+                        ? 'text-white border-b-2 border-cyan-500' // Borde amarillo para hacer match con el estilo del componente
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    🎁 Apply Code
               </button>
+
             )}
           </div>
 
@@ -261,7 +266,7 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
                 <button
                     type='submit'
                     disabled={isSending || !email.trim()}
-                    className='flex-1 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2'
+                    className='flex-1 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2'
                 >
                     {isSending ? (
                         <>
@@ -309,8 +314,8 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
           <div className='mt-4 text-center text-white'>
               <h3 className='font-bold text-lg'>Stats de Referidos</h3>
               {/* Aquí ya no da error porque TypeScript SABE que el valor existe y es un número */}
-              <p>Amigos Invitados: {account.stats.referralsCount}</p>
-              <p>Puntos de Bono: {account.stats.totalReferralPoints}</p>
+              <p>Guest Friends: {account.stats.referralsCount}</p>
+              <p>Bonus Points: {account.stats.totalReferralPoints}</p>
           </div>
         )}
     </div>

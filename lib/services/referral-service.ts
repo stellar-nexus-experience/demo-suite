@@ -148,7 +148,7 @@ export async function applyReferralCodeForExistingUser(
     return {
       success: true,
       
-      message: `Referral applied! You won ${referredBonusPoints} points thanks to ${referrerAccount.profile?.displayName ?? 'Your Friend'}.`, 
+      message: `Referral applied! You won 💰 ${referredBonusPoints} pts thanks to ${referrerAccount.profile?.displayName ?? 'Your Friend'}.`, 
       referrerName: referrerAccount.profile?.displayName,
       bonusEarned: referredBonusPoints,
     };
