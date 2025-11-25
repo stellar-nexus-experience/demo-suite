@@ -151,11 +151,25 @@ export const PokemonReferralCard: React.FC<PokemonReferralCardProps> = ({
   const currentLayout = layoutOptions[selectedLayout];
 
   // Get earned badges for display
-  const earnedBadges = Array.isArray(account.badges)
-    ? account.badges
-    : account.badges && typeof account.badges === 'object'
-      ? Object.values(account.badges)
-      : [];
+  // First try badgesEarned (array of badge ID strings) - this is the standard field
+  // If that doesn't exist, extract badge IDs from badges array (NFTBadge objects)
+  let earnedBadges: string[] = [];
+  
+  if ((account as any).badgesEarned !== undefined) {
+    // Handle badgesEarned (array of badge ID strings)
+    if (Array.isArray((account as any).badgesEarned)) {
+      earnedBadges = (account as any).badgesEarned;
+    } else if ((account as any).badgesEarned && typeof (account as any).badgesEarned === 'object') {
+      earnedBadges = Object.values((account as any).badgesEarned);
+    }
+  } else if (account.badges) {
+    // Extract badge IDs from badges array (NFTBadge objects)
+    if (Array.isArray(account.badges)) {
+      earnedBadges = account.badges.map(badge => badge.id);
+    } else if (typeof account.badges === 'object') {
+      earnedBadges = Object.values(account.badges).map((badge: any) => badge.id || badge);
+    }
+  }
 
   const handleShare = async (platform: 'twitter' | 'discord' | 'linkedin' | 'copy') => {
     setIsSharing(true);
@@ -522,6 +536,9 @@ export const PokemonReferralCard: React.FC<PokemonReferralCardProps> = ({
                 )}
 
                 <br/>
+                {currentLayout.id === 0 && (
+                  <br/>
+                )}
 
                 {/* Footer */}
                 <div className='absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 via-black/40 to-transparent backdrop-blur-sm rounded-b-2xl'>
