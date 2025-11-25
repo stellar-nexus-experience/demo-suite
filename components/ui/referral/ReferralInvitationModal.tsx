@@ -8,9 +8,11 @@ import { emailJSService } from '@/lib/services/emailjs-service';
 import { applyReferralCodeForExistingUser } from '@/lib/services/referral-service'; 
 import { PokemonReferralCard } from './PokemonReferralCard';
 import { Account } from '@/lib/firebase/firebase-types';
+import { referralInvitationService } from '@/lib/services/referral-invitation-service';
+import { MyReferralsView } from './MyReferralsView';
 
 // 1. Definir el nuevo tipo de pestaña
-type Tab = 'card' | 'email' | 'apply-code'; 
+type Tab = 'card' | 'email' | 'apply-code' | 'my-referrals'; 
 
 interface ReferralInvitationModalProps {
   isOpen: boolean;
@@ -69,9 +71,17 @@ const ApplyCodeView: React.FC<ApplyCodeViewProps> = ({
 
     return (
         <div className="space-y-4">
-            <p className="text-white text-sm">
-                Enter your friend's 8-character code to receive your welcome bonus. 🎮
-            </p>
+            {isAlreadyReferred ? (
+                <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4 mb-4">
+                    <p className="text-green-400 text-sm font-medium">
+                        ✅ You've already applied a referral code! You can still invite friends using your own referral code.
+                    </p>
+                </div>
+            ) : (
+                <p className="text-white text-sm">
+                    Enter your friend's 8-character code to receive your welcome bonus. 🎮
+                </p>
+            )}
             <input
                 type='text'
                 placeholder='FRIEND CODE (8 CHARACTERS)'
@@ -85,13 +95,11 @@ const ApplyCodeView: React.FC<ApplyCodeViewProps> = ({
 
             <button
                 onClick={handleApply}
-                // Usa isAlreadyReferred, NO account.referredBy
                 disabled={loading || code.length !== 8 || isAlreadyReferred} 
                 className='w-full bg-cyan-400 hover:bg-cyan-600 text-black br-cyan-300 font-semibold py-3 px-4 rounded-xl transition disabled:opacity-50'
             >
-                {/* Usa isAlreadyReferred, NO account.referredBy */}
                 {isAlreadyReferred 
-                  ? 'Good code successfully applied!' 
+                  ? 'Already Applied ✓' 
                   : (loading ? 'Applying...' : 'Apply Code') 
                 }
             </button>
@@ -123,12 +131,60 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
   const referralCode = account.referralCode || account.walletAddress.slice(-8).toUpperCase(); 
   const referralLink = `${window.location.origin}/?ref=${referralCode}`;
   const referrerName = account?.profile?.displayName || 'Nexus Explorer';
-  
-  // Condición para mostrar la nueva pestaña: solo si el usuario aún NO tiene un referidor
-  const showApplyCodeTab = !account?.referredBy;
 
   const handleSendInvitation = async (e: React.FormEvent) => {
+    e.preventDefault();
     
+    if (!email.trim()) {
+      addToast('Please enter an email address', 'error');
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      // Check if this email was already invited with this referral code
+      const existingInvitation = await referralInvitationService.getInvitationByEmailAndCode(
+        email,
+        referralCode
+      );
+
+      if (existingInvitation) {
+        addToast('This email has already been invited with your referral code', 'warning');
+        setIsSending(false);
+        return;
+      }
+
+      // Send email invitation
+      if (emailJSService.isConfigured()) {
+        await emailJSService.sendReferralInvitation({
+          user_email: email,
+          referral_code: referralCode,
+          referral_link: referralLink,
+          referrer_name: referrerName,
+          personal_message: personalMessage || undefined,
+        });
+      }
+
+      // Save invitation to database
+      await referralInvitationService.createInvitation({
+        referrerWalletAddress: account.walletAddress,
+        referralCode: referralCode,
+        invitedEmail: email,
+      });
+
+      addToast('Invitation sent successfully!', 'success');
+      setEmail('');
+      setPersonalMessage('');
+    } catch (error) {
+      console.error('Error sending invitation:', error);
+      addToast(
+        error instanceof Error ? error.message : 'Failed to send invitation. Please try again.',
+        'error'
+      );
+    } finally {
+      setIsSending(false);
+    }
   };
 
 
@@ -188,23 +244,32 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
                   : 'text-gray-400 hover:text-white'
               }`}
             >
-              📧 Email Invitation
+              📧 Invite
             </button>
             
-            {/* 3. Botón de la nueva pestaña (APPLY CODE) */}
-            {showApplyCodeTab && (
-                   <button
-                    onClick={() => setActiveTab('apply-code')}
-                    className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
-                      activeTab === 'apply-code'
-                        ? 'text-white border-b-2 border-cyan-500' // Borde amarillo para hacer match con el estilo del componente
-                        : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    🎁 Apply Code
-              </button>
+            {/* Apply Code tab - now available for all users */}
+            <button
+              onClick={() => setActiveTab('apply-code')}
+              className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
+                activeTab === 'apply-code'
+                  ? 'text-white border-b-2 border-cyan-500'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              🎁 Apply Code
+            </button>
 
-            )}
+            {/* My Referrals tab */}
+            <button
+              onClick={() => setActiveTab('my-referrals')}
+              className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
+                activeTab === 'my-referrals'
+                  ? 'text-white border-b-2 border-cyan-500'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              👥 My Referrals
+            </button>
           </div>
 
           {/* Tab Content */}
@@ -294,8 +359,8 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
         </form>
     </>
 
-) : activeTab === 'apply-code' && showApplyCodeTab ? (
-    // 4. Nuevo contenido de la pestaña APPLY CODE
+) : activeTab === 'apply-code' ? (
+    // Apply Code tab - available for all users
     <ApplyCodeView 
       userWalletAddress={account.walletAddress}
       isAlreadyReferred={!!account.referredBy}
@@ -304,6 +369,9 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
         onAccountUpdate(); 
       }}
     />
+) : activeTab === 'my-referrals' ? (
+    // My Referrals tab
+    <MyReferralsView referrerWalletAddress={account.walletAddress} />
 ) : (
     /* Card View (Incluir aquí las estadísticas del referidor) */
         <div className='flex justify-center'>

@@ -2,7 +2,8 @@ import { accountService } from './account-service';
 import { db } from '../firebase/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { REFERRAL_REWARDS } from '../../utils/constants/referral/constants';
-import { UserAccount } from '@/utils/types/account'; 
+import { UserAccount } from '@/utils/types/account';
+import { referralInvitationService } from './referral-invitation-service'; 
 
 
 
@@ -143,6 +144,13 @@ export async function applyReferralCodeForExistingUser(
       // Usamos el 'as any' para manejar el tipo de retorno de serverTimestamp()
       referredAt: serverTimestamp() as any, 
     });
+
+    // 8. Activate any pending invitations for this referral code
+    await referralInvitationService.activateInvitation(
+      referralCode,
+      userWalletAddress,
+      referrerBonusPoints
+    );
 
 
     return {
