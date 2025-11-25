@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { UserAccount } from '@/utils/types/account'; // Importar el tipo correcto
 import { useToast } from '@/contexts/ui/ToastContext';
@@ -125,6 +125,13 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
   // 2. Cambiamos el tipo de estado de pestaña
   const [activeTab, setActiveTab] = useState<Tab>('card'); 
 
+  // If user has already applied a referral code and is on the apply-code tab, switch to card tab
+  useEffect(() => {
+    if (account?.referredBy && activeTab === 'apply-code') {
+      setActiveTab('card');
+    }
+  }, [account?.referredBy, activeTab]);
+
   if (!isOpen || !account) return null;
 
   // Generación de datos... (El código ya estaba correcto)
@@ -136,7 +143,11 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
     e.preventDefault();
     
     if (!email.trim()) {
-      addToast('Please enter an email address', 'error');
+      addToast({
+        type: 'error',
+        title: 'Email Required',
+        message: 'Please enter an email address to send the invitation.',
+      });
       return;
     }
 
@@ -150,38 +161,69 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
       );
 
       if (existingInvitation) {
-        addToast('This email has already been invited with your referral code', 'warning');
+        addToast({
+          type: 'warning',
+          title: 'Already Invited',
+          message: 'This email has already been invited. You can resend the invitation from the "My Referrals" tab.',
+        });
         setIsSending(false);
         return;
       }
 
       // Send email invitation
+      let emailSent = false;
       if (emailJSService.isConfigured()) {
-        await emailJSService.sendReferralInvitation({
-          user_email: email,
-          referral_code: referralCode,
-          referral_link: referralLink,
-          referrer_name: referrerName,
-          personal_message: personalMessage || undefined,
-        });
+        try {
+          await emailJSService.sendReferralInvitation({
+            user_email: email,
+            referral_code: referralCode,
+            referral_link: referralLink,
+            referrer_name: referrerName,
+            personal_message: personalMessage || undefined,
+          });
+          emailSent = true;
+        } catch (emailError) {
+          console.error('Failed to send email:', emailError);
+          // Continue to save invitation even if email fails
+        }
       }
 
-      // Save invitation to database
+      // Save invitation to database (always save, even if email wasn't sent)
       await referralInvitationService.createInvitation({
         referrerWalletAddress: account.walletAddress,
         referralCode: referralCode,
         invitedEmail: email,
       });
 
-      addToast('Invitation sent successfully!', 'success');
+      if (emailSent) {
+        addToast({
+          type: 'success',
+          title: '✅ Invitation Sent!',
+          message: `Your referral invitation has been sent to ${email}. They can use your code ${referralCode} or click the link to join!`,
+        });
+      } else if (emailJSService.isConfigured()) {
+        addToast({
+          type: 'warning',
+          title: '⚠️ Email Not Sent',
+          message: `Invitation saved but email failed to send. You can share your referral link manually: ${referralLink}`,
+        });
+      } else {
+        addToast({
+          type: 'info',
+          title: '📋 Invitation Saved',
+          message: `Invitation saved! Share your referral link: ${referralLink} (Email service not configured)`,
+        });
+      }
       setEmail('');
       setPersonalMessage('');
     } catch (error) {
       console.error('Error sending invitation:', error);
-      addToast(
-        error instanceof Error ? error.message : 'Failed to send invitation. Please try again.',
-        'error'
-      );
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send invitation. Please try again.';
+      addToast({
+        type: 'error',
+        title: '❌ Send Failed',
+        message: errorMessage,
+      });
     } finally {
       setIsSending(false);
     }
@@ -244,20 +286,22 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
                   : 'text-gray-400 hover:text-white'
               }`}
             >
-              📧 Invite
+              📧 Email Invitation
             </button>
             
-            {/* Apply Code tab - now available for all users */}
-            <button
-              onClick={() => setActiveTab('apply-code')}
-              className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
-                activeTab === 'apply-code'
-                  ? 'text-white border-b-2 border-cyan-500'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              🎁 Apply Code
-            </button>
+            {/* Apply Code tab - only show if user hasn't applied a referral code yet */}
+            {!account.referredBy && (
+              <button
+                onClick={() => setActiveTab('apply-code')}
+                className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
+                  activeTab === 'apply-code'
+                    ? 'text-white border-b-2 border-cyan-500'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                🎁 Apply Code
+              </button>
+            )}
 
             {/* My Referrals tab */}
             <button
@@ -371,7 +415,12 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
     />
 ) : activeTab === 'my-referrals' ? (
     // My Referrals tab
-    <MyReferralsView referrerWalletAddress={account.walletAddress} />
+    <MyReferralsView 
+      referrerWalletAddress={account.walletAddress}
+      referralCode={referralCode}
+      referralLink={referralLink}
+      referrerName={referrerName}
+    />
 ) : (
     /* Card View (Incluir aquí las estadísticas del referidor) */
         <div className='flex justify-center'>

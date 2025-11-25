@@ -38,11 +38,13 @@ export class EmailJSService {
 
   public async sendReferralInvitation(data: ReferralInvitationData): Promise<boolean> {
     try {
-      this.initialize();
-
-      // Validate required configuration
+      // Validate required configuration first
       if (!EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId || !EMAILJS_CONFIG.publicKey) {
-        throw new Error('EmailJS configuration is missing. Please check your environment variables.');
+        const missing = [];
+        if (!EMAILJS_CONFIG.serviceId) missing.push('SERVICE_ID');
+        if (!EMAILJS_CONFIG.templateId) missing.push('TEMPLATE_ID');
+        if (!EMAILJS_CONFIG.publicKey) missing.push('PUBLIC_KEY');
+        throw new Error(`EmailJS configuration is missing: ${missing.join(', ')}. Please check your environment variables.`);
       }
 
       // Validate email format
@@ -50,6 +52,9 @@ export class EmailJSService {
       if (!emailRegex.test(data.user_email)) {
         throw new Error('Invalid email address format.');
       }
+
+      // Initialize EmailJS
+      this.initialize();
 
       // Prepare template parameters
       const templateParams = {
@@ -60,21 +65,51 @@ export class EmailJSService {
         personal_message: data.personal_message || 'Join me on this amazing Web3 journey!',
       };
 
-      // Send email
-      const response = await emailjs.send(
-        EMAILJS_CONFIG.serviceId,
-        EMAILJS_CONFIG.templateId,
+      // Send email with timeout
+      const sendPromise = emailjs.send(
+        EMAILJS_CONFIG.serviceId!,
+        EMAILJS_CONFIG.templateId!,
         templateParams
       );
 
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Email sending timed out after 30 seconds')), 30000);
+      });
+
+      const response = await Promise.race([sendPromise, timeoutPromise]) as any;
+
       return response.status === 200;
-    } catch (error) {
-      console.error('EmailJS error:', error);
-      throw new Error(
-        error instanceof Error 
-          ? error.message 
-          : 'Failed to send referral invitation. Please try again.'
-      );
+    } catch (error: any) {
+      console.error('EmailJS error details:', {
+        error,
+        message: error?.message,
+        text: error?.text,
+        status: error?.status,
+        code: error?.code,
+        config: {
+          hasServiceId: !!EMAILJS_CONFIG.serviceId,
+          hasTemplateId: !!EMAILJS_CONFIG.templateId,
+          hasPublicKey: !!EMAILJS_CONFIG.publicKey,
+        }
+      });
+      
+      // Provide more detailed error information
+      let errorMessage = 'Failed to send referral invitation. Please try again.';
+      
+      if (error?.text) {
+        // EmailJS specific error
+        errorMessage = `EmailJS error: ${error.text}`;
+      } else if (error?.message) {
+        errorMessage = error.message;
+      } else if (error?.status === 0 || error?.message?.includes('fetch') || error?.message?.includes('network') || error?.message?.includes('Failed to fetch')) {
+        errorMessage = 'Network error. Please check your internet connection and EmailJS configuration. If the problem persists, verify your EmailJS public key is correct.';
+      } else if (error?.code === 'NETWORK_ERROR' || error?.code === 'ERR_NETWORK') {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      } else if (error?.message?.includes('timeout')) {
+        errorMessage = 'Request timed out. Please try again.';
+      }
+      
+      throw new Error(errorMessage);
     }
   }
 

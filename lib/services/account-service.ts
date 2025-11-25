@@ -36,7 +36,8 @@ export class AccountService {
   async createAccount(
   walletAddress: string,
   publicKey: string,
-  network: string
+  network: string,
+  pendingReferralCode?: string | null
 ): Promise<any> {
   // Use wallet address as account ID (matches Firebase example structure)
   const accountId = walletAddress;
@@ -78,6 +79,22 @@ export class AccountService {
   };
 
   await setDoc(doc(db, 'accounts', accountId), newAccount);
+
+  // Apply referral code if provided (from URL parameter or other source)
+  if (pendingReferralCode) {
+    try {
+      const { validateReferralCode } = await import('./referral-service');
+      const validation = await validateReferralCode(walletAddress, pendingReferralCode);
+      
+      if (validation.applied && validation.referrerWalletAddress && validation.referrerAccount) {
+        const { applyReferralCodeForExistingUser } = await import('./referral-service');
+        await applyReferralCodeForExistingUser(walletAddress, pendingReferralCode);
+      }
+    } catch (error) {
+      // Silently fail - account is created, referral just didn't apply
+      console.warn('Failed to apply referral code during account creation:', error);
+    }
+  }
 
   // Points tracking is done in the account document itself (no separate pointsTransactions collection)
 

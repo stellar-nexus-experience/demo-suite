@@ -116,11 +116,26 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({ children }) =>
     setError(null);
 
     try {
+      // Get referral code from URL if present
+      let pendingReferralCode: string | null = null;
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        pendingReferralCode = urlParams.get('ref');
+        if (pendingReferralCode) {
+          // Normalize to uppercase and validate format
+          pendingReferralCode = pendingReferralCode.toUpperCase().trim();
+          if (!/^[A-Z0-9]{8}$/.test(pendingReferralCode)) {
+            pendingReferralCode = null; // Invalid format
+          }
+        }
+      }
+
       // Add timeout to prevent hanging
       const accountCreationPromise = accountService.createAccount(
         walletData.publicKey,
         walletData.publicKey, // publicKey parameter (not used for displayName anymore)
-        walletData.network
+        walletData.network,
+        pendingReferralCode // Pass referral code if present
       );
 
       const timeoutPromise = new Promise((_, reject) => {

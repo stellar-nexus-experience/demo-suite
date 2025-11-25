@@ -5,19 +5,31 @@ import { referralInvitationService, ReferralInvitation } from '@/lib/services/re
 import { formatWalletAddress } from '@/utils/helpers/formatting';
 import { formatDate } from '@/utils/helpers/formatting';
 import { accountService } from '@/lib/services/account-service';
+import { emailJSService } from '@/lib/services/emailjs-service';
+import { useToast } from '@/contexts/ui/ToastContext';
 
 interface MyReferralsViewProps {
   referrerWalletAddress: string;
+  referralCode?: string;
+  referralLink?: string;
+  referrerName?: string;
 }
 
 interface EnrichedReferralInvitation extends ReferralInvitation {
   username?: string | null;
 }
 
-export const MyReferralsView: React.FC<MyReferralsViewProps> = ({ referrerWalletAddress }) => {
+export const MyReferralsView: React.FC<MyReferralsViewProps> = ({ 
+  referrerWalletAddress,
+  referralCode,
+  referralLink,
+  referrerName 
+}) => {
+  const { addToast } = useToast();
   const [invitations, setInvitations] = useState<EnrichedReferralInvitation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [resendingEmail, setResendingEmail] = useState<string | null>(null);
 
   useEffect(() => {
     loadInvitations();
@@ -68,6 +80,72 @@ export const MyReferralsView: React.FC<MyReferralsViewProps> = ({ referrerWallet
       setError(errorMessage);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendEmail = async (invitation: EnrichedReferralInvitation) => {
+    if (!invitation.invitedEmail || invitation.status === 'activated') {
+      return;
+    }
+
+    if (!referralCode || !referralLink || !referrerName) {
+      addToast({
+        type: 'error',
+        title: '❌ Cannot Resend',
+        message: 'Missing referral information. Please try again.',
+      });
+      return;
+    }
+
+    // Check EmailJS configuration first
+    if (!emailJSService.isConfigured()) {
+      addToast({
+        type: 'warning',
+        title: '⚠️ Email Service Not Configured',
+        message: 'Email service is not available. You can share your referral link manually.',
+      });
+      return;
+    }
+
+    setResendingEmail(invitation.id);
+
+    try {
+      await emailJSService.sendReferralInvitation({
+        user_email: invitation.invitedEmail,
+        referral_code: referralCode,
+        referral_link: referralLink,
+        referrer_name: referrerName,
+        personal_message: undefined,
+      });
+
+      addToast({
+        type: 'success',
+        title: '✅ Email Resent!',
+        message: `Invitation email has been resent to ${invitation.invitedEmail}.`,
+      });
+    } catch (error: any) {
+      console.error('Error resending email:', error);
+      
+      // Provide more specific error messages
+      let errorMessage = 'Failed to resend email. Please try again.';
+      
+      if (error?.message) {
+        errorMessage = error.message;
+      } else if (error?.code === 'NETWORK_ERROR' || error?.message?.includes('fetch')) {
+        errorMessage = 'Network error. Please check your internet connection and try again.';
+      } else if (error?.message?.includes('configuration') || error?.message?.includes('EmailJS')) {
+        errorMessage = 'Email service configuration error. Please contact support.';
+      } else if (error?.status === 0 || error?.message?.includes('CORS')) {
+        errorMessage = 'Network or CORS error. Please check your EmailJS configuration.';
+      }
+      
+      addToast({
+        type: 'error',
+        title: '❌ Resend Failed',
+        message: errorMessage,
+      });
+    } finally {
+      setResendingEmail(null);
     }
   };
 
@@ -149,6 +227,7 @@ export const MyReferralsView: React.FC<MyReferralsViewProps> = ({ referrerWallet
               <th className="text-left py-3 px-4 text-white/80 font-semibold">Activated</th>
               <th className="text-left py-3 px-4 text-white/80 font-semibold">Status</th>
               <th className="text-right py-3 px-4 text-white/80 font-semibold">Points</th>
+              <th className="text-center py-3 px-4 text-white/80 font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -206,6 +285,29 @@ export const MyReferralsView: React.FC<MyReferralsViewProps> = ({ referrerWallet
                     </span>
                   ) : (
                     <span className="text-white/30">-</span>
+                  )}
+                </td>
+                <td className="py-3 px-4 text-center">
+                  {invitation.status === 'pending' && invitation.invitedEmail ? (
+                    <button
+                      onClick={() => handleResendEmail(invitation)}
+                      disabled={resendingEmail === invitation.id}
+                      className="px-3 py-1.5 text-xs bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 border border-cyan-500/30 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Resend invitation email"
+                    >
+                      {resendingEmail === invitation.id ? (
+                        <span className="flex items-center gap-1">
+                          <span className="animate-spin">⏳</span>
+                          Sending...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          📧 Resend
+                        </span>
+                      )}
+                    </button>
+                  ) : (
+                    <span className="text-white/20">-</span>
                   )}
                 </td>
               </tr>

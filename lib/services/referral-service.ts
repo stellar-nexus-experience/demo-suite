@@ -1,6 +1,6 @@
 import { accountService } from './account-service';
 import { db } from '../firebase/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { REFERRAL_REWARDS } from '../../utils/constants/referral/constants';
 import { UserAccount } from '@/utils/types/account';
 import { referralInvitationService } from './referral-invitation-service'; 
@@ -151,6 +151,61 @@ export async function applyReferralCodeForExistingUser(
       userWalletAddress,
       referrerBonusPoints
     );
+
+    // 9. Create a referral invitation record if one doesn't exist (for users who applied code without email invite)
+    // This ensures the referral shows up in the referrer's My Referrals tab
+    try {
+      const existingInvitations = await referralInvitationService.getInvitationsByReferrer(referrerWalletAddress);
+      const hasMatchingInvitation = existingInvitations.some(
+        inv => inv.referredWalletAddress === userWalletAddress && inv.referralCode === referralCode
+      );
+
+      if (!hasMatchingInvitation) {
+        // Create a new invitation record for this referral (status: activated since they already joined)
+        const invitationsRef = collection(db, 'referralInvitations');
+        const invitationDocRef = await addDoc(invitationsRef, {
+          referrerWalletAddress: referrerWalletAddress,
+          referralCode: referralCode,
+          invitedEmail: '', // No email since they applied code directly
+          status: 'activated',
+          invitedAt: serverTimestamp(),
+          activatedAt: serverTimestamp(),
+          referredWalletAddress: userWalletAddress,
+          pointsEarned: referrerBonusPoints,
+        });
+
+        // Also update the referrer's account document
+        try {
+          const accountRef = doc(db, 'accounts', referrerWalletAddress);
+          const accountDocSnap = await getDoc(accountRef);
+          
+          if (accountDocSnap.exists()) {
+            const accountData = accountDocSnap.data();
+            const referralInvitations = accountData.referralInvitations || [];
+            
+            // Add the new invitation to the array
+            referralInvitations.push({
+              invitationId: invitationDocRef.id,
+              invitedEmail: '',
+              status: 'activated',
+              referredWalletAddress: userWalletAddress,
+              pointsEarned: referrerBonusPoints,
+              invitedAt: serverTimestamp(),
+              activatedAt: serverTimestamp(),
+            });
+            
+            await updateDoc(accountRef, {
+              referralInvitations: referralInvitations,
+            });
+          }
+        } catch (error) {
+          console.warn('Failed to update account with new referral invitation:', error);
+        }
+      }
+    } catch (error) {
+      // Silently fail - the referral is still applied, just the invitation record creation failed
+      console.warn('Failed to create referral invitation record:', error);
+    }
 
 
     return {
