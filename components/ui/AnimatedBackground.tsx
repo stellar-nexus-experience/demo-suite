@@ -38,7 +38,7 @@ export const AnimatedBackground: React.FC = () => {
     const createStars = () => {
       stars.length = 0;
       const starCount = theme === 'dark' ? 200 : 50;
-      
+
       for (let i = 0; i < starCount; i++) {
         stars.push({
           x: Math.random() * canvas.width,
@@ -72,7 +72,7 @@ export const AnimatedBackground: React.FC = () => {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Draw stars
-        stars.forEach((star) => {
+        stars.forEach(star => {
           star.x += star.vx;
           star.y += star.vy;
           star.twinkle += 0.02;
@@ -213,7 +213,7 @@ export const AnimatedBackground: React.FC = () => {
         drawCloud(700 + Math.sin(time * 0.5) * 30, 90, 20);
 
         // Light particles (like dust in sunlight)
-        stars.forEach((particle) => {
+        stars.forEach(particle => {
           particle.x += particle.vx * 0.5;
           particle.y += particle.vy * 0.5;
           particle.twinkle += 0.01;
@@ -250,7 +250,7 @@ export const AnimatedBackground: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 w-full h-full pointer-events-none z-0"
+      className='fixed inset-0 w-full h-full pointer-events-none z-0'
       style={{ zIndex: -1 }}
     />
   );

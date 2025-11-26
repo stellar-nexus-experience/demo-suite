@@ -26,12 +26,12 @@ import { LeaderboardSidebar } from '@/components/ui/LeaderboardSidebar';
 import { QuestAndReferralSection } from '@/components/ui/quest/QuestAndReferralSection';
 import { TOP_BADGES } from '@/utils/constants/demos';
 import { useTransactionHistory } from '@/contexts/data/TransactionContext';
-import React, {  useCallback } from 'react';
-import { 
-  DemoSelector, 
-  HeroSection, 
+import React, { useCallback } from 'react';
+import {
+  DemoSelector,
+  HeroSection,
   InteractiveTutorialSection,
-  LeaderboardSection
+  LeaderboardSection,
 } from '@/components/home';
 import { DEMO_CARDS } from '@/utils/constants/demos';
 
@@ -117,7 +117,6 @@ export default function HomePageContent() {
     const handleOpenLeaderboard = () => {
       setLeaderboardSidebarOpen(true);
     };
-    
 
     window.addEventListener('walletSidebarToggle', handleWalletSidebarToggle as EventListener);
     window.addEventListener('openUserProfile', handleOpenUserProfile);
@@ -205,77 +204,74 @@ export default function HomePageContent() {
   const handleFeedbackClose = () => {
     setShowFeedbackModal(false);
     setFeedbackDemoData(null);
-
   };
 
   const onTechTreeClick = useCallback(() => {
-  if (showTechTree || isTechTreeProcessing) {
-    // Si ya está abierto o en proceso, ignora el clic (Idempotencia)
-    return;
-  }
-  
-  // 1. Establecer el estado de procesamiento inmediatamente
-  setIsTechTreeProcessing(true);
-  
-  // 2. Abrir el modal
-  setShowTechTree(true);
-  
-  
-  setTimeout(() => {
-    setIsTechTreeProcessing(false);
-  }, 500); // 500ms recomendado para mayor seguridad
-  
-}, [showTechTree, isTechTreeProcessing])
+    if (showTechTree || isTechTreeProcessing) {
+      // Si ya está abierto o en proceso, ignora el clic (Idempotencia)
+      return;
+    }
 
-const onCloseTechTree = useCallback(() => {
-      setShowTechTree(false);
-      setIsTechTreeProcessing(false); // Asegurar que se restablezca el estado de procesamiento
-    }, []);
-  
+    // 1. Establecer el estado de procesamiento inmediatamente
+    setIsTechTreeProcessing(true);
+
+    // 2. Abrir el modal
+    setShowTechTree(true);
+
+    setTimeout(() => {
+      setIsTechTreeProcessing(false);
+    }, 500); // 500ms recomendado para mayor seguridad
+  }, [showTechTree, isTechTreeProcessing]);
+
+  const onCloseTechTree = useCallback(() => {
+    setShowTechTree(false);
+    setIsTechTreeProcessing(false); // Asegurar que se restablezca el estado de procesamiento
+  }, []);
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-neutral-900 via-brand-900 to-neutral-900 relative overflow-hidden'>
       {/* Structured Data for SEO */}
       <script
-        type="application/ld+json"
+        type='application/ld+json'
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "name": "Stellar Nexus Experience",
-            "alternateName": "Stellar Nexus Experience Web3 Early Adopters Program",
-            "description": "Join the Stellar Nexus Experience Web3 Early Adopters Program. Master trustless work on Stellar blockchain with interactive demos, earn badges, and compete on the global leaderboard.",
-            "url": "https://stellar-nexus-experience.vercel.app",
-            "applicationCategory": "EducationalApplication",
-            "operatingSystem": "Web Browser",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: 'Stellar Nexus Experience',
+            alternateName: 'Stellar Nexus Experience Web3 Early Adopters Program',
+            description:
+              'Join the Stellar Nexus Experience Web3 Early Adopters Program. Master trustless work on Stellar blockchain with interactive demos, earn badges, and compete on the global leaderboard.',
+            url: 'https://stellar-nexus-experience.vercel.app',
+            applicationCategory: 'EducationalApplication',
+            operatingSystem: 'Web Browser',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
             },
-            "creator": {
-              "@type": "Organization",
-              "name": "Stellar Nexus Team",
-              "url": "https://stellar-nexus-experience.vercel.app"
+            creator: {
+              '@type': 'Organization',
+              name: 'Stellar Nexus Team',
+              url: 'https://stellar-nexus-experience.vercel.app',
             },
-            "featureList": [
-              "Interactive Blockchain Demos",
-              "Trustless Work Education",
-              "Badge System",
-              "Global Leaderboard",
-              "Stellar Network Integration",
-              "Web3 Wallet Connection"
+            featureList: [
+              'Interactive Blockchain Demos',
+              'Trustless Work Education',
+              'Badge System',
+              'Global Leaderboard',
+              'Stellar Network Integration',
+              'Web3 Wallet Connection',
             ],
-            "screenshot": "https://stellar-nexus-experience.vercel.app/images/logo/logoicon.png",
-            "softwareVersion": "0.1.0",
-            "datePublished": "2024-01-01",
-            "dateModified": new Date().toISOString().split('T')[0],
-            "inLanguage": "en-US",
-            "isAccessibleForFree": true,
-            "browserRequirements": "Requires JavaScript. Requires HTML5.",
-            "softwareRequirements": "Web Browser",
-            "permissions": "Web3 Wallet Access"
-          })
+            screenshot: 'https://stellar-nexus-experience.vercel.app/images/logo/logoicon.png',
+            softwareVersion: '0.1.0',
+            datePublished: '2024-01-01',
+            dateModified: '2025-11-26',
+            inLanguage: 'en-US',
+            isAccessibleForFree: true,
+            browserRequirements: 'Requires JavaScript. Requires HTML5.',
+            softwareRequirements: 'Web Browser',
+            permissions: 'Web3 Wallet Access',
+          }),
         }}
       />
       {/* Header */}
@@ -293,127 +289,123 @@ const onCloseTechTree = useCallback(() => {
 
       {/* Main Content */}
       <main
-        className={`relative z-10 pt-20 ${
-          walletSidebarOpen && walletExpanded ? 'mr-96' : walletSidebarOpen ? 'mr-20' : 'mr-0'
-        } ${!walletSidebarOpen ? 'pb-32' : 'pb-8'}`}
+        className={`relative z-10 pt-20 ${walletSidebarOpen && walletExpanded ? 'mr-96' : walletSidebarOpen ? 'mr-20' : 'mr-0'
+          } ${!walletSidebarOpen ? 'pb-32' : 'pb-8'}`}
       >
-        
-        
-            {/* Hero Section */}
-            <HeroSection
-                isVideoPlaying={false}
-                miniGamesUnlocked={miniGamesUnlocked}
-                onTutorialClick={() => {
-                    const tutorialSection = document.getElementById('interactive-tutorial');
-                    if (tutorialSection) {
-                        tutorialSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start',
-                        });
-                    }
-                }}
-                // ✅ 1. USAR EL HANDLER CON useCallback Y LÓGICA DE CONTROL ✅
-                onTechTreeClick={onTechTreeClick}
-                
-                // ✅ 2. AÑADIR LA PROP DE DESHABILITACIÓN PARA CONTROLAR EL BOTÓN Y EL TOOLTIP ✅
-                isTechTreeDisabled={showTechTree || isTechTreeProcessing} 
-                
-                isConnected={isConnected}
-                isLoadingAccount={firebaseLoading && !isInitialized}
-            />
+        {/* Hero Section */}
+        <HeroSection
+          isVideoPlaying={false}
+          miniGamesUnlocked={miniGamesUnlocked}
+          onTutorialClick={() => {
+            const tutorialSection = document.getElementById('interactive-tutorial');
+            if (tutorialSection) {
+              tutorialSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+              });
+            }
+          }}
+          // ✅ 1. USAR EL HANDLER CON useCallback Y LÓGICA DE CONTROL ✅
+          onTechTreeClick={onTechTreeClick}
+          // ✅ 2. AÑADIR LA PROP DE DESHABILITACIÓN PARA CONTROLAR EL BOTÓN Y EL TOOLTIP ✅
+          isTechTreeDisabled={showTechTree || isTechTreeProcessing}
+          isConnected={isConnected}
+          isLoadingAccount={firebaseLoading && !isInitialized}
+        />
 
-            {/* Demo Cards Section - with fade-in animation */}
-            <div className='text-center'>
-              <p className=' text-white/80 max-w-3xl mx-auto mb-6'>
-              The <span className='text-brand-200 font-semibold'>Escrow Arsenal</span> turns early adoption into an adventure—earn XP, unlock badges, and co-create the future of Web3 alongside the first wave of <span className='text-brand-200 font-semibold'>Founders, Builders, and Developers</span>.
-              </p>
-              <br />
-            </div>
+        {/* Demo Cards Section - with fade-in animation */}
+        <div className='text-center'>
+          <p className=' text-white/80 max-w-3xl mx-auto mb-6'>
+            The <span className='text-brand-200 font-semibold'>Escrow Arsenal</span> turns early
+            adoption into an adventure—earn XP, unlock badges, and co-create the future of Web3
+            alongside the first wave of{' '}
+            <span className='text-brand-200 font-semibold'>Founders, Builders, and Developers</span>
+            .
+          </p>
+          <br />
+        </div>
 
+        <section className='mx-auto px-4 animate-fadeIn'>
+          <div className=' mx-auto'>
+            {isConnected && firebaseLoading && !isInitialized && (
+              <div className='text-center py-16'>
+                {/* Loading Spinner */}
+                <div className='inline-block'>
+                  <div className='animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400 mb-4'></div>
+                </div>
 
-            <section className='mx-auto px-4 animate-fadeIn'>
-              <div className=' mx-auto'>
-                {isConnected && firebaseLoading && !isInitialized && (
-                  <div className='text-center py-16'>
-                    {/* Loading Spinner */}
-                    <div className='inline-block'>
-                      <div className='animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400 mb-4'></div>
-                    </div>
+                {/* Loading Title */}
+                <h3 className='text-lg font-semibold text-white mb-2'>Loading Your Account...</h3>
 
-                    {/* Loading Title */}
-                    <h3 className='text-lg font-semibold text-white mb-2'>
-                      Loading Your Account...
-                    </h3>
+                {/* Loading Description */}
+                <p className='text-white/70 text-sm mb-6'>
+                  Preparing demo cards and loading your progress data
+                </p>
 
-                    {/* Loading Description */}
-                    <p className='text-white/70 text-sm mb-6'>
-                      Preparing demo cards and loading your progress data
-                    </p>
+                {/* Animated Loading Dots */}
+                <div className='flex justify-center items-center space-x-2'>
+                  <div className='animate-pulse bg-blue-400/30 rounded-full h-3 w-3'></div>
+                  <div
+                    className='animate-pulse bg-blue-400/50 rounded-full h-3 w-3'
+                    style={{ animationDelay: '0.3s' }}
+                  ></div>
+                  <div
+                    className='animate-pulse bg-blue-400/30 rounded-full h-3 w-3'
+                    style={{ animationDelay: '0.6s' }}
+                  ></div>
+                </div>
 
-                    {/* Animated Loading Dots */}
-                    <div className='flex justify-center items-center space-x-2'>
-                      <div className='animate-pulse bg-blue-400/30 rounded-full h-3 w-3'></div>
-                      <div
-                        className='animate-pulse bg-blue-400/50 rounded-full h-3 w-3'
-                        style={{ animationDelay: '0.3s' }}
-                      ></div>
-                      <div
-                        className='animate-pulse bg-blue-400/30 rounded-full h-3 w-3'
-                        style={{ animationDelay: '0.6s' }}
-                      ></div>
-                    </div>
-
-                    {/* Progress Steps */}
-                    <div className='mt-6 space-y-2'>
-                      <div className='text-xs text-white/60'>• Loading account information</div>
-                      <div className='text-xs text-white/60'>• Fetching demo statistics</div>
-                      <div className='text-xs text-white/60'>• Preparing demo interfaces</div>
-                    </div>
-                  </div>
-                )}
-
-                {(!isConnected || !firebaseLoading || isInitialized) && (
-                  <DemoSelector
-                    activeDemo={activeDemo}
-                    setActiveDemo={setActiveDemo}
-                    setShowImmersiveDemo={setShowImmersiveDemo}
-                    isConnected={isConnected}
-                    addToast={(toast) => addToastHook({ ...toast, duration: 5000 })}
-                    account={account}
-                    demoStats={demoStats}
-                    completeDemo={completeDemo}
-                    hasBadge={hasBadge}
-                    hasClappedDemo={hasClappedDemo}
-                    clapDemo={clapDemo}
-                    refreshAccountData={refreshAccountData}
-                  />
-                )}
+                {/* Progress Steps */}
+                <div className='mt-6 space-y-2'>
+                  <div className='text-xs text-white/60'>• Loading account information</div>
+                  <div className='text-xs text-white/60'>• Fetching demo statistics</div>
+                  <div className='text-xs text-white/60'>• Preparing demo interfaces</div>
+                </div>
               </div>
-            </section>
+            )}
 
-            {/* Quest System Section */}
-            <section className='container mx-auto px-4 py-16 animate-fadeIn'>
-              <QuestAndReferralSection
+            {(!isConnected || !firebaseLoading || isInitialized) && (
+              <DemoSelector
+                activeDemo={activeDemo}
+                setActiveDemo={setActiveDemo}
+                setShowImmersiveDemo={setShowImmersiveDemo}
+                isConnected={isConnected}
+                addToast={toast => addToastHook({ ...toast, duration: 5000 })}
                 account={account}
-                onQuestComplete={(questId, rewards) => {
-                  addToastHook({
-                    type: 'success',
-                    title: '🎯 Quest Completed!',
-                    message: `Earned ${rewards.experience} XP and ${rewards.points} points!`,
-                    duration: 5000,
-                  });
-                }}
+                demoStats={demoStats}
+                completeDemo={completeDemo}
+                hasBadge={hasBadge}
+                hasClappedDemo={hasClappedDemo}
+                clapDemo={clapDemo}
                 refreshAccountData={refreshAccountData}
               />
-            </section>
+            )}
+          </div>
+        </section>
 
-            {/* Interactive Tutorial Section */}
-            <InteractiveTutorialSection
-              isVideoPlaying={false}
-              onStartTutorial={() => setShowInteractiveTutorial(true)}
-            />
+        {/* Quest System Section */}
+        <section className='container mx-auto px-4 py-16 animate-fadeIn'>
+          <QuestAndReferralSection
+            account={account}
+            onQuestComplete={(questId, rewards) => {
+              addToastHook({
+                type: 'success',
+                title: '🎯 Quest Completed!',
+                message: `Earned ${rewards.experience} XP and ${rewards.points} points!`,
+                duration: 5000,
+              });
+            }}
+            refreshAccountData={refreshAccountData}
+          />
+        </section>
+
+        {/* Interactive Tutorial Section */}
+        <InteractiveTutorialSection
+          isVideoPlaying={false}
+          onStartTutorial={() => setShowInteractiveTutorial(true)}
+        />
       </main>
-      
+
       {/* Footer */}
       <div className='animate-fadeIn'>
         <Footer />
@@ -435,9 +427,9 @@ const onCloseTechTree = useCallback(() => {
       />
 
       {/* NEXUS PRIME Character */}
-      <NexusPrime 
-        currentPage='home' 
-        currentDemo={activeDemo} 
+      <NexusPrime
+        currentPage='home'
+        currentDemo={activeDemo}
         walletConnected={isConnected}
         autoOpen={false}
         showDuringLoading={false}
@@ -468,32 +460,31 @@ const onCloseTechTree = useCallback(() => {
           onClose={() => setShowImmersiveDemo(false)}
           demoId={activeDemo}
           demoTitle={DEMO_CARDS.find(d => d.id === activeDemo)?.title || 'Demo'}
-          demoDescription={DEMO_CARDS.find(d => d.id === activeDemo)?.subtitle || 'Demo Description'}
-          estimatedTime={
-              activeDemo === 'hello-milestone' ? 1 : activeDemo === 'dispute-resolution' ? 3 : 2
+          demoDescription={
+            DEMO_CARDS.find(d => d.id === activeDemo)?.subtitle || 'Demo Description'
           }
-          demoColor={DEMO_CARDS.find(d => d.id === activeDemo)?.color || 'from-brand-500 to-brand-400'}
+          estimatedTime={
+            activeDemo === 'hello-milestone' ? 1 : activeDemo === 'dispute-resolution' ? 3 : 2
+          }
+          demoColor={
+            DEMO_CARDS.find(d => d.id === activeDemo)?.color || 'from-brand-500 to-brand-400'
+          }
           onDemoComplete={handleDemoComplete}
-          
-          {...(activeTx ? { transaction: activeTx } : {})} 
-      >
-          
+          {...(activeTx ? { transaction: activeTx } : {})}
+        >
           {activeDemo === 'hello-milestone' && (
-              <HelloMilestoneDemo onDemoComplete={handleDemoComplete} />
+            <HelloMilestoneDemo onDemoComplete={handleDemoComplete} />
           )}
           {activeDemo === 'dispute-resolution' && <DisputeResolutionDemo />}
           {activeDemo === 'milestone-voting' && <MilestoneVotingDemo />}
           {activeDemo === 'micro-marketplace' && (
-              <MicroTaskMarketplaceDemo onDemoComplete={handleDemoComplete} />
+            <MicroTaskMarketplaceDemo onDemoComplete={handleDemoComplete} />
           )}
-      </ImmersiveDemoModal>
+        </ImmersiveDemoModal>
       )}
 
       {/* Tech Tree Modal */}
-      <TechTreeModal 
-          isOpen={showTechTree} 
-          onClose={onCloseTechTree} 
-      />
+      <TechTreeModal isOpen={showTechTree} onClose={onCloseTechTree} />
 
       {/* Authentication Modal */}
       <AuthModal

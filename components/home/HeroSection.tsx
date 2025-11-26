@@ -11,7 +11,7 @@ interface HeroSectionProps {
   isLoadingAccount?: boolean;
   onTechTreeClick: () => void;
   // ✅ NUEVA PROP REQUERIDA ✅
-  isTechTreeDisabled: boolean
+  isTechTreeDisabled: boolean;
 }
 
 export const HeroSection = ({
@@ -24,7 +24,9 @@ export const HeroSection = ({
   isLoadingAccount = false,
 }: HeroSectionProps) => {
   return (
-    <section className={`container mx-auto px-4 py-16 ${!isVideoPlaying ? 'animate-fadeIn' : 'opacity-0'}`}>
+    <section
+      className={`container mx-auto px-4 py-16 ${!isVideoPlaying ? 'animate-fadeIn' : 'opacity-0'}`}
+    >
       <div className='text-center'>
         {/* Page Header */}
         <div className='text-center mb-16'>
@@ -89,7 +91,9 @@ export const HeroSection = ({
               Early adopters. Real builders. Stellar impact.
             </p>
             <p className='text-xl text-white/80 max-w-3xl mx-auto mb-6'>
-              Master the art of <span className='text-brand-200 font-semibold'>Trustless Work</span> with our demo suite on <span className='text-brand-200 font-semibold'>Stellar</span> blockchain
+              Master the art of <span className='text-brand-200 font-semibold'>Trustless Work</span>{' '}
+              with our demo suite on <span className='text-brand-200 font-semibold'>Stellar</span>{' '}
+              blockchain
             </p>
           </div>
           <br />
@@ -125,15 +129,14 @@ export const HeroSection = ({
             <Tooltip content='Explore the Trustless Work Tech Tree'>
               <button
                 onClick={onTechTreeClick}
-                
-                disabled={isTechTreeDisabled} 
+                disabled={isTechTreeDisabled}
                 className={`
                   w-full md:w-auto px-6 md:px-8 py-4 font-bold rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 
                   text-white shadow-lg border-2 border-white/20 
                   
                   // ✅ 2. ESTILOS CONDICIONALES BASADOS EN EL ESTADO ✅
                   ${
-                    isTechTreeDisabled 
+                    isTechTreeDisabled
                       ? 'opacity-50 cursor-not-allowed transform scale-100' // Estado Deshabilitado
                       : 'bg-gradient-to-r from-brand-500/20 to-accent-500/20 hover:from-brand-800/50 hover:to-accent-800/50 transform hover:scale-105 hover:shadow-xl hover:border-white/40' // Estado Habilitado
                   }
@@ -157,7 +160,9 @@ export const HeroSection = ({
               </button>
             </Tooltip>
 
-            <div className={`relative w-full md:w-auto ${miniGamesUnlocked ? ' hover:animate-none cursor-pointer' : ''}`}>
+            <div
+              className={`relative w-full md:w-auto ${miniGamesUnlocked ? ' hover:animate-none cursor-pointer' : ''}`}
+            >
               {/* Wave Effect - Only show when unlocked */}
               {miniGamesUnlocked && (
                 <>
@@ -174,8 +179,8 @@ export const HeroSection = ({
                   isLoadingAccount && isConnected
                     ? 'Loading your account...'
                     : miniGamesUnlocked
-                    ? 'Explore the Nexus Web3 Playground'
-                    : 'Complete all demos and earn all badges to unlock the Nexus Web3 Playground'
+                      ? 'Explore the Nexus Web3 Playground'
+                      : 'Complete all demos and earn all badges to unlock the Nexus Web3 Playground'
                 }
               >
                 <a
@@ -194,8 +199,8 @@ export const HeroSection = ({
                     isLoadingAccount && isConnected
                       ? 'Loading your account...'
                       : miniGamesUnlocked
-                      ? 'Explore the Nexus Web3 Playground'
-                      : 'Complete all demos and earn all badges to unlock the Nexus Web3 Playground'
+                        ? 'Explore the Nexus Web3 Playground'
+                        : 'Complete all demos and earn all badges to unlock the Nexus Web3 Playground'
                   }
                 >
                   {isLoadingAccount && isConnected ? (
@@ -236,4 +241,3 @@ export const HeroSection = ({
     </section>
   );
 };
-

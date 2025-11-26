@@ -113,7 +113,8 @@ export const useWallet = (): UseWalletReturn => {
     const interval = setInterval(checkFreighterPeriodically, 2000);
 
     return () => clearInterval(interval);
-  }, [isFreighterAvailable]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount - isFreighterAvailable dependency removed to prevent loop
 
   // Initialize Stellar Wallets Kit
   useEffect(() => {
@@ -124,7 +125,7 @@ export const useWallet = (): UseWalletReturn => {
           setWalletKit(globalWalletKit);
           const supportedWallets = await globalWalletKit.getSupportedWallets();
           setAvailableWallets(supportedWallets);
-          
+
           // If we have saved wallet data, try to reconnect
           if (walletData?.isConnected) {
             await checkConnectionStatus(globalWalletKit);
@@ -231,9 +232,9 @@ export const useWallet = (): UseWalletReturn => {
             walletIcon: connectedWallet?.icon,
             walletUrl: connectedWallet?.url,
           };
-          
+
           setWalletData(newWalletData);
-          
+
           // Persist to localStorage
           if (typeof window !== 'undefined') {
             localStorage.setItem('stellar-wallet-data', JSON.stringify(newWalletData));
@@ -501,7 +502,7 @@ export const useWallet = (): UseWalletReturn => {
         await currentKit.disconnect();
       }
       setWalletData(null);
-      
+
       // Clear all localStorage wallet data
       if (typeof window !== 'undefined') {
         localStorage.removeItem('wallet-connected-before');
@@ -644,7 +645,8 @@ export const useWallet = (): UseWalletReturn => {
         );
       }
     } catch (err) {}
-  }, [walletKit, walletData, currentNetwork]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [walletKit, walletData?.publicKey, currentNetwork]); // Only depend on wallet identity, not entire walletData object
 
   // Network switching function
   const switchNetwork = useCallback(
@@ -707,12 +709,12 @@ export const useWallet = (): UseWalletReturn => {
   // Open wallet modal function
   const openWalletModal = useCallback(async () => {
     let currentKit = walletKit || globalWalletKit;
-    
+
     // If kit is not initialized, try to initialize it now
     if (!currentKit && !isInitializing) {
       try {
         isInitializing = true;
-        
+
         // Create wallet modules
         const modules = [
           new FreighterModule(),
@@ -730,14 +732,14 @@ export const useWallet = (): UseWalletReturn => {
         // Store globally to prevent re-initialization
         globalWalletKit = currentKit;
         setWalletKit(currentKit);
-        
+
         isInitializing = false;
       } catch (initError) {
         isInitializing = false;
         throw new Error('Wallet kit not initialized. Please refresh the page and try again.');
       }
     }
-    
+
     if (!currentKit) {
       throw new Error('Wallet kit not initialized. Please refresh the page and try again.');
     }
@@ -787,7 +789,8 @@ export const useWallet = (): UseWalletReturn => {
       window.removeEventListener('networkChanged', handleNetworkChange);
       clearInterval(networkCheckInterval);
     };
-  }, [isFreighterAvailable, walletData, detectNetworkChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [walletData?.publicKey, walletData?.isConnected]); // Only depend on wallet identity, not isFreighterAvailable or detectNetworkChange
 
   return {
     walletData,

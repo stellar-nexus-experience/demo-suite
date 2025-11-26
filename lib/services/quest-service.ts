@@ -1,16 +1,16 @@
-import { 
-  Quest, 
-  Account, 
-  getQuestById, 
+import {
+  Quest,
+  Account,
+  getQuestById,
   getAvailableQuests,
   getAllQuests,
-  PREDEFINED_QUESTS 
+  PREDEFINED_QUESTS,
 } from '@/lib/firebase/firebase-types';
 import { db } from '@/lib/firebase/firebase';
 import { doc, updateDoc, arrayUnion, increment } from 'firebase/firestore';
 
 // ✅ AÑADIDO: Importar notificationService
-import { notificationService } from '@/lib/services/notification-service'; 
+import { notificationService } from '@/lib/services/notification-service';
 import { getBadgeById } from '@/lib/firebase/firebase-types';
 
 export class QuestService {
@@ -44,7 +44,7 @@ export class QuestService {
     // Also include quests where the user has earned the badge (even if not explicitly marked as completed)
     const badgesEarned = this.getBadgesEarned(account);
     const allQuests = getAllQuests();
-    
+
     for (const quest of allQuests) {
       if (quest.rewards.badgeId && badgesEarned.includes(quest.rewards.badgeId)) {
         if (!completedQuests.includes(quest.id)) {
@@ -62,17 +62,17 @@ export class QuestService {
   static isQuestCompleted(account: Account, questId: string): boolean {
     const completedQuests = this.getCompletedQuests(account);
     const isInCompletedQuests = completedQuests.includes(questId);
-    
+
     // Also check if the quest rewards a badge and the user has earned that badge
     const quest = getQuestById(questId);
     if (quest?.rewards.badgeId) {
       const badgesEarned = this.getBadgesEarned(account);
       const hasBadge = badgesEarned.includes(quest.rewards.badgeId);
-      
+
       // Quest is completed if it's in completedQuests OR if the user has the badge
       return isInCompletedQuests || hasBadge;
     }
-    
+
     return isInCompletedQuests;
   }
 
@@ -100,8 +100,8 @@ export class QuestService {
    * Complete a quest manually (for social media tasks)
    */
   static async completeQuest(
-    account: Account, 
-    questId: string, 
+    account: Account,
+    questId: string,
     verificationData?: any
   ): Promise<{ success: boolean; message: string; rewards?: any }> {
     try {
@@ -123,7 +123,7 @@ export class QuestService {
 
       // Update account with completed quest and rewards
       const accountRef = doc(db, 'accounts', account.id);
-      
+
       const updateData: any = {
         completedQuests: arrayUnion(questId),
         experience: increment(quest.rewards.experience),
@@ -150,15 +150,15 @@ export class QuestService {
           quest.rewards.points,
           badgeName // Nombre legible de la insignia (puede ser '')
         );
-        } catch (notificationError) {
+      } catch (notificationError) {
         // No interrumpir el flujo principal si la notificación falla🚫
         console.error('QuestService: Failed to send quest notification:', notificationError);
       }
-            
+
       return {
         success: true,
         message: `Quest "${quest.title}" completed! Earned ${quest.rewards.experience} XP and ${quest.rewards.points} points.`,
-        rewards: quest.rewards
+        rewards: quest.rewards,
       };
     } catch (error) {
       console.error('Error completing quest:', error);
@@ -166,13 +166,12 @@ export class QuestService {
     }
   }
 
-
   /**
    * Update quest progress for multi-step quests
    */
   static async updateQuestProgress(
-    account: Account, 
-    questId: string, 
+    account: Account,
+    questId: string,
     progress: number
   ): Promise<{ success: boolean; message: string; completed?: boolean }> {
     try {
@@ -187,7 +186,7 @@ export class QuestService {
       }
 
       const accountRef = doc(db, 'accounts', account.id);
-      
+
       // Update progress
       await updateDoc(accountRef, {
         [`questProgress.${questId}`]: progress,
@@ -202,14 +201,14 @@ export class QuestService {
         return {
           success: true,
           message: `Quest progress updated. ${result.message}`,
-          completed: true
+          completed: true,
         };
       }
 
       return {
         success: true,
         message: `Quest progress updated: ${progress}/${requiredCount}`,
-        completed: false
+        completed: false,
       };
     } catch (error) {
       console.error('Error updating quest progress:', error);
@@ -229,7 +228,7 @@ export class QuestService {
   } {
     const availableQuests = this.getAvailableQuests(account);
     const completedQuests = this.getCompletedQuests(account);
-    
+
     let totalXPEarned = 0;
     let totalPointsEarned = 0;
 
@@ -262,8 +261,14 @@ export class QuestService {
    * Check if user has unlocked quest system (completed top 5 badges)
    */
   static isQuestSystemUnlocked(account: Account): boolean {
-    const requiredBadges = ['welcome_explorer', 'escrow_expert', 'trust_guardian', 'stellar_champion', 'nexus_master'];
-    
+    const requiredBadges = [
+      'welcome_explorer',
+      'escrow_expert',
+      'trust_guardian',
+      'stellar_champion',
+      'nexus_master',
+    ];
+
     // Handle both array and object formats for badgesEarned
     let badgesEarnedArray: string[] = [];
     if (Array.isArray(account.badgesEarned)) {

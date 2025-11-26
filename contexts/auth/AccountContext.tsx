@@ -116,26 +116,12 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({ children }) =>
     setError(null);
 
     try {
-      // Get referral code from URL if present
-      let pendingReferralCode: string | null = null;
-      if (typeof window !== 'undefined') {
-        const urlParams = new URLSearchParams(window.location.search);
-        pendingReferralCode = urlParams.get('ref');
-        if (pendingReferralCode) {
-          // Normalize to uppercase and validate format
-          pendingReferralCode = pendingReferralCode.toUpperCase().trim();
-          if (!/^[A-Z0-9]{8}$/.test(pendingReferralCode)) {
-            pendingReferralCode = null; // Invalid format
-          }
-        }
-      }
-
       // Add timeout to prevent hanging
       const accountCreationPromise = accountService.createAccount(
         walletData.publicKey,
         walletData.publicKey, // publicKey parameter (not used for displayName anymore)
         walletData.network,
-        pendingReferralCode // Pass referral code if present
+        null // No automatic referral code from URL
       );
 
       const timeoutPromise = new Promise((_, reject) => {
@@ -148,9 +134,11 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({ children }) =>
       ])) as UserAccount;
 
       // Award Welcome Explorer badge for new account (using firebase accountService)
-      const { accountService: firebaseAccountService } = await import('@/lib/firebase/firebase-service');
+      const { accountService: firebaseAccountService } = await import(
+        '@/lib/firebase/firebase-service'
+      );
       await firebaseAccountService.addEarnedBadge(walletData.publicKey, 'welcome_explorer');
-      
+
       // Add experience and points for account creation
       await firebaseAccountService.addExperienceAndPoints(walletData.publicKey, 20, 10);
 
@@ -174,12 +162,19 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({ children }) =>
             badge => badge.name === 'Welcome Explorer'
           );
           if (welcomeExplorerBadge) {
-            showBadgeAnimation({
-              ...welcomeExplorerBadge,
-              earnedAt: new Date().toISOString(),
-              rarity: welcomeExplorerBadge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
-              category: welcomeExplorerBadge.category as 'demo' | 'milestone' | 'achievement' | 'special'
-            }, welcomeExplorerBadge.earningPoints);
+            showBadgeAnimation(
+              {
+                ...welcomeExplorerBadge,
+                earnedAt: new Date().toISOString(),
+                rarity: welcomeExplorerBadge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
+                category: welcomeExplorerBadge.category as
+                  | 'demo'
+                  | 'milestone'
+                  | 'achievement'
+                  | 'special',
+              },
+              welcomeExplorerBadge.earningPoints
+            );
           }
         }, 1000);
       }
@@ -324,12 +319,19 @@ export const AccountProvider: React.FC<AccountProviderProps> = ({ children }) =>
               () => {
                 const badgeConfig = getAllBadges().find(b => b.name === badge.name);
                 if (badgeConfig) {
-                  showBadgeAnimation({
-                    ...badgeConfig,
-                    earnedAt: new Date().toISOString(),
-                    rarity: badgeConfig.rarity as 'common' | 'rare' | 'epic' | 'legendary',
-                    category: badgeConfig.category as 'demo' | 'milestone' | 'achievement' | 'special'
-                  }, badge.pointsValue);
+                  showBadgeAnimation(
+                    {
+                      ...badgeConfig,
+                      earnedAt: new Date().toISOString(),
+                      rarity: badgeConfig.rarity as 'common' | 'rare' | 'epic' | 'legendary',
+                      category: badgeConfig.category as
+                        | 'demo'
+                        | 'milestone'
+                        | 'achievement'
+                        | 'special',
+                    },
+                    badge.pointsValue
+                  );
                 }
               },
               2000 + index * 5500

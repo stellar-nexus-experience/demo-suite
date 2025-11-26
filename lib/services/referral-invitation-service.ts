@@ -1,36 +1,27 @@
-import { 
-  collection, 
-  addDoc, 
-  query, 
-  where, 
-  orderBy, 
+import {
+  collection,
+  query,
+  where,
+  orderBy,
   getDocs,
   updateDoc,
   doc,
   serverTimestamp,
   Timestamp,
-  arrayUnion,
-  getDoc
 } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
-import { accountService } from './account-service';
+import { ReferralStatus } from '../constants/referral.constants';
 
 export interface ReferralInvitation {
   id: string;
   referrerWalletAddress: string;
   referralCode: string;
   invitedEmail: string;
-  status: 'pending' | 'activated';
+  status: ReferralStatus;
   invitedAt: Timestamp;
   activatedAt?: Timestamp;
-  referredWalletAddress?: string; // Set when activated
-  pointsEarned?: number; // Points earned by referrer when activated
-}
-
-export interface CreateReferralInvitationParams {
-  referrerWalletAddress: string;
-  referralCode: string;
-  invitedEmail: string;
+  referredWalletAddress?: string;
+  pointsEarned?: number;
 }
 
 export class ReferralInvitationService {
@@ -44,66 +35,29 @@ export class ReferralInvitationService {
   }
 
   /**
-   * Create a new referral invitation
-   * Also stores a reference in the user's account document
+   * Get only activated referrals for a referrer (for My Referrals tab)
+   * Returns referrals where users have actually applied the code
    */
-  async createInvitation(params: CreateReferralInvitationParams): Promise<string> {
+  async getActivatedReferrals(referrerWalletAddress: string): Promise<ReferralInvitation[]> {
     const invitationsRef = collection(db, 'referralInvitations');
-    
-    const invitationData = {
-      referrerWalletAddress: params.referrerWalletAddress,
-      referralCode: params.referralCode,
-      invitedEmail: params.invitedEmail.toLowerCase().trim(),
-      status: 'pending' as const,
-      invitedAt: serverTimestamp(),
-    };
 
-    const docRef = await addDoc(invitationsRef, invitationData);
-    const invitationId = docRef.id;
-
-    // Also store a reference in the user's account document
-    try {
-      const accountRef = doc(db, 'accounts', params.referrerWalletAddress);
-      await updateDoc(accountRef, {
-        referralInvitations: arrayUnion({
-          invitationId: invitationId,
-          invitedEmail: params.invitedEmail.toLowerCase().trim(),
-          status: 'pending',
-          invitedAt: serverTimestamp(),
-        }),
-      });
-    } catch (error) {
-      // If account doesn't exist or update fails, continue anyway
-      // The invitation is still created in the collection
-      console.warn('Failed to update account with referral invitation:', error);
-    }
-
-    return invitationId;
-  }
-
-  /**
-   * Get all invitations for a referrer
-   * Tries with orderBy first, falls back to without orderBy if index is missing
-   */
-  async getInvitationsByReferrer(referrerWalletAddress: string): Promise<ReferralInvitation[]> {
-    const invitationsRef = collection(db, 'referralInvitations');
-    
     let querySnapshot;
     try {
       // Try with orderBy first (requires composite index)
       const q = query(
         invitationsRef,
         where('referrerWalletAddress', '==', referrerWalletAddress),
-        orderBy('invitedAt', 'desc')
+        where('status', '==', ReferralStatus.ACTIVATED),
+        orderBy('activatedAt', 'desc')
       );
       querySnapshot = await getDocs(q);
     } catch (error: any) {
       // If index is missing, try without orderBy
       if (error?.code === 'failed-precondition' || error?.message?.includes('index')) {
-        console.warn('Composite index missing, fetching without orderBy:', error);
         const q = query(
           invitationsRef,
-          where('referrerWalletAddress', '==', referrerWalletAddress)
+          where('referrerWalletAddress', '==', referrerWalletAddress),
+          where('status', '==', ReferralStatus.ACTIVATED)
         );
         querySnapshot = await getDocs(q);
       } else {
@@ -111,17 +65,17 @@ export class ReferralInvitationService {
       }
     }
 
-    const invitations: ReferralInvitation[] = [];
+    const activatedReferrals: ReferralInvitation[] = [];
 
     for (const docSnap of querySnapshot.docs) {
       const data = docSnap.data();
 
-      invitations.push({
+      activatedReferrals.push({
         id: docSnap.id,
         referrerWalletAddress: data.referrerWalletAddress,
         referralCode: data.referralCode,
-        invitedEmail: data.invitedEmail,
-        status: data.status,
+        invitedEmail: data.invitedEmail || '',
+        status: data.status as ReferralStatus,
         invitedAt: data.invitedAt,
         activatedAt: data.activatedAt,
         referredWalletAddress: data.referredWalletAddress,
@@ -129,17 +83,18 @@ export class ReferralInvitationService {
       } as ReferralInvitation);
     }
 
-    // Sort manually if we couldn't use orderBy
-    invitations.sort((a, b) => {
-      if (!a.invitedAt || !b.invitedAt) return 0;
-      return b.invitedAt.toMillis() - a.invitedAt.toMillis();
+    // Sort manually by activatedAt if we couldn't use orderBy
+    activatedReferrals.sort((a, b) => {
+      if (!a.activatedAt || !b.activatedAt) return 0;
+      return b.activatedAt.toMillis() - a.activatedAt.toMillis();
     });
 
-    return invitations;
+    return activatedReferrals;
   }
 
   /**
    * Update invitation status to activated when referral code is applied
+   * This is called when a user applies a referral code
    */
   async activateInvitation(
     referralCode: string,
@@ -147,97 +102,31 @@ export class ReferralInvitationService {
     pointsEarned: number
   ): Promise<void> {
     const invitationsRef = collection(db, 'referralInvitations');
-    
+
     // Find pending invitations with this referral code
     const q = query(
       invitationsRef,
       where('referralCode', '==', referralCode),
-      where('status', '==', 'pending')
+      where('status', '==', ReferralStatus.PENDING)
     );
 
     const querySnapshot = await getDocs(q);
-    
+
     // Update all matching pending invitations
-    const updatePromises = querySnapshot.docs.map(async (docSnap) => {
+    const updatePromises = querySnapshot.docs.map(async docSnap => {
       const invitationRef = doc(db, 'referralInvitations', docSnap.id);
-      const invitationData = docSnap.data();
-      
-      // Update the invitation document
+
       await updateDoc(invitationRef, {
-        status: 'activated',
+        status: ReferralStatus.ACTIVATED,
         activatedAt: serverTimestamp(),
         referredWalletAddress: referredWalletAddress,
         pointsEarned: pointsEarned,
       });
-
-      // Update the referrer's account document
-      try {
-        const accountRef = doc(db, 'accounts', invitationData.referrerWalletAddress);
-        const accountDocSnap = await getDoc(accountRef);
-        
-        if (accountDocSnap.exists()) {
-          const accountData = accountDocSnap.data();
-          const referralInvitations = accountData.referralInvitations || [];
-          
-          // Find and update the specific invitation in the array
-          const invitationIndex = referralInvitations.findIndex(
-            (inv: any) => inv.invitationId === docSnap.id
-          );
-          
-          if (invitationIndex !== -1) {
-            const updatedInvitations = [...referralInvitations];
-            updatedInvitations[invitationIndex] = {
-              ...updatedInvitations[invitationIndex],
-              status: 'activated',
-              referredWalletAddress,
-              pointsEarned,
-              activatedAt: serverTimestamp(),
-            };
-            
-            await updateDoc(accountRef, {
-              referralInvitations: updatedInvitations,
-            });
-          }
-        }
-      } catch (error) {
-        // Silently fail - the main invitation document is already updated
-        console.warn('Failed to update account referral invitations array:', error);
-      }
     });
 
     await Promise.all(updatePromises);
-  }
-
-  /**
-   * Get invitation by email and referral code (for checking if email was already invited)
-   */
-  async getInvitationByEmailAndCode(
-    email: string,
-    referralCode: string
-  ): Promise<ReferralInvitation | null> {
-    const invitationsRef = collection(db, 'referralInvitations');
-    const q = query(
-      invitationsRef,
-      where('invitedEmail', '==', email.toLowerCase().trim()),
-      where('referralCode', '==', referralCode)
-    );
-
-    const querySnapshot = await getDocs(q);
-    
-    if (querySnapshot.empty) {
-      return null;
-    }
-
-    const docSnap = querySnapshot.docs[0];
-    const data = docSnap.data();
-    
-    return {
-      id: docSnap.id,
-      ...data,
-    } as ReferralInvitation;
   }
 }
 
 // Export singleton instance
 export const referralInvitationService = ReferralInvitationService.getInstance();
-

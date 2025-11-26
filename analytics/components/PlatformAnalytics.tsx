@@ -130,7 +130,8 @@ export const PlatformAnalytics: React.FC<PlatformAnalyticsProps> = ({ className 
       };
     } else {
       return {
-        container: 'p-6 bg-gradient-to-br from-slate-900 to-slate-800 backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl',
+        container:
+          'p-6 bg-gradient-to-br from-slate-900 to-slate-800 backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl',
         card: 'p-4 bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-xl border border-white/20 hover:from-slate-700/60 hover:to-slate-800/60 shadow-lg',
         text: 'text-white',
         textSecondary: 'text-gray-300',
@@ -342,8 +343,8 @@ export const PlatformAnalytics: React.FC<PlatformAnalyticsProps> = ({ className 
               </div>
               <div className='text-right'>
                 <p className={`${themeClasses.text} font-medium`}>
-                  {user.totalPoints.toLocaleString()} pts / 
-                  {(user.experience || 0).toLocaleString()} XP
+                  {user.totalPoints.toLocaleString()} pts /{(user.experience || 0).toLocaleString()}{' '}
+                  XP
                 </p>
                 <p className={`${themeClasses.textMuted} text-sm`}>
                   {user.demosCompleted} demos, {user.badgesEarned} badges

@@ -22,13 +22,11 @@ export const UserProfile: React.FC<UserProfileProps> = ({ isOpen, onClose }) => 
 
   // Use Firebase account data
   const stats = getUserStats();
-  const level = account 
-    ? Math.floor((account.experience || 0) / 1000) + 1
-    : stats.level;
+  const level = account ? Math.floor((account.experience || 0) / 1000) + 1 : stats.level;
   const expProgress = account
-    ? { 
-        current: (account.experience || 0) % 1000, 
-        next: 1000 
+    ? {
+        current: (account.experience || 0) % 1000,
+        next: 1000,
       }
     : null;
   const mainDemoProgress = account
@@ -324,14 +322,14 @@ export const UserProfile: React.FC<UserProfileProps> = ({ isOpen, onClose }) => 
                         .map(demoId => {
                           const isCompleted = (() => {
                             if (!account.demosCompleted) return false;
-                            
+
                             // Handle both array and object formats for demosCompleted
                             if (Array.isArray(account.demosCompleted)) {
                               return account.demosCompleted.includes(demoId);
                             } else if (typeof account.demosCompleted === 'object') {
                               return Object.values(account.demosCompleted).includes(demoId);
                             }
-                            
+
                             return false;
                           })();
                           const pointsEarned = 0; // Not available in current structure

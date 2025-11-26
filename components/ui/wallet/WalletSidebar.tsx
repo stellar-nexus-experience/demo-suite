@@ -20,7 +20,12 @@ interface WalletSidebarProps {
   hideFloatingButton?: boolean;
 }
 
-export const WalletSidebar = ({ isOpen, onToggle, showBanner = false, hideFloatingButton = false }: WalletSidebarProps) => {
+export const WalletSidebar = ({
+  isOpen,
+  onToggle,
+  showBanner = false,
+  hideFloatingButton = false,
+}: WalletSidebarProps) => {
   const {
     walletData,
     isConnected,
@@ -62,20 +67,31 @@ export const WalletSidebar = ({ isOpen, onToggle, showBanner = false, hideFloati
     window.dispatchEvent(event);
   }, [isOpen, isExpanded]);
 
-  // Dispatch wallet state change events
+  // Dispatch wallet state change events (throttled to prevent excessive events)
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(
-        new CustomEvent('walletStateChanged', {
-          detail: {
-            isConnected,
-            walletData,
-            isFreighterAvailable,
-          },
-        })
-      );
+      // Use a small timeout to debounce rapid state changes
+      const timeoutId = setTimeout(() => {
+        window.dispatchEvent(
+          new CustomEvent('walletStateChanged', {
+            detail: {
+              isConnected,
+              walletData: walletData
+                ? {
+                    publicKey: walletData.publicKey,
+                    network: walletData.network,
+                    isConnected: walletData.isConnected,
+                  }
+                : null, // Only send essential data, not entire object
+              isFreighterAvailable,
+            },
+          })
+        );
+      }, 100); // 100ms debounce
+
+      return () => clearTimeout(timeoutId);
     }
-  }, [isConnected, walletData, isFreighterAvailable]);
+  }, [isConnected, walletData?.publicKey, walletData?.network, isFreighterAvailable]); // Only depend on essential properties
 
   // Auto-close wallet sidebar only for first-time account creation
   useEffect(() => {
@@ -384,8 +400,9 @@ export const WalletSidebar = ({ isOpen, onToggle, showBanner = false, hideFloati
                           }, 1500);
                         } catch (error) {
                           console.error('Wallet modal error:', error);
-                          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-                          
+                          const errorMessage =
+                            error instanceof Error ? error.message : 'Unknown error';
+
                           // Provide more specific error messages
                           if (errorMessage.includes('not initialized')) {
                             addToast({
@@ -398,7 +415,8 @@ export const WalletSidebar = ({ isOpen, onToggle, showBanner = false, hideFloati
                             addToast({
                               type: 'error',
                               title: 'Wallet Connection Error',
-                              message: 'Failed to open wallet selection modal. Try using Freighter or manual address.',
+                              message:
+                                'Failed to open wallet selection modal. Try using Freighter or manual address.',
                               duration: 6000,
                             });
                           }
@@ -635,7 +653,9 @@ export const WalletSidebar = ({ isOpen, onToggle, showBanner = false, hideFloati
 
               {/* Achievement Guide */}
               <div className='bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-3 border border-blue-400/20 mt-4'>
-                <h4 className='text-sm font-semibold text-blue-300 mb-2'>🎯 Top Achievements Guide</h4>
+                <h4 className='text-sm font-semibold text-blue-300 mb-2'>
+                  🎯 Top Achievements Guide
+                </h4>
                 <div className='text-xs text-gray-300 space-y-1'>
                   <div>
                     • <span>Account Creation</span> → Welcome Explorer
@@ -851,21 +871,24 @@ export const WalletSidebar = ({ isOpen, onToggle, showBanner = false, hideFloati
                           }, 1500);
                         } catch (error) {
                           console.error('Wallet modal error:', error);
-                          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-                          
+                          const errorMessage =
+                            error instanceof Error ? error.message : 'Unknown error';
+
                           // Provide more specific error messages
                           if (errorMessage.includes('not initialized')) {
                             addToast({
                               type: 'warning',
                               title: 'Wallet Kit Initializing',
-                              message: 'Please wait a moment and try again, or use Freighter/manual address',
+                              message:
+                                'Please wait a moment and try again, or use Freighter/manual address',
                               duration: 5000,
                             });
                           } else {
                             addToast({
                               type: 'error',
                               title: 'Wallet Connection Error',
-                              message: 'Failed to open wallet selection modal. Try using Freighter or manual address.',
+                              message:
+                                'Failed to open wallet selection modal. Try using Freighter or manual address.',
                               duration: 6000,
                             });
                           }

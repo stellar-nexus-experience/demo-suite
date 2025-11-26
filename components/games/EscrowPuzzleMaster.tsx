@@ -94,7 +94,7 @@ export default function EscrowPuzzleMaster() {
     let cardId = 0;
 
     // Create pairs: one step card and one description card for each escrow step
-    escrowSteps.forEach((step) => {
+    escrowSteps.forEach(step => {
       // Step card
       newCards.push({
         id: cardId++,
@@ -123,7 +123,7 @@ export default function EscrowPuzzleMaster() {
     }
 
     // Initially show all cards for preview
-    const cardsWithPreview = newCards.map((card) => ({ ...card, isFlipped: true }));
+    const cardsWithPreview = newCards.map(card => ({ ...card, isFlipped: true }));
     setCards(cardsWithPreview);
   }, []);
 
@@ -141,20 +141,20 @@ export default function EscrowPuzzleMaster() {
   useEffect(() => {
     if (flippedCards.length === 2) {
       const [firstId, secondId] = flippedCards;
-      const firstCard = cards.find((c) => c.id === firstId);
-      const secondCard = cards.find((c) => c.id === secondId);
+      const firstCard = cards.find(c => c.id === firstId);
+      const secondCard = cards.find(c => c.id === secondId);
 
       if (firstCard && secondCard && firstCard.pairId === secondCard.pairId) {
         // Match found!
-        setCards((prevCards) =>
-          prevCards.map((card) =>
+        setCards(prevCards =>
+          prevCards.map(card =>
             card.id === firstId || card.id === secondId
               ? { ...card, isMatched: true, isFlipped: true }
               : card
           )
         );
-        setMatchedPairs((prev) => prev + 1);
-        setScore((prev) => prev + 10);
+        setMatchedPairs(prev => prev + 1);
+        setScore(prev => prev + 10);
         setFlippedCards([]);
 
         // Check for achievements
@@ -175,8 +175,8 @@ export default function EscrowPuzzleMaster() {
       } else {
         // No match - flip back after delay (increased time for better readability)
         setTimeout(() => {
-          setCards((prevCards) =>
-            prevCards.map((card) =>
+          setCards(prevCards =>
+            prevCards.map(card =>
               flippedCards.includes(card.id) ? { ...card, isFlipped: false } : card
             )
           );
@@ -200,7 +200,7 @@ export default function EscrowPuzzleMaster() {
 
     const GAME_COST = isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL;
     const currentPoints = account.totalPoints || account.profile?.totalPoints || 0;
-    
+
     if (currentPoints < GAME_COST) {
       addToast({
         type: 'error',
@@ -214,7 +214,7 @@ export default function EscrowPuzzleMaster() {
     // Deduct points from account
     try {
       await accountService.addExperienceAndPoints(account.id, 0, -GAME_COST);
-      
+
       addToast({
         type: 'success',
         title: isReplay ? '🔄 Playing Again!' : '🎮 Game Started!',
@@ -245,18 +245,18 @@ export default function EscrowPuzzleMaster() {
     setPreviewTimeLeft(5);
     // Note: isReplay will be set to true in resetGame() after completion
     initializeCards();
-    
+
     // Show preview for 5 seconds
     setShowPreview(true);
-    
+
     // Clear any existing interval
     if (previewIntervalRef.current) {
       clearInterval(previewIntervalRef.current);
     }
-    
+
     // Countdown timer for preview
     previewIntervalRef.current = setInterval(() => {
-      setPreviewTimeLeft((prev) => {
+      setPreviewTimeLeft(prev => {
         if (prev <= 1) {
           if (previewIntervalRef.current) {
             clearInterval(previewIntervalRef.current);
@@ -264,9 +264,7 @@ export default function EscrowPuzzleMaster() {
           }
           setShowPreview(false);
           // Flip all cards back after preview
-          setCards((prevCards) =>
-            prevCards.map((card) => ({ ...card, isFlipped: false }))
-          );
+          setCards(prevCards => prevCards.map(card => ({ ...card, isFlipped: false })));
           return 0;
         }
         return prev - 1;
@@ -275,7 +273,7 @@ export default function EscrowPuzzleMaster() {
   };
 
   const handleCardClick = (cardId: number) => {
-    const card = cards.find((c) => c.id === cardId);
+    const card = cards.find(c => c.id === cardId);
 
     // Don't allow clicking if:
     // - Card is already flipped or matched
@@ -292,16 +290,14 @@ export default function EscrowPuzzleMaster() {
     }
 
     // Flip the card
-    setCards((prevCards) =>
-      prevCards.map((c) => (c.id === cardId ? { ...c, isFlipped: true } : c))
-    );
+    setCards(prevCards => prevCards.map(c => (c.id === cardId ? { ...c, isFlipped: true } : c)));
 
     // Add to flipped cards
     if (flippedCards.length === 0) {
       setFlippedCards([cardId]);
     } else {
       setFlippedCards([flippedCards[0], cardId]);
-      setMoves((prev) => prev + 1);
+      setMoves(prev => prev + 1);
     }
   };
 
@@ -312,7 +308,7 @@ export default function EscrowPuzzleMaster() {
     const pointsReward = finalScore;
     let xpReward = 0;
     const newAchievements = [...achievements];
-    
+
     // Calculate XP based on points earned
     if (pointsReward === POINTS_REWARDS.PERFECT) {
       xpReward = 50; // Perfect performance
@@ -330,7 +326,7 @@ export default function EscrowPuzzleMaster() {
         newAchievements.push('Quick Learner - 200 Points!');
       }
     }
-    
+
     if (newAchievements.length > achievements.length) {
       setAchievements(newAchievements);
     }
@@ -394,7 +390,7 @@ export default function EscrowPuzzleMaster() {
       clearInterval(previewIntervalRef.current);
       previewIntervalRef.current = null;
     }
-    
+
     setGameState('intro');
     setScore(0);
     setMoves(0);
@@ -438,41 +434,49 @@ export default function EscrowPuzzleMaster() {
 
   if (gameState === 'intro') {
     return (
-      <div className='relative w-full h-full flex flex-col items-center justify-center' style={{ minHeight: 'calc(100vh - 200px)' }}>
+      <div
+        className='relative w-full h-full flex flex-col items-center justify-center'
+        style={{ minHeight: 'calc(100vh - 200px)' }}
+      >
         {/* Arcade Machine Border & Game Canvas */}
         <div className='relative w-full h-full flex items-center justify-center p-4'>
           {/* Arcade Machine Frame */}
-          <div className='relative max-w-[1200px] w-full' style={{ minHeight: '700px', maxHeight: '90vh' }}>
+          <div
+            className='relative max-w-[1200px] w-full'
+            style={{ minHeight: '700px', maxHeight: '90vh' }}
+          >
             {/* Outer Frame - Wood texture */}
-            <div 
-              className='absolute inset-0 bg-gradient-to-br from-amber-900 via-amber-800 to-amber-950 rounded-3xl shadow-2xl' 
-              style={{ 
-                boxShadow: '0 0 0 8px #422006, 0 0 0 12px #78350f, inset 0 0 30px rgba(0,0,0,0.5), 0 20px 50px rgba(0,0,0,0.8)'
+            <div
+              className='absolute inset-0 bg-gradient-to-br from-amber-900 via-amber-800 to-amber-950 rounded-3xl shadow-2xl'
+              style={{
+                boxShadow:
+                  '0 0 0 8px #422006, 0 0 0 12px #78350f, inset 0 0 30px rgba(0,0,0,0.5), 0 20px 50px rgba(0,0,0,0.8)',
               }}
-            >
-            </div>
-                  
+            ></div>
+
             {/* CRT Screen Effect Border */}
-            <div 
+            <div
               className='absolute inset-6 rounded-lg overflow-hidden'
               style={{
                 boxShadow: 'inset 0 0 10px rgba(0,0,0,0.8)',
-                border: '2px solid rgba(0,255,255,0.2)'
+                border: '2px solid rgba(0,255,255,0.2)',
               }}
             >
               {/* Game Content */}
-              <div className='relative w-full h-full flex flex-col bg-black overflow-y-auto p-6' style={{ minHeight: 'calc(100% - 48px)' }}>
+              <div
+                className='relative w-full h-full flex flex-col bg-black overflow-y-auto p-6'
+                style={{ minHeight: 'calc(100% - 48px)' }}
+              >
                 <div className='max-w-4xl mx-auto text-center w-full'>
-
                   {/* Game Description */}
                   <div className='bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8  mt-4'>
                     <h1 className='text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mb-4'>
                       Escrow Puzzle Master
                     </h1>
                     <p className='text-lg text-white/80 leading-relaxed mb-6'>
-                      Match escrow mechanics steps with their descriptions! Learn how Trustless Work escrow
-                      contracts work by finding all 6 matching pairs. Test your memory and master the escrow
-                      flow!
+                      Match escrow mechanics steps with their descriptions! Learn how Trustless Work
+                      escrow contracts work by finding all 6 matching pairs. Test your memory and
+                      master the escrow flow!
                     </p>
 
                     <div className='grid md:grid-cols-3 gap-6 mb-6'>
@@ -488,9 +492,7 @@ export default function EscrowPuzzleMaster() {
                       </div>
                       <div className='text-center p-4 bg-white/5 rounded-2xl'>
                         <div className='text-3xl mb-2'>💰</div>
-                        <h3 className='text-white font-semibold mb-2'>
-                          60 XLM + NFT Badge
-                        </h3>
+                        <h3 className='text-white font-semibold mb-2'>60 XLM + NFT Badge</h3>
                         <p className='text-white/60 text-sm'>Rewards</p>
                       </div>
                     </div>
@@ -504,18 +506,22 @@ export default function EscrowPuzzleMaster() {
                             {isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL} Points
                           </div>
                         </div>
-                        {account && (() => {
-                          const currentPoints = account.totalPoints || account.profile?.totalPoints || 0;
-                          const GAME_COST = isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL;
-                          return (
-                            <div className='flex items-center justify-between mt-2 pt-2 border-t border-white/20'>
-                              <div className='text-white/80 text-sm'>Balance:</div>
-                              <div className={`font-bold text-xl ${currentPoints >= GAME_COST ? 'text-green-400' : 'text-red-400'}`}>
-                                {currentPoints} pts
+                        {account &&
+                          (() => {
+                            const currentPoints =
+                              account.totalPoints || account.profile?.totalPoints || 0;
+                            const GAME_COST = isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL;
+                            return (
+                              <div className='flex items-center justify-between mt-2 pt-2 border-t border-white/20'>
+                                <div className='text-white/80 text-sm'>Balance:</div>
+                                <div
+                                  className={`font-bold text-xl ${currentPoints >= GAME_COST ? 'text-green-400' : 'text-red-400'}`}
+                                >
+                                  {currentPoints} pts
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })()}
+                            );
+                          })()}
                       </div>
 
                       {/* Start Button */}
@@ -530,7 +536,8 @@ export default function EscrowPuzzleMaster() {
                             });
                             return;
                           }
-                          const currentPoints = account.totalPoints || account.profile?.totalPoints || 0;
+                          const currentPoints =
+                            account.totalPoints || account.profile?.totalPoints || 0;
                           const GAME_COST = isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL;
                           if (currentPoints < GAME_COST) {
                             addToast({
@@ -543,9 +550,17 @@ export default function EscrowPuzzleMaster() {
                           }
                           setShowStartConfirmation(true);
                         }}
-                        disabled={!account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < (isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL))}
+                        disabled={
+                          !account ||
+                          (account &&
+                            (account.totalPoints || account.profile?.totalPoints || 0) <
+                              (isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL))
+                        }
                         className={`w-full px-12 py-6 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:from-cyan-400 hover:via-purple-400 hover:to-pink-400 text-white font-bold text-2xl rounded-3xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-cyan-500/50 ${
-                          !account || (account && (account.totalPoints || account.profile?.totalPoints || 0) < (isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL))
+                          !account ||
+                          (account &&
+                            (account.totalPoints || account.profile?.totalPoints || 0) <
+                              (isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL))
                             ? 'opacity-50 cursor-not-allowed animate-none'
                             : 'animate-pulse'
                         }`}
@@ -555,28 +570,28 @@ export default function EscrowPuzzleMaster() {
 
                       {/* Warning Messages */}
                       {!account && (
-                        <p className='text-yellow-300 text-xs mt-3'>
-                          🔒 Connect wallet to play
-                        </p>
+                        <p className='text-yellow-300 text-xs mt-3'>🔒 Connect wallet to play</p>
                       )}
-                      {account && (() => {
-                        const currentPoints = account.totalPoints || account.profile?.totalPoints || 0;
-                        const GAME_COST = isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL;
-                        if (currentPoints < GAME_COST) {
-                          return (
-                            <p className='text-red-300 text-xs mt-3'>
-                              💰 Need {GAME_COST - currentPoints} more points
-                            </p>
-                          );
-                        }
-                        return null;
-                      })()}
+                      {account &&
+                        (() => {
+                          const currentPoints =
+                            account.totalPoints || account.profile?.totalPoints || 0;
+                          const GAME_COST = isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL;
+                          if (currentPoints < GAME_COST) {
+                            return (
+                              <p className='text-red-300 text-xs mt-3'>
+                                💰 Need {GAME_COST - currentPoints} more points
+                              </p>
+                            );
+                          }
+                          return null;
+                        })()}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             {/* Ventilation slots at bottom */}
             <div className='absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1 z-10'>
               {[...Array(8)].map((_, i) => (
@@ -593,10 +608,10 @@ export default function EscrowPuzzleMaster() {
               <div className='text-center'>
                 {/* Icon */}
                 <div className='text-6xl mb-4'>🎮</div>
-                
+
                 {/* Title */}
                 <h2 className='text-3xl font-bold text-white mb-4'>Start Game?</h2>
-                
+
                 {/* Points Cost Info */}
                 <div className='bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl p-4 mb-6 border border-yellow-400/30'>
                   <div className='text-yellow-300 text-sm mb-2'>💰 Entry Cost</div>
@@ -604,19 +619,23 @@ export default function EscrowPuzzleMaster() {
                     {isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL} Points
                   </div>
                   <div className='text-white/70 text-xs'>
-                    Your current balance: {account?.totalPoints || account?.profile?.totalPoints || 0} points
+                    Your current balance:{' '}
+                    {account?.totalPoints || account?.profile?.totalPoints || 0} points
                   </div>
                 </div>
 
                 {/* Description */}
                 <p className='text-white/80 text-sm mb-6 leading-relaxed'>
-                  Starting this game will deduct {isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL} points from your account. 
-                  Match all pairs efficiently to earn up to 500 points and XP!
+                  Starting this game will deduct {isReplay ? GAME_COSTS.REPLAY : GAME_COSTS.INITIAL}{' '}
+                  points from your account. Match all pairs efficiently to earn up to 500 points and
+                  XP!
                 </p>
 
                 {/* Rewards Info */}
                 <div className='bg-gradient-to-br from-cyan-500/10 to-purple-500/10 rounded-2xl p-3 mb-6 border border-cyan-400/30'>
-                  <div className='text-cyan-300 text-xs mb-2 font-semibold text-center'>🏆 Possible Rewards</div>
+                  <div className='text-cyan-300 text-xs mb-2 font-semibold text-center'>
+                    🏆 Possible Rewards
+                  </div>
                   <div className='space-y-1 text-white/80 text-xs'>
                     <div>• Less than 5 moves: 500 points + 50 XP</div>
                     <div>• Less than 10 moves: 350 points + 35 XP</div>
@@ -652,156 +671,174 @@ export default function EscrowPuzzleMaster() {
 
   if (gameState === 'playing') {
     return (
-      <div className='relative w-full h-full flex flex-col items-center justify-center' style={{ minHeight: 'calc(100vh - 200px)' }}>
+      <div
+        className='relative w-full h-full flex flex-col items-center justify-center'
+        style={{ minHeight: 'calc(100vh - 200px)' }}
+      >
         {/* Arcade Machine Border & Game Canvas */}
         <div className='relative w-full h-full flex items-center justify-center p-4'>
           {/* Arcade Machine Frame */}
-          <div className='relative max-w-[1200px] w-full' style={{ minHeight: '700px', maxHeight: '90vh' }}>
+          <div
+            className='relative max-w-[1200px] w-full'
+            style={{ minHeight: '700px', maxHeight: '90vh' }}
+          >
             {/* Outer Frame - Wood texture */}
-            <div 
-              className='absolute inset-0 bg-gradient-to-br from-amber-900 via-amber-800 to-amber-950 rounded-3xl shadow-2xl' 
-              style={{ 
-                boxShadow: '0 0 0 8px #422006, 0 0 0 12px #78350f, inset 0 0 30px rgba(0,0,0,0.5), 0 20px 50px rgba(0,0,0,0.8)'
+            <div
+              className='absolute inset-0 bg-gradient-to-br from-amber-900 via-amber-800 to-amber-950 rounded-3xl shadow-2xl'
+              style={{
+                boxShadow:
+                  '0 0 0 8px #422006, 0 0 0 12px #78350f, inset 0 0 30px rgba(0,0,0,0.5), 0 20px 50px rgba(0,0,0,0.8)',
               }}
-            >
-            </div>
-                  
+            ></div>
+
             {/* CRT Screen Effect Border */}
-            <div 
+            <div
               className='absolute inset-6 rounded-lg overflow-hidden'
               style={{
                 boxShadow: 'inset 0 0 10px rgba(0,0,0,0.8)',
-                border: '2px solid rgba(0,255,255,0.2)'
+                border: '2px solid rgba(0,255,255,0.2)',
               }}
             >
               {/* Game Content */}
-              <div className='relative w-full h-full flex flex-col bg-black overflow-y-auto p-6' style={{ minHeight: 'calc(100% - 48px)' }}>
-                  {/* Game Header */}
-                  <div className='text-center mb-6 w-full'>
-                    <div className='flex justify-between items-center mb-4'>
-                      <div className='text-left'>
-                        <div className='text-white/60 text-sm'>Pairs Matched: {matchedPairs} / 6</div>
-                        <div className='text-white/60 text-sm'>Moves: {moves}</div>
-                      </div>
-                      <div className='text-right'>
-                        <div className='text-white/60 text-sm'>Score: {score}</div>
-                        <div className='text-white/60 text-sm'>Time: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</div>
-                      </div>
+              <div
+                className='relative w-full h-full flex flex-col bg-black overflow-y-auto p-6'
+                style={{ minHeight: 'calc(100% - 48px)' }}
+              >
+                {/* Game Header */}
+                <div className='text-center mb-6 w-full'>
+                  <div className='flex justify-between items-center mb-4'>
+                    <div className='text-left'>
+                      <div className='text-white/60 text-sm'>Pairs Matched: {matchedPairs} / 6</div>
+                      <div className='text-white/60 text-sm'>Moves: {moves}</div>
                     </div>
-
-                    <h1 className='text-3xl md:text-4xl font-bold text-white mb-2'>
-                      Match the Escrow Steps!
-                    </h1>
-                    <p className='text-white/80'>
-                      Find matching pairs of steps and their descriptions
-                    </p>
-                  </div>
-
-                  {/* Game Grid */}
-                  <div className='bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border-2 border-cyan-400/30 rounded-3xl p-6 mb-4 shadow-2xl w-full'>
-                    {showPreview && (
-                      <div className='text-center mb-4 text-cyan-300 font-semibold animate-pulse text-lg'>
-                        👀 Memorize the cards! Game starts in {previewTimeLeft}s...
+                    <div className='text-right'>
+                      <div className='text-white/60 text-sm'>Score: {score}</div>
+                      <div className='text-white/60 text-sm'>
+                        Time: {Math.floor(timeLeft / 60)}:
+                        {(timeLeft % 60).toString().padStart(2, '0')}
                       </div>
-                    )}
-                    <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3'>
-                      {cards.map((card) => {
-                        const isFlipped = showPreview || card.isFlipped || card.isMatched;
-                        const canInteract = !showPreview && !card.isMatched && flippedCards.length < 2;
-                        
-                        return (
-                          <div
-                            key={card.id}
-                            className='relative aspect-square'
-                            style={{ perspective: '1000px' }}
-                          >
-                            <div
-                              className={`w-full h-full rounded-xl border-2 transition-all duration-500 ${
-                                card.isMatched
-                                  ? 'border-green-400 bg-green-500/20'
-                                  : isFlipped
-                                    ? 'border-cyan-400/50 bg-cyan-500/10'
-                                    : 'border-white/20 hover:border-cyan-400/50 hover:bg-white/10'
-                              } ${canInteract && !card.isFlipped ? 'cursor-pointer hover:scale-105 hover:shadow-lg' : 'cursor-default'}`}
-                              style={{
-                                transformStyle: 'preserve-3d',
-                                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                              }}
-                            >
-                              {/* Card Back (Lock Icon) */}
-                              <div
-                                className='absolute inset-0 flex items-center justify-center p-2 rounded-xl'
-                                style={{
-                                  backfaceVisibility: 'hidden',
-                                  WebkitBackfaceVisibility: 'hidden',
-                                  transform: 'rotateY(0deg)',
-                                }}
-                              >
-                                <div className='text-2xl md:text-3xl'>
-                                  <Image src='/images/logo/logoicon.png' alt='Lock' width={100} height={100} />
-                                </div>
-                              </div>
-                              
-                              {/* Card Front (Content) */}
-                              <div
-                                className='absolute inset-0 flex items-center justify-center p-2 rounded-xl'
-                                style={{
-                                  backfaceVisibility: 'hidden',
-                                  WebkitBackfaceVisibility: 'hidden',
-                                  transform: 'rotateY(180deg)',
-                                }}
-                              >
-                                <div className='text-center w-full'>
-                                  <div
-                                    className={`text-[10px] mb-1 font-semibold ${
-                                      card.type === 'step' ? 'text-cyan-300' : 'text-purple-300'
-                                    }`}
-                                  >
-                                    {card.type === 'step' ? 'STEP' : 'DESC'}
-                                  </div>
-                                  <div className='text-white text-[11px] font-medium leading-tight px-1'>
-                                    {card.content}
-                                  </div>
-                                  {card.isMatched && (
-                                    <div className='text-green-400 text-lg mt-1'>✓</div>
-                                  )}
-                                </div>
-                              </div>
-                              
-                              {/* Clickable overlay for interaction */}
-                              {canInteract && !card.isFlipped && (
-                                <button
-                                  onClick={() => handleCardClick(card.id)}
-                                  className='absolute inset-0 w-full h-full rounded-xl'
-                                  style={{ zIndex: 10 }}
-                                  aria-label='Flip card'
-                                />
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
                     </div>
                   </div>
 
-                  {/* Achievements Display */}
-                  {achievements.length > 0 && (
-                    <div className='bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-xl border border-yellow-400/30 rounded-2xl p-4 mb-4 w-full'>
-                      <div className='text-yellow-300 font-semibold text-center'>
-                        🏅 Achievement Unlocked: {achievements[achievements.length - 1]}!
-                      </div>
+                  <h1 className='text-3xl md:text-4xl font-bold text-white mb-2'>
+                    Match the Escrow Steps!
+                  </h1>
+                  <p className='text-white/80'>
+                    Find matching pairs of steps and their descriptions
+                  </p>
+                </div>
+
+                {/* Game Grid */}
+                <div className='bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border-2 border-cyan-400/30 rounded-3xl p-6 mb-4 shadow-2xl w-full'>
+                  {showPreview && (
+                    <div className='text-center mb-4 text-cyan-300 font-semibold animate-pulse text-lg'>
+                      👀 Memorize the cards! Game starts in {previewTimeLeft}s...
                     </div>
                   )}
+                  <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3'>
+                    {cards.map(card => {
+                      const isFlipped = showPreview || card.isFlipped || card.isMatched;
+                      const canInteract =
+                        !showPreview && !card.isMatched && flippedCards.length < 2;
+
+                      return (
+                        <div
+                          key={card.id}
+                          className='relative aspect-square'
+                          style={{ perspective: '1000px' }}
+                        >
+                          <div
+                            className={`w-full h-full rounded-xl border-2 transition-all duration-500 ${
+                              card.isMatched
+                                ? 'border-green-400 bg-green-500/20'
+                                : isFlipped
+                                  ? 'border-cyan-400/50 bg-cyan-500/10'
+                                  : 'border-white/20 hover:border-cyan-400/50 hover:bg-white/10'
+                            } ${canInteract && !card.isFlipped ? 'cursor-pointer hover:scale-105 hover:shadow-lg' : 'cursor-default'}`}
+                            style={{
+                              transformStyle: 'preserve-3d',
+                              transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                            }}
+                          >
+                            {/* Card Back (Lock Icon) */}
+                            <div
+                              className='absolute inset-0 flex items-center justify-center p-2 rounded-xl'
+                              style={{
+                                backfaceVisibility: 'hidden',
+                                WebkitBackfaceVisibility: 'hidden',
+                                transform: 'rotateY(0deg)',
+                              }}
+                            >
+                              <div className='text-2xl md:text-3xl'>
+                                <Image
+                                  src='/images/logo/logoicon.png'
+                                  alt='Lock'
+                                  width={100}
+                                  height={100}
+                                />
+                              </div>
+                            </div>
+
+                            {/* Card Front (Content) */}
+                            <div
+                              className='absolute inset-0 flex items-center justify-center p-2 rounded-xl'
+                              style={{
+                                backfaceVisibility: 'hidden',
+                                WebkitBackfaceVisibility: 'hidden',
+                                transform: 'rotateY(180deg)',
+                              }}
+                            >
+                              <div className='text-center w-full'>
+                                <div
+                                  className={`text-[10px] mb-1 font-semibold ${
+                                    card.type === 'step' ? 'text-cyan-300' : 'text-purple-300'
+                                  }`}
+                                >
+                                  {card.type === 'step' ? 'STEP' : 'DESC'}
+                                </div>
+                                <div className='text-white text-[11px] font-medium leading-tight px-1'>
+                                  {card.content}
+                                </div>
+                                {card.isMatched && (
+                                  <div className='text-green-400 text-lg mt-1'>✓</div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Clickable overlay for interaction */}
+                            {canInteract && !card.isFlipped && (
+                              <button
+                                onClick={() => handleCardClick(card.id)}
+                                className='absolute inset-0 w-full h-full rounded-xl'
+                                style={{ zIndex: 10 }}
+                                aria-label='Flip card'
+                              />
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-              
-              {/* Ventilation slots at bottom */}
-              <div className='absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1 z-10'>
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className='w-1 h-3 bg-gray-900 rounded-sm' />
-                ))}
+
+                {/* Achievements Display */}
+                {achievements.length > 0 && (
+                  <div className='bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-xl border border-yellow-400/30 rounded-2xl p-4 mb-4 w-full'>
+                    <div className='text-yellow-300 font-semibold text-center'>
+                      🏅 Achievement Unlocked: {achievements[achievements.length - 1]}!
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
+
+            {/* Ventilation slots at bottom */}
+            <div className='absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1 z-10'>
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className='w-1 h-3 bg-gray-900 rounded-sm' />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -812,38 +849,48 @@ export default function EscrowPuzzleMaster() {
     const finalScore = score; // This is now the points earned (500, 350, 200, or 0)
 
     return (
-      <div className='relative w-full h-full flex flex-col items-center justify-center' style={{ minHeight: 'calc(100vh - 200px)' }}>
+      <div
+        className='relative w-full h-full flex flex-col items-center justify-center'
+        style={{ minHeight: 'calc(100vh - 200px)' }}
+      >
         {/* Arcade Machine Border & Game Canvas */}
         <div className='relative w-full h-full flex items-center justify-center p-4'>
           {/* Arcade Machine Frame */}
-          <div className='relative max-w-[1200px] w-full' style={{ minHeight: '700px', maxHeight: '90vh' }}>
+          <div
+            className='relative max-w-[1200px] w-full'
+            style={{ minHeight: '700px', maxHeight: '90vh' }}
+          >
             {/* Outer Frame - Wood texture */}
-            <div 
-              className='absolute inset-0 bg-gradient-to-br from-amber-900 via-amber-800 to-amber-950 rounded-3xl shadow-2xl' 
-              style={{ 
-                boxShadow: '0 0 0 8px #422006, 0 0 0 12px #78350f, inset 0 0 30px rgba(0,0,0,0.5), 0 20px 50px rgba(0,0,0,0.8)'
+            <div
+              className='absolute inset-0 bg-gradient-to-br from-amber-900 via-amber-800 to-amber-950 rounded-3xl shadow-2xl'
+              style={{
+                boxShadow:
+                  '0 0 0 8px #422006, 0 0 0 12px #78350f, inset 0 0 30px rgba(0,0,0,0.5), 0 20px 50px rgba(0,0,0,0.8)',
               }}
-            >
-            </div>
-                  
+            ></div>
+
             {/* CRT Screen Effect Border */}
-            <div 
+            <div
               className='absolute inset-6 rounded-lg overflow-hidden'
               style={{
                 boxShadow: 'inset 0 0 10px rgba(0,0,0,0.8)',
-                border: '2px solid rgba(0,255,255,0.2)'
+                border: '2px solid rgba(0,255,255,0.2)',
               }}
             >
               {/* Game Content */}
-              <div className='relative w-full h-full flex flex-col bg-black overflow-y-auto p-6' style={{ minHeight: 'calc(100% - 48px)' }}>
+              <div
+                className='relative w-full h-full flex flex-col bg-black overflow-y-auto p-6'
+                style={{ minHeight: 'calc(100% - 48px)' }}
+              >
                 <div className='max-w-4xl mx-auto text-center w-full'>
                   {/* Game Results */}
                   <div className='mb-8'>
                     <h1 className='text-5xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 mb-4 mt-6'>
-                      {matchedPairs === 6 ? 'Perfect Match!' : 'Time\'s Up!'}
+                      {matchedPairs === 6 ? 'Perfect Match!' : "Time's Up!"}
                     </h1>
                     <h2 className='text-2xl md:text-3xl font-semibold text-white/90 mb-6'>
-                      Final Score: {finalScore} Points <span className='text-white/40 text-sm'>({moves}) moves</span>
+                      Final Score: {finalScore} Points{' '}
+                      <span className='text-white/40 text-sm'>({moves}) moves</span>
                     </h2>
                   </div>
 
@@ -857,7 +904,9 @@ export default function EscrowPuzzleMaster() {
                             <>
                               <div className='flex justify-between items-center p-3 bg-green-500/20 rounded-xl border border-green-400/30'>
                                 <span className='text-white/70'>Points Earned:</span>
-                                <span className='text-green-400 font-semibold'>+{pointsEarned}</span>
+                                <span className='text-green-400 font-semibold'>
+                                  +{pointsEarned}
+                                </span>
                               </div>
                               <div className='flex justify-between items-center p-3 bg-cyan-500/20 rounded-xl border border-cyan-400/30'>
                                 <span className='text-white/70'>XP Earned:</span>
@@ -881,7 +930,9 @@ export default function EscrowPuzzleMaster() {
                                 key={index}
                                 className='p-3 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl border border-yellow-400/30'
                               >
-                                <div className='text-yellow-400 font-semibold'>⭐ {achievement}</div>
+                                <div className='text-yellow-400 font-semibold'>
+                                  ⭐ {achievement}
+                                </div>
                               </div>
                             ))
                           ) : (
@@ -912,7 +963,7 @@ export default function EscrowPuzzleMaster() {
                 </div>
               </div>
             </div>
-            
+
             {/* Ventilation slots at bottom */}
             <div className='absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1 z-10'>
               {[...Array(8)].map((_, i) => (

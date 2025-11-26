@@ -187,5 +187,12 @@ export interface AnalyticsDashboard {
 // Export types for use in components
 export type AnalyticsView = 'overview' | 'users' | 'feedback' | 'demos' | 'engagement';
 export type AnalyticsPeriod = '7d' | '30d' | '90d' | '1y' | 'all';
-export type SortField = 'createdAt' | 'lastLoginAt' | 'totalPoints' | 'level' | 'demosCompleted' | 'rating' | 'displayName';
+export type SortField =
+  | 'createdAt'
+  | 'lastLoginAt'
+  | 'totalPoints'
+  | 'level'
+  | 'demosCompleted'
+  | 'rating'
+  | 'displayName';
 export type SortOrder = 'asc' | 'desc';

@@ -97,7 +97,8 @@ export const AccountStatusIndicator: React.FC = () => {
               <div className='text-sm'>
                 <div className='font-medium'>Account Ready</div>
                 <div className='text-xs opacity-90'>
-                  {account.totalPoints || 0} points • Level {Math.floor((account.experience || 0) / 1000) + 1}
+                  {account.totalPoints || 0} points • Level{' '}
+                  {Math.floor((account.experience || 0) / 1000) + 1}
                 </div>
               </div>
             </div>

@@ -13,8 +13,14 @@ import Image from 'next/image';
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isRewardsOpen, setIsRewardsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { isConnected } = useGlobalWallet();
   const { account, isLoading } = useFirebase();
+
+  // Ensure component is mounted before rendering client-specific content
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Check if user has unlocked mini-games access (earned all 5 top badges)
   const miniGamesUnlocked = useMemo(() => {
@@ -29,7 +35,13 @@ export const Header = () => {
     }
 
     // Check if user has earned all 5 top badges
-    const topBadges = ['welcome_explorer', 'escrow_expert', 'trust_guardian', 'stellar_champion', 'nexus_master'];
+    const topBadges = [
+      'welcome_explorer',
+      'escrow_expert',
+      'trust_guardian',
+      'stellar_champion',
+      'nexus_master',
+    ];
     const hasAllTopBadges = topBadges.every(badgeId => badgesEarnedArray.includes(badgeId));
 
     return hasAllTopBadges;
@@ -37,6 +49,9 @@ export const Header = () => {
 
   // Listen for custom event to toggle rewards dropdown
   useEffect(() => {
+    // Only add event listener after component is mounted
+    if (!isMounted || typeof window === 'undefined') return;
+
     const handleToggleRewards = () => {
       setIsRewardsOpen(true);
     };
@@ -45,28 +60,36 @@ export const Header = () => {
     return () => {
       window.removeEventListener('toggleRewardsSidebar', handleToggleRewards);
     };
-  }, []);
+  }, [isMounted]);
 
   // Auto-open rewards sidebar only on first wallet connect (not on reconnects)
   useEffect(() => {
+    // Only run after component is mounted to avoid hydration issues
+    if (!isMounted) return;
+
     if (isConnected && account) {
       // Check if this is the first time connecting (no previous session)
-      const hasConnectedBefore = localStorage.getItem('wallet-connected-before');
-      
+      const hasConnectedBefore =
+        typeof window !== 'undefined' ? localStorage.getItem('wallet-connected-before') : null;
+
       if (!hasConnectedBefore) {
         // First time connecting - auto-open rewards panel
         const timer = setTimeout(() => {
           setIsRewardsOpen(true);
-          localStorage.setItem('wallet-connected-before', 'true');
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('wallet-connected-before', 'true');
+          }
         }, 500);
 
         return () => clearTimeout(timer);
       }
     }
-  }, [isConnected, account]);
+  }, [isConnected, account, isMounted]);
 
   return (
-    <header className='bg-white/10 backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/10 shadow-lg'>
+    <header
+      className='bg-white/10 backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/10 shadow-lg'
+    >
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex justify-between items-center h-16'>
           {/* Logo and App Name */}
@@ -143,8 +166,8 @@ export const Header = () => {
 
           {/* Header Controls */}
           <div className='flex items-center space-x-4'>
-            {/* Account Status - Show when connected */}
-            {isConnected && (
+            {/* Account Status - Show when connected - Only render after mount to prevent hydration mismatch */}
+            {isMounted && isConnected && (
               <div className='flex items-center space-x-2'>
                 {account ? (
                   <>
@@ -182,7 +205,6 @@ export const Header = () => {
                         onClose={() => setIsRewardsOpen(false)}
                       />
                     </div>
-
                   </>
                 ) : isLoading ? (
                   <div className='flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-1'>
@@ -203,10 +225,10 @@ export const Header = () => {
             </div> */}
 
             {/* Notification Bell - Only show when wallet is connected */}
-            {isConnected && <NotificationBell />}
+            {isMounted && isConnected && <NotificationBell />}
 
             {/* User Dropdown - Only show when wallet is connected */}
-            {isConnected && <UserDropdown />}
+            {isMounted && isConnected && <UserDropdown />}
 
             {/* Mobile Menu Button */}
             <button
@@ -241,7 +263,7 @@ export const Header = () => {
               </div>
             </a>
             {/* Only show Nexus Web3 Playground in mobile menu when wallet is connected */}
-            {isConnected && (
+            {isMounted && isConnected && (
               <Tooltip
                 content={
                   miniGamesUnlocked
@@ -258,11 +280,10 @@ export const Header = () => {
                       setIsMenuOpen(false);
                     }
                   }}
-                  className={`block px-3 py-2 rounded-md transition-colors ${
-                    miniGamesUnlocked
+                  className={`block px-3 py-2 rounded-md transition-colors ${miniGamesUnlocked
                       ? 'text-white/80 hover:text-white hover:bg-white/10'
                       : 'text-white/40 cursor-not-allowed'
-                  }`}
+                    }`}
                 >
                   <div className='flex items-center space-x-2'>
                     <Image
@@ -300,7 +321,6 @@ export const Header = () => {
           </div>
         </div>
       )}
-
     </header>
   );
 };

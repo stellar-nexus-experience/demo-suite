@@ -664,7 +664,9 @@ export const MicroTaskMarketplaceDemo = ({
       setTasks(updatedTasks);
 
       // If no tasks remain in-progress/approved, disable refund button
-      const anyActive = updatedTasks.some(t => ['in-progress', 'completed', 'approved'].includes(t.status));
+      const anyActive = updatedTasks.some(t =>
+        ['in-progress', 'completed', 'approved'].includes(t.status)
+      );
       if (!anyActive) setCanRefund(false);
     } catch (error) {
       addToast({

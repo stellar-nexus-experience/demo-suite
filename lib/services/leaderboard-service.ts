@@ -203,7 +203,7 @@ export class LeaderboardService {
   ): LeaderboardEntry {
     // Handle both account structures
     const totalPoints = account.profile?.totalPoints || account.totalPoints || 0;
-    
+
     // Calculate level from experience (XP) for accuracy
     // Level formula: 0-999 XP = Level 1, 1000-1999 XP = Level 2, etc.
     const experience = account.profile?.experience || account.experience || 0;

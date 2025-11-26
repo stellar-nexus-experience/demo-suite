@@ -29,11 +29,15 @@ export default function MiniGameStore() {
   const { account, isLoading: firebaseLoading, isInitialized } = useFirebase();
   const { addToast } = useToast();
   const [activePromo, setActivePromo] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState<string>(GAME_DISPLAY_CONFIG.DEFAULT_CATEGORY);
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    GAME_DISPLAY_CONFIG.DEFAULT_CATEGORY
+  );
   const [searchQuery, setSearchQuery] = useState<string>(GAME_DISPLAY_CONFIG.DEFAULT_SEARCH_QUERY);
   const [showDonationModal, setShowDonationModal] = useState<string | null>(null);
   const [hoveredGame, setHoveredGame] = useState<string | null>(null);
-  const [gamesPerPage, setGamesPerPage] = useState<number>(GAME_DISPLAY_CONFIG.INITIAL_GAMES_PER_PAGE);
+  const [gamesPerPage, setGamesPerPage] = useState<number>(
+    GAME_DISPLAY_CONFIG.INITIAL_GAMES_PER_PAGE
+  );
   const [walletSidebarOpen, setWalletSidebarOpen] = useState(false);
   const [walletExpanded, setWalletExpanded] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
@@ -131,8 +135,9 @@ export default function MiniGameStore() {
 
       {/* Main Content */}
       <main
-        className={`relative z-10 pt-20 animate-fadeIn ${walletSidebarOpen && walletExpanded ? 'mr-96' : walletSidebarOpen ? 'mr-20' : 'mr-0'
-          } ${!walletSidebarOpen ? 'pb-32' : 'pb-8'}`}
+        className={`relative z-10 pt-20 animate-fadeIn ${
+          walletSidebarOpen && walletExpanded ? 'mr-96' : walletSidebarOpen ? 'mr-20' : 'mr-0'
+        } ${!walletSidebarOpen ? 'pb-32' : 'pb-8'}`}
       >
         <div className='container mx-auto px-4'>
           <div className='max-w-7xl mx-auto'>
@@ -192,7 +197,6 @@ export default function MiniGameStore() {
                 <span className='text-yellow-400 font-bold'>BUILD</span>
               </p>
 
-
               {/* Navigation Buttons */}
               <div className='flex justify-center gap-6 mb-12'>
                 <button
@@ -233,12 +237,13 @@ export default function MiniGameStore() {
                     }
                   }}
                   disabled={isConnected && firebaseLoading && !isInitialized}
-                  className={`px-8 py-4 font-bold rounded-xl transition-all duration-300 transform shadow-lg border-2 flex items-center space-x-3 ${isConnected && firebaseLoading && !isInitialized
+                  className={`px-8 py-4 font-bold rounded-xl transition-all duration-300 transform shadow-lg border-2 flex items-center space-x-3 ${
+                    isConnected && firebaseLoading && !isInitialized
                       ? 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'
                       : !isConnected
                         ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white hover:scale-105 hover:shadow-yellow-500/25 border-white/20 hover:border-white/40'
                         : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white hover:scale-105 hover:shadow-purple-500/25 border-white/20 hover:border-white/40'
-                    }`}
+                  }`}
                 >
                   {isConnected && firebaseLoading && !isInitialized ? (
                     <>
@@ -268,13 +273,12 @@ export default function MiniGameStore() {
                 </div>
 
                 {/* Title */}
-                <h3 className='text-2xl font-semibold text-white mb-2'>
-                  Connect Your Wallet
-                </h3>
+                <h3 className='text-2xl font-semibold text-white mb-2'>Connect Your Wallet</h3>
 
                 {/* Description */}
                 <p className='text-white/70 text-sm mb-8 max-w-md mx-auto'>
-                  Connect your Stellar wallet to access the Nexus Web3 Playground, track your progress, and compete on the leaderboard!
+                  Connect your Stellar wallet to access the Nexus Web3 Playground, track your
+                  progress, and compete on the leaderboard!
                 </p>
 
                 {/* Connect Button */}
@@ -303,9 +307,7 @@ export default function MiniGameStore() {
                 </div>
 
                 {/* Loading Title */}
-                <h3 className='text-lg font-semibold text-white mb-2'>
-                  Loading Your Account...
-                </h3>
+                <h3 className='text-lg font-semibold text-white mb-2'>Loading Your Account...</h3>
 
                 {/* Loading Description */}
                 <p className='text-white/70 text-sm mb-6'>
@@ -339,8 +341,7 @@ export default function MiniGameStore() {
               <>
                 {/* Featured Game Spotlight */}
                 <div className='mb-16'>
-                  <div className='text-center mb-8'>
-                  </div>
+                  <div className='text-center mb-8'></div>
 
                   <div className='relative bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 backdrop-blur-xl border border-yellow-400/30 rounded-3xl p-8 shadow-2xl'>
                     <div className='grid lg:grid-cols-2 gap-8 items-center'>
@@ -377,9 +378,9 @@ export default function MiniGameStore() {
                       <div className='space-y-6'>
                         <div>
                           <h3 className='text-4xl font-bold text-white mb-4'>
-                           <span className='text-brand-300 text-2xl font-bold'>NEXUS</span> Infinite Runner <br /> <span className='text-brand-300 text-2xl font-bold'>
-                              
-                            </span>
+                            <span className='text-brand-300 text-2xl font-bold'>NEXUS</span>{' '}
+                            Infinite Runner <br />{' '}
+                            <span className='text-brand-300 text-2xl font-bold'></span>
                           </h3>
                           <p className='text-white/90 text-lg leading-relaxed mb-6'>
                             Embark on an epic journey through blockchain fundamentals. Learn smart
@@ -411,9 +412,7 @@ export default function MiniGameStore() {
                             </span>
 
                             <div className='text-2xl mb-2'>🏆</div>
-                            <div className='text-white font-semibold'>
-                              50 XLM
-                            </div>
+                            <div className='text-white font-semibold'>50 XLM</div>
                             <div className='text-white/60 text-sm'>+ NFT Badge</div>
                           </div>
                         </div>
@@ -461,10 +460,11 @@ export default function MiniGameStore() {
                         <button
                           key={category.id}
                           onClick={() => setSelectedCategory(category.id)}
-                          className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 ${selectedCategory === category.id
+                          className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+                            selectedCategory === category.id
                               ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/25'
                               : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
-                            }`}
+                          }`}
                         >
                           <span className='mr-2'>{category.name.split(' ')[0]}</span>
                           {category.name.split(' ').slice(1).join(' ')}
@@ -482,8 +482,9 @@ export default function MiniGameStore() {
                   {filteredGames.map(game => (
                     <div
                       key={game.id}
-                      className={`group relative bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl ${hoveredGame === game.id ? 'shadow-cyan-500/25' : 'shadow-lg'
-                        }`}
+                      className={`group relative bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden transition-all duration-500 transform hover:scale-105 hover:shadow-2xl ${
+                        hoveredGame === game.id ? 'shadow-cyan-500/25' : 'shadow-lg'
+                      }`}
                       onMouseEnter={() => setHoveredGame(game.id)}
                       onMouseLeave={() => setHoveredGame(null)}
                     >
@@ -584,10 +585,11 @@ export default function MiniGameStore() {
                         {(game.status === 'available' || game.status === 'beta') && (
                           <button
                             onClick={() => handlePlayGame(game)}
-                            className={`w-full py-3 px-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 ${game.status === 'available'
+                            className={`w-full py-3 px-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 ${
+                              game.status === 'available'
                                 ? 'bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white shadow-lg hover:shadow-cyan-500/25'
                                 : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-blue-500/25'
-                              }`}
+                            }`}
                           >
                             {game.status === 'available' ? '🎮 Play Now' : '🧪 Try Beta'}
                           </button>
@@ -595,16 +597,18 @@ export default function MiniGameStore() {
                       </div>
 
                       {/* Donate Button - Hidden for Escrow Puzzle Master */}
-                      {game.status !== 'available' && game.donationGoal > 0 && game.id !== 'escrow-puzzle-master' && (
-                        <div className='p-6 pt-0'>
-                          <button
-                            onClick={() => handleDonate(game)}
-                            className='w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white text-sm font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-purple-500/25 border border-purple-400/50'
-                          >
-                            💝 Donate to Speed Up Development
-                          </button>
-                        </div>
-                      )}
+                      {game.status !== 'available' &&
+                        game.donationGoal > 0 &&
+                        game.id !== 'escrow-puzzle-master' && (
+                          <div className='p-6 pt-0'>
+                            <button
+                              onClick={() => handleDonate(game)}
+                              className='w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white text-sm font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-purple-500/25 border border-purple-400/50'
+                            >
+                              💝 Donate to Speed Up Development
+                            </button>
+                          </div>
+                        )}
                     </div>
                   ))}
                 </div>
@@ -658,8 +662,9 @@ export default function MiniGameStore() {
                 {PROMOTIONAL_BANNERS.map((banner, index) => (
                   <div
                     key={banner.id}
-                    className={`absolute inset-0 transition-all duration-1000 ease-in-out ${index === activePromo ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                      }`}
+                    className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+                      index === activePromo ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                    }`}
                   >
                     <div
                       className={`absolute inset-0 bg-gradient-to-r ${banner.gradient} opacity-90`}
@@ -690,7 +695,6 @@ export default function MiniGameStore() {
                     {/* Content */}
                     <div className='relative z-10 h-full flex items-center justify-center text-center '>
                       <div className='max-w-4xl'>
-                        
                         <h3 className='text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-2xl'>
                           {banner.title}
                         </h3>
@@ -718,10 +722,11 @@ export default function MiniGameStore() {
                     <button
                       key={index}
                       onClick={() => setActivePromo(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${index === activePromo
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        index === activePromo
                           ? 'bg-white scale-125'
                           : 'bg-white/50 hover:bg-white/75'
-                        }`}
+                      }`}
                     />
                   ))}
                 </div>
@@ -829,7 +834,8 @@ export default function MiniGameStore() {
             <div className='space-y-4'>
               <div>
                 <label className='block text-white/80 text-sm font-medium mb-2'>
-                  Donation Amount (USD) <span className='px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full animate-pulse'>
+                  Donation Amount (USD){' '}
+                  <span className='px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full animate-pulse'>
                     🔜 COMING SOON
                   </span>
                 </label>

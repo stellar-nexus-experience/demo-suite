@@ -269,15 +269,17 @@ export default function GamePage() {
         className='fixed top-24 left-4 z-50 group bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl border-2 border-cyan-400/30 hover:border-cyan-400 text-white px-3 py-2 md:px-4 md:py-3 rounded-2xl shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-cyan-500/50 flex items-center gap-2'
         aria-label='Back to Arcade'
       >
-        <svg 
-          className='w-5 h-5 md:w-5 md:h-5 transform group-hover:-translate-x-1 transition-transform duration-300' 
-          fill='none' 
-          stroke='currentColor' 
+        <svg
+          className='w-5 h-5 md:w-5 md:h-5 transform group-hover:-translate-x-1 transition-transform duration-300'
+          fill='none'
+          stroke='currentColor'
           viewBox='0 0 24 24'
         >
           <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
         </svg>
-        <span className='font-bold text-xs md:text-sm hidden sm:inline'>Back to Nexus Playground</span>
+        <span className='font-bold text-xs md:text-sm hidden sm:inline'>
+          Back to Nexus Playground
+        </span>
         <span className='font-bold text-xs sm:hidden'>Back</span>
       </button>
 
@@ -374,7 +376,10 @@ export default function GamePage() {
                   <>
                     <div className='mt-10'>
                       {/* Game Container */}
-                      <div className='relative' style={{ height: 'calc(100vh - 200px)', minHeight: '600px' }}>
+                      <div
+                        className='relative'
+                        style={{ height: 'calc(100vh - 200px)', minHeight: '600px' }}
+                      >
                         {gameId === 'web3-basics-adventure' ? (
                           <InfiniteRunner gameId={gameId} gameTitle={game.title} embedded={true} />
                         ) : gameId === 'escrow-puzzle-master' ? (

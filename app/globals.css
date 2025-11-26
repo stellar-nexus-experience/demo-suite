@@ -373,24 +373,20 @@ body {
 
 /* Demo Card Styles */
 .demo-card.earned-badge {
-  animation:
-    glow-pulse 2s ease-in-out infinite !important;
+  animation: glow-pulse 2s ease-in-out infinite !important;
 }
 
 .demo-card.earned-badge:hover {
-  animation:
-    glow-pulse 1s ease-in-out infinite !important;
+  animation: glow-pulse 1s ease-in-out infinite !important;
   transform: scale(1.05) !important;
 }
 
 .demo-card.completed.earned-badge {
-  animation:
-    glow-pulse 2s ease-in-out infinite !important;
+  animation: glow-pulse 2s ease-in-out infinite !important;
 }
 
 .demo-card.completed.earned-badge:hover {
-  animation:
-    glow-pulse 1s ease-in-out infinite !important;
+  animation: glow-pulse 1s ease-in-out infinite !important;
   transform: scale(1.05) !important;
 }
 

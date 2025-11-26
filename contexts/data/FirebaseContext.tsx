@@ -2,19 +2,19 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import { useGlobalWallet } from '../wallet/WalletContext';
-import { 
+import {
   accountService,
   demoStatsService,
   mandatoryFeedbackService,
-  firebaseUtils
+  firebaseUtils,
 } from '../../lib/firebase/firebase-service';
-import { 
+import {
   Account,
   DemoStats,
   MandatoryFeedback,
   PREDEFINED_DEMOS,
   PREDEFINED_BADGES,
-  getBadgeById
+  getBadgeById,
 } from '../../lib/firebase/firebase-types';
 
 // DemoCard interface
@@ -34,22 +34,19 @@ import { useTransactionHistory } from './TransactionContext';
 //Nuevo
 import { notificationService } from '@/lib/services/notification-service';
 
-
-
 interface FirebaseContextType {
   // Account data
   account: Account | null;
-  
+
   // Static data
   demos: DemoCard[];
   badges: typeof PREDEFINED_BADGES;
   demoStats: DemoStats[];
-  
+
   // Loading states
   isLoading: boolean;
   isInitialized: boolean;
-  
-  
+
   // Actions
   initializeAccount: (displayName: string, userEmail?: string) => Promise<void>;
   completeDemo: (demoId: string, score?: number, completionTimeMinutes?: number) => Promise<void>;
@@ -58,9 +55,11 @@ interface FirebaseContextType {
   hasClappedDemo: (demoId: string) => Promise<boolean>;
   refreshAccountData: () => Promise<void>;
   clapDemo: (demoId: string) => Promise<void>;
-  
+
   // Mandatory feedback actions
-  submitMandatoryFeedback: (feedbackData: Omit<MandatoryFeedback, 'id' | 'userId' | 'timestamp'>) => Promise<string>;
+  submitMandatoryFeedback: (
+    feedbackData: Omit<MandatoryFeedback, 'id' | 'userId' | 'timestamp'>
+  ) => Promise<string>;
   hasUserSubmittedFeedback: (demoId: string) => Promise<boolean>;
   getUserFeedback: () => Promise<MandatoryFeedback[]>;
   getDemoFeedbackStats: (demoId: string) => Promise<{
@@ -92,7 +91,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   const { showBadgeAnimation } = useBadgeAnimation();
   const { addToast } = useToast();
   const { addTransaction, refreshTransactions } = useTransactionHistory();
-  
+
   // State
   const [account, setAccount] = useState<Account | null>(null);
   const [demoStats, setDemoStats] = useState<DemoStats[]>([]);
@@ -108,7 +107,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       } catch (error) {
         console.error('Error loading demo stats:', error);
       }
-      
+
       if (!walletData?.publicKey) {
         // Clear account data when wallet disconnects
         setAccount(null);
@@ -116,13 +115,14 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
         setIsLoading(false);
         return;
       }
-      
+
       setIsLoading(true);
       try {
-        
         // Check if account exists
-        const existingAccount = await accountService.getAccountByWalletAddress(walletData.publicKey);
-        
+        const existingAccount = await accountService.getAccountByWalletAddress(
+          walletData.publicKey
+        );
+
         if (!existingAccount) {
           // Create new account
           await firebaseUtils.createAccount(
@@ -130,23 +130,25 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
             user?.customName || user?.username || 'Anonymous User',
             walletData.network || 'testnet'
           );
-          
+
           // Award Welcome Explorer badge for new account
           await accountService.addEarnedBadge(walletData.publicKey, 'welcome_explorer');
-          
+
           // Add experience and points for account creation
           await accountService.addExperienceAndPoints(walletData.publicKey, 20, 10);
-          
-          
+
           // Show Welcome badge animation
           const welcomeBadge = getBadgeById('welcome_explorer');
           if (welcomeBadge) {
-            showBadgeAnimation({
-              ...welcomeBadge,
-              earnedAt: new Date().toISOString(),
-              rarity: welcomeBadge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
-              category: welcomeBadge.category as 'demo' | 'milestone' | 'achievement' | 'special'
-            }, welcomeBadge.earningPoints);
+            showBadgeAnimation(
+              {
+                ...welcomeBadge,
+                earnedAt: new Date().toISOString(),
+                rarity: welcomeBadge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
+                category: welcomeBadge.category as 'demo' | 'milestone' | 'achievement' | 'special',
+              },
+              welcomeBadge.earningPoints
+            );
           }
         } else {
           // Update last login
@@ -154,9 +156,8 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
             id: walletData.publicKey,
             lastLoginAt: new Date(),
           });
-          
         }
-        
+
         // Load account data (demo stats already loaded above)
         await loadAccountData();
         setIsInitialized(true);
@@ -177,7 +178,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   // Load account data
   const loadAccountData = async () => {
     if (!walletData?.publicKey) return;
-    
+
     try {
       const accountData = await accountService.getAccountByWalletAddress(walletData.publicKey);
       setAccount(accountData);
@@ -195,7 +196,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   const loadDemoStats = async () => {
     try {
       let stats = await demoStatsService.getAllDemoStats();
-      
+
       // If no stats exist, initialize them for all demos
       if (stats.length === 0) {
         const demos = [
@@ -204,7 +205,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
           { id: 'micro-marketplace', name: 'Gig Economy Madness' },
           { id: 'nexus-master', name: 'Nexus Master Achievement' },
         ];
-        
+
         for (const demo of demos) {
           try {
             await demoStatsService.initializeDemoStats(demo.id, demo.name);
@@ -212,11 +213,11 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
             // Failed to initialize stats
           }
         }
-        
+
         // Reload stats after initialization
         stats = await demoStatsService.getAllDemoStats();
       }
-      
+
       setDemoStats(stats);
     } catch (error) {
       console.error('Error loading demo stats:', error);
@@ -227,12 +228,12 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   // Initialize account (called from AuthModal)
   const initializeAccount = async (displayName: string, userEmail?: string) => {
     if (!walletData?.publicKey) throw new Error('Wallet not connected');
-    
+
     setIsLoading(true);
     try {
       // Check if account already exists
       const existingAccount = await accountService.getAccountByWalletAddress(walletData.publicKey);
-      
+
       if (!existingAccount) {
         // Create new account
         await firebaseUtils.createAccount(
@@ -240,25 +241,27 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
           displayName,
           walletData.network || 'testnet'
         );
-        
+
         // Award Welcome Explorer badge for new account
         await accountService.addEarnedBadge(walletData.publicKey, 'welcome_explorer');
-        
+
         // Add experience and points for account creation
         await accountService.addExperienceAndPoints(walletData.publicKey, 20, 10);
-        
-        
+
         // Show Welcome badge animation
         const welcomeBadge = getBadgeById('welcome_explorer');
         if (welcomeBadge) {
-          showBadgeAnimation({
-            ...welcomeBadge,
-            earnedAt: new Date().toISOString(),
-            rarity: welcomeBadge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
-            category: welcomeBadge.category as 'demo' | 'milestone' | 'achievement' | 'special'
-          }, welcomeBadge.earningPoints);
+          showBadgeAnimation(
+            {
+              ...welcomeBadge,
+              earnedAt: new Date().toISOString(),
+              rarity: welcomeBadge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
+              category: welcomeBadge.category as 'demo' | 'milestone' | 'achievement' | 'special',
+            },
+            welcomeBadge.earningPoints
+          );
         }
-        
+
         addToast({
           title: 'Welcome!',
           message: `Account created for ${displayName}. You earned the Welcome Explorer badge!`,
@@ -270,14 +273,14 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
           id: walletData.publicKey,
           lastLoginAt: new Date(),
         });
-        
+
         addToast({
           title: 'Welcome Back!',
           message: `Welcome back, ${displayName}!`,
           type: 'success',
         });
       }
-      
+
       await Promise.all([loadAccountData(), loadDemoStats()]);
       setIsInitialized(true);
     } catch (error) {
@@ -295,9 +298,8 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   // Complete demo
   const completeDemo = async (demoId: string, score?: number, completionTimeMinutes?: number) => {
     if (!walletData?.publicKey || !account) return;
-    
+
     try {
-      
       // Handle both array and object formats for demosCompleted (Firebase sometimes stores arrays as objects)
       let demosCompletedArray: string[] = [];
       if (Array.isArray(account.demosCompleted)) {
@@ -305,7 +307,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       } else if (account.demosCompleted && typeof account.demosCompleted === 'object') {
         demosCompletedArray = Object.values(account.demosCompleted);
       }
-      
+
       // Check if demo already completed
       if (demosCompletedArray.includes(demoId)) {
         return;
@@ -316,17 +318,20 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       const finalScore = score || 85; // Default score if not provided
       const scoreMultiplier = Math.max(0.5, finalScore / 100);
       const pointsEarned = Math.round(basePoints * scoreMultiplier);
-      
+
       // Add demo to completed list in account (but not for nexus-master as it's not a real demo)
       if (demoId !== 'nexus-master') {
         await accountService.addCompletedDemo(walletData.publicKey, demoId);
       }
-      
+
       // Add experience and points (experience is 2x points)
       // 🎯 MODIFICACIÓN 1: Definir xpEarned aquí para la notificación
       const xpEarned = pointsEarned * 2; //👀
-      await accountService.addExperienceAndPoints(walletData.publicKey, pointsEarned * 2, pointsEarned);
-
+      await accountService.addExperienceAndPoints(
+        walletData.publicKey,
+        pointsEarned * 2,
+        pointsEarned
+      );
 
       // Update demo stats for global tracking
       try {
@@ -336,11 +341,9 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
         // Don't fail the demo completion if stats tracking fails
       }
 
-      
-      
       // Award appropriate badge based on demo
       let badgeToAward = '';
-      let demoName = ''; 
+      let demoName = '';
       switch (demoId) {
         case 'hello-milestone':
           badgeToAward = 'escrow_expert';
@@ -355,7 +358,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
           badgeToAward = 'nexus_master';
           break;
       }
-      
+
       if (badgeToAward) {
         await accountService.addEarnedBadge(walletData.publicKey, badgeToAward);
 
@@ -376,33 +379,36 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
           pointsEarned,
           badgeName // Nombre legible de la insignia
         );
-        
-    
 
-        
         // Show badge animation
         const badge = getBadgeById(badgeToAward);
         if (badge) {
-          showBadgeAnimation({
-            ...badge,
-            earnedAt: new Date().toISOString(),
-            rarity: badge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
-            category: badge.category as 'demo' | 'milestone' | 'achievement' | 'special'
-          }, badge.earningPoints);
+          showBadgeAnimation(
+            {
+              ...badge,
+              earnedAt: new Date().toISOString(),
+              rarity: badge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
+              category: badge.category as 'demo' | 'milestone' | 'achievement' | 'special',
+            },
+            badge.earningPoints
+          );
         }
       }
 
       // Check if all 3 demos completed to unlock Nexus Master demo card
       const updatedAccount = await accountService.getAccountByWalletAddress(walletData.publicKey);
-      
+
       // Handle both array and object formats for demosCompleted
       let updatedDemosCompletedArray: string[] = [];
       if (Array.isArray(updatedAccount?.demosCompleted)) {
         updatedDemosCompletedArray = updatedAccount.demosCompleted;
-      } else if (updatedAccount?.demosCompleted && typeof updatedAccount.demosCompleted === 'object') {
+      } else if (
+        updatedAccount?.demosCompleted &&
+        typeof updatedAccount.demosCompleted === 'object'
+      ) {
         updatedDemosCompletedArray = Object.values(updatedAccount.demosCompleted);
       }
-      
+
       if (updatedAccount && updatedDemosCompletedArray.length === 3) {
         // Note: Nexus Master badge is NOT auto-awarded here
         // It will only be awarded when user manually claims it from the 4th demo card
@@ -435,7 +441,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
         console.error('FirebaseContext: Failed to add transaction to history:', transactionError);
         // Don't fail the demo completion if transaction logging fails
       }
-      
+
       // Refresh account data and demo stats
       await Promise.all([loadAccountData(), loadDemoStats()]);
     } catch (error) {
@@ -450,7 +456,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   // Check if account has badge
   const hasBadge = async (badgeId: string): Promise<boolean> => {
     if (!walletData?.publicKey) return false;
-    
+
     try {
       return await accountService.hasBadge(walletData.publicKey, badgeId);
     } catch (error) {
@@ -461,7 +467,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   // Check if account has completed demo
   const hasCompletedDemo = async (demoId: string): Promise<boolean> => {
     if (!walletData?.publicKey) return false;
-    
+
     try {
       return await accountService.hasCompletedDemo(walletData.publicKey, demoId);
     } catch (error) {
@@ -472,7 +478,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   // Check if account has clapped for demo
   const hasClappedDemo = async (demoId: string): Promise<boolean> => {
     if (!walletData?.publicKey) return false;
-    
+
     try {
       return await accountService.hasClappedDemo(walletData.publicKey, demoId);
     } catch (error) {
@@ -499,7 +505,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
     try {
       await demoStatsService.incrementClap(demoId, walletData.publicKey);
       await Promise.all([loadAccountData(), loadDemoStats()]); // Refresh both account data and demo stats
-      
+
       addToast({
         title: '👏 Demo Clapped!',
         message: 'Thanks for showing your appreciation!',
@@ -508,7 +514,8 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       });
     } catch (error) {
       console.error('Failed to clap demo:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Failed to clap demo. Please try again.';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to clap demo. Please try again.';
       addToast({
         title: 'Error',
         message: errorMessage,
@@ -518,7 +525,9 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   };
 
   // Submit mandatory feedback
-  const submitMandatoryFeedback = async (feedbackData: Omit<MandatoryFeedback, 'id' | 'userId' | 'timestamp'>): Promise<string> => {
+  const submitMandatoryFeedback = async (
+    feedbackData: Omit<MandatoryFeedback, 'id' | 'userId' | 'timestamp'>
+  ): Promise<string> => {
     if (!walletData?.publicKey) {
       throw new Error('Wallet not connected');
     }
@@ -539,7 +548,8 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       return feedbackId;
     } catch (error) {
       console.error('Failed to submit mandatory feedback:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Failed to submit feedback. Please try again.';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to submit feedback. Please try again.';
       addToast({
         title: 'Error',
         message: errorMessage,
@@ -552,7 +562,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   // Check if user has submitted feedback for a demo
   const hasUserSubmittedFeedback = async (demoId: string): Promise<boolean> => {
     if (!walletData?.publicKey) return false;
-    
+
     try {
       return await mandatoryFeedbackService.hasUserSubmittedFeedback(walletData.publicKey, demoId);
     } catch (error) {
@@ -564,7 +574,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
   // Get user's feedback history
   const getUserFeedback = async (): Promise<MandatoryFeedback[]> => {
     if (!walletData?.publicKey) return [];
-    
+
     try {
       return await mandatoryFeedbackService.getUserFeedback(walletData.publicKey);
     } catch (error) {
@@ -625,7 +635,8 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       id: 'nexus-master',
       title: 'Nexus Master Achievement',
       subtitle: 'Complete All Main Badges',
-      description: 'The ultimate achievement! Complete all three main demos to unlock the legendary Nexus Master badge and claim your place among the elite.',
+      description:
+        'The ultimate achievement! Complete all three main demos to unlock the legendary Nexus Master badge and claim your place among the elite.',
       icon: '/images/demos/economy.png',
       color: 'from-gray-500 to-gray-400',
       isReady: false,
@@ -653,9 +664,5 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
     getDemoFeedbackStats,
   };
 
-  return (
-    <FirebaseContext.Provider value={value}>
-      {children}
-    </FirebaseContext.Provider>
-  );
+  return <FirebaseContext.Provider value={value}>{children}</FirebaseContext.Provider>;
 };

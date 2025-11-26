@@ -15,7 +15,14 @@ import {
   getDocs,
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { Account, TransactionRecord, DemoStats, MandatoryFeedback, GameScore, COLLECTIONS } from './firebase-types';
+import {
+  Account,
+  TransactionRecord,
+  DemoStats,
+  MandatoryFeedback,
+  GameScore,
+  COLLECTIONS,
+} from './firebase-types';
 import { cleanObject } from '../../contexts/data/TransactionContext';
 // Helper function to convert Firestore timestamps to Date objects
 const convertTimestamps = (data: any): any => {
@@ -37,11 +44,11 @@ export const accountService = {
   // Create or update account
   async createOrUpdateAccount(accountData: Partial<Account>): Promise<void> {
     const accountRef = doc(db, COLLECTIONS.ACCOUNTS, accountData.id!);
-    
+
     // Get existing account to preserve fields
     const existingDoc = await getDoc(accountRef);
     const existingData = existingDoc.exists() ? existingDoc.data() : {};
-    
+
     const accountDoc = {
       ...accountData,
       // Initialize new fields if they don't exist (match Firebase example structure)
@@ -49,10 +56,11 @@ export const accountService = {
       questProgress: accountData.questProgress || existingData.questProgress || {},
       // Only preserve existing profile if it exists, don't create empty one
       ...(existingData.profile && { profile: existingData.profile }),
-      stats: accountData.stats || existingData.stats || {
-        totalPoints: accountData.totalPoints || 0,
-        lastActiveDate: new Date().toISOString().split('T')[0],
-      },
+      stats: accountData.stats ||
+        existingData.stats || {
+          totalPoints: accountData.totalPoints || 0,
+          lastActiveDate: new Date().toISOString().split('T')[0],
+        },
       updatedAt: serverTimestamp(),
       lastLoginAt: serverTimestamp(),
     };
@@ -229,7 +237,6 @@ export const accountService = {
     return false;
   },
 
-
   // Add transaction to user's history
   async addTransaction(
     walletAddress: string,
@@ -261,7 +268,6 @@ export const accountService = {
     status: 'success' | 'failed',
     message: string
   ): Promise<void> {
-    
     // 1. Define la referencia a la colección y la consulta (query)
     const transactionsRef = collection(db, COLLECTIONS.TRANSACTIONS);
     const q = query(
@@ -269,27 +275,23 @@ export const accountService = {
       where('walletAddress', '==', walletAddress),
       where('hash', '==', transactionHash)
     );
-    
+
     // 2. Ejecutar la consulta
-    const querySnapshot = await getDocs(q); 
-    
-    
+    const querySnapshot = await getDocs(q);
+
     if (querySnapshot.empty) {
-        console.warn('Transaction not found to update:', transactionHash);
-        return;
+      console.warn('Transaction not found to update:', transactionHash);
+      return;
     }
 
     // 4. Crear y limpiar el objeto de actualización
     // ⬇️ OBJETO DE ACTUALIZACIÓN LIMPIO ⬇️
     const updateData = cleanObject({ status, message });
-    
-    
-    querySnapshot.forEach(async (doc) => {
-        
-        await updateDoc(doc.ref, updateData);
+
+    querySnapshot.forEach(async doc => {
+      await updateDoc(doc.ref, updateData);
     });
-}
-,
+  },
   // Get user's transaction history
   async getUserTransactions(
     walletAddress: string,
@@ -548,7 +550,10 @@ export const mandatoryFeedbackService = {
   },
 
   // Get feedback by user and demo
-  async getFeedbackByUserAndDemo(userId: string, demoId: string): Promise<MandatoryFeedback | null> {
+  async getFeedbackByUserAndDemo(
+    userId: string,
+    demoId: string
+  ): Promise<MandatoryFeedback | null> {
     const feedbackRef = collection(db, COLLECTIONS.MANDATORY_FEEDBACK);
     const q = query(
       feedbackRef,
@@ -573,11 +578,7 @@ export const mandatoryFeedbackService = {
   // Get all feedback for a user
   async getUserFeedback(userId: string): Promise<MandatoryFeedback[]> {
     const feedbackRef = collection(db, COLLECTIONS.MANDATORY_FEEDBACK);
-    const q = query(
-      feedbackRef,
-      where('userId', '==', userId),
-      orderBy('timestamp', 'desc')
-    );
+    const q = query(feedbackRef, where('userId', '==', userId), orderBy('timestamp', 'desc'));
 
     const querySnapshot = await getDocs(q);
     const feedback: MandatoryFeedback[] = [];
@@ -596,11 +597,7 @@ export const mandatoryFeedbackService = {
   // Get all feedback for a demo
   async getDemoFeedback(demoId: string): Promise<MandatoryFeedback[]> {
     const feedbackRef = collection(db, COLLECTIONS.MANDATORY_FEEDBACK);
-    const q = query(
-      feedbackRef,
-      where('demoId', '==', demoId),
-      orderBy('timestamp', 'desc')
-    );
+    const q = query(feedbackRef, where('demoId', '==', demoId), orderBy('timestamp', 'desc'));
 
     const querySnapshot = await getDocs(q);
     const feedback: MandatoryFeedback[] = [];
@@ -625,7 +622,7 @@ export const mandatoryFeedbackService = {
     recommendationRate: number;
   }> {
     const feedback = await this.getDemoFeedback(demoId);
-    
+
     if (feedback.length === 0) {
       return {
         totalFeedback: 0,
@@ -639,11 +636,14 @@ export const mandatoryFeedbackService = {
     const totalRating = feedback.reduce((sum, f) => sum + f.rating, 0);
     const totalCompletionTime = feedback.reduce((sum, f) => sum + f.completionTime, 0);
     const recommendations = feedback.filter(f => f.wouldRecommend).length;
-    
-    const difficultyDistribution = feedback.reduce((acc, f) => {
-      acc[f.difficulty] = (acc[f.difficulty] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+
+    const difficultyDistribution = feedback.reduce(
+      (acc, f) => {
+        acc[f.difficulty] = (acc[f.difficulty] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return {
       totalFeedback: feedback.length,
@@ -663,11 +663,7 @@ export const mandatoryFeedbackService = {
   // Get recent feedback (for admin/analytics)
   async getRecentFeedback(limitCount: number = 50): Promise<MandatoryFeedback[]> {
     const feedbackRef = collection(db, COLLECTIONS.MANDATORY_FEEDBACK);
-    const q = query(
-      feedbackRef,
-      orderBy('timestamp', 'desc'),
-      limit(limitCount)
-    );
+    const q = query(feedbackRef, orderBy('timestamp', 'desc'), limit(limitCount));
 
     const querySnapshot = await getDocs(q);
     const feedback: MandatoryFeedback[] = [];
@@ -809,7 +805,7 @@ export const gameScoresService = {
     );
 
     const querySnapshot = await getDocs(q);
-    
+
     // Get unique user IDs with better scores
     const betterScoreUsers = new Set<string>();
     querySnapshot.forEach(doc => {
@@ -854,7 +850,7 @@ export const gameScoresService = {
     const q = query(scoresRef, where('gameId', '==', gameId));
 
     const querySnapshot = await getDocs(q);
-    
+
     if (querySnapshot.empty) {
       return {
         totalPlays: 0,

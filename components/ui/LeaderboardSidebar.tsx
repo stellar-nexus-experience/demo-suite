@@ -118,7 +118,9 @@ export const LeaderboardSidebar: React.FC<LeaderboardSidebarProps> = ({ isOpen, 
           <div className='flex-1 min-w-0'>
             <div>
               <h4 className='font-bold text-white text-sm truncate'>{entry.displayName}</h4>
-              <p className='text-xs text-gray-400 truncate'>{formatWalletAddress(entry.walletAddress)}</p>
+              <p className='text-xs text-gray-400 truncate'>
+                {formatWalletAddress(entry.walletAddress)}
+              </p>
             </div>
           </div>
 

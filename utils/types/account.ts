@@ -90,14 +90,14 @@ export interface UserAccount {
     totalPointsEarned: number;
     totalTimeSpent: number; // in minutes
     streakDays: number;
-    lastActiveDate: string; 
-    referralsCount?: number;      
-  totalReferralPoints?: number;
+    lastActiveDate: string;
+    referralsCount?: number;
+    totalReferralPoints?: number;
   };
 
-    // ========================================================
-    // 👆 ESTADÍSTICAS DEL REFERIDOR AÑADIDAS AQUÍ 👆
-    // ================================================
+  // ========================================================
+  // 👆 ESTADÍSTICAS DEL REFERIDOR AÑADIDAS AQUÍ 👆
+  // ================================================
 
   // Settings
   settings: {

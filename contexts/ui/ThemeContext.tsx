@@ -42,7 +42,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
-    
+
     // Add theme class to body for global styling
     if (theme === 'dark') {
       document.body.classList.remove('light-theme');
@@ -54,7 +54,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setThemeState(prev => prev === 'dark' ? 'light' : 'dark');
+    setThemeState(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const setTheme = (newTheme: Theme) => {
@@ -67,9 +67,5 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     setTheme,
   };
 
-  return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };

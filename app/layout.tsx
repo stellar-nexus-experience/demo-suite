@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { config } from '@/lib/config';
-import { suppressHydrationWarning } from '@/lib/utils/suppress-hydration';
 import { RootProviders } from './root';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 
@@ -11,7 +10,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Stellar Nexus Experience | Web3 Early Adopters Program',
-  description: 'Join the Stellar Nexus Experience Web3 Early Adopters Program. Master trustless work on Stellar blockchain with interactive demos, earn badges, and compete on the global leaderboard. Experience the future of decentralized work.',
+  description:
+    'Join the Stellar Nexus Experience Web3 Early Adopters Program. Master trustless work on Stellar blockchain with interactive demos, earn badges, and compete on the global leaderboard. Experience the future of decentralized work.',
   keywords: [
     'Stellar blockchain',
     'trustless work',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     'early adopters',
     'leaderboard',
     'badges',
-    'gamification'
+    'gamification',
   ],
   authors: [{ name: 'Stellar Nexus Team' }],
   creator: 'Stellar Nexus Experience',
@@ -42,7 +42,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Stellar Nexus Experience | Web3 Early Adopters Program',
-    description: 'Join the Stellar Nexus Experience Web3 Early Adopters Program. Master trustless work on Stellar blockchain with interactive demos, earn badges, and compete on the global leaderboard.',
+    description:
+      'Join the Stellar Nexus Experience Web3 Early Adopters Program. Master trustless work on Stellar blockchain with interactive demos, earn badges, and compete on the global leaderboard.',
     url: 'https://stellar-nexus-experience.vercel.app',
     siteName: 'Stellar Nexus Experience',
     images: [
@@ -59,7 +60,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Stellar Nexus Experience | Web3 Early Adopters Program',
-    description: 'Join the Stellar Nexus Experience Web3 Early Adopters Program. Master trustless work on Stellar blockchain with interactive demos, earn badges, and compete on the global leaderboard.',
+    description:
+      'Join the Stellar Nexus Experience Web3 Early Adopters Program. Master trustless work on Stellar blockchain with interactive demos, earn badges, and compete on the global leaderboard.',
     images: ['/images/logo/logoicon.png'],
     creator: '@StellarNexus',
   },
@@ -84,14 +86,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Suppress hydration warnings in development
-  if (config.development.isDevelopment) {
-    suppressHydrationWarning();
-  }
-
   return (
     <html lang='en' className='scroll-smooth'>
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body className={inter.className}>
         {/* Google Analytics - Simple implementation that works with any ID format */}
         {config.analytics.enabled && config.analytics.id && (
           <GoogleAnalytics measurementId={config.analytics.id} />

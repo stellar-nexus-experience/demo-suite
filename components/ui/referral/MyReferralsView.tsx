@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { referralInvitationService, ReferralInvitation } from '@/lib/services/referral-invitation-service';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  referralInvitationService,
+  ReferralInvitation,
+} from '@/lib/services/referral-invitation-service';
 import { formatWalletAddress } from '@/utils/helpers/formatting';
 import { formatDate } from '@/utils/helpers/formatting';
 import { accountService } from '@/lib/services/account-service';
-import { emailJSService } from '@/lib/services/emailjs-service';
-import { useToast } from '@/contexts/ui/ToastContext';
 
 interface MyReferralsViewProps {
   referrerWalletAddress: string;
@@ -19,61 +20,55 @@ interface EnrichedReferralInvitation extends ReferralInvitation {
   username?: string | null;
 }
 
-export const MyReferralsView: React.FC<MyReferralsViewProps> = ({ 
+export const MyReferralsView: React.FC<MyReferralsViewProps> = ({
   referrerWalletAddress,
-  referralCode,
-  referralLink,
-  referrerName 
 }) => {
-  const { addToast } = useToast();
-  const [invitations, setInvitations] = useState<EnrichedReferralInvitation[]>([]);
+  const [referrals, setReferrals] = useState<EnrichedReferralInvitation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [resendingEmail, setResendingEmail] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadInvitations();
-  }, [referrerWalletAddress]);
-
-  const loadInvitations = async () => {
+  const loadReferrals = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await referralInvitationService.getInvitationsByReferrer(referrerWalletAddress);
-      
+
+      // Only fetch activated referrals
+      const data = await referralInvitationService.getActivatedReferrals(referrerWalletAddress);
+
       // Enrich with username data
       const enrichedData: EnrichedReferralInvitation[] = await Promise.all(
-        data.map(async (invitation) => {
-          if (invitation.status === 'activated' && invitation.referredWalletAddress) {
+        data.map(async referral => {
+          if (referral.referredWalletAddress) {
             try {
-              const account = await accountService.getAccountByWalletAddress(invitation.referredWalletAddress);
+              const account = await accountService.getAccountByWalletAddress(
+                referral.referredWalletAddress
+              );
               return {
-                ...invitation,
+                ...referral,
                 username: account?.profile?.displayName || account?.displayName || 'Anonymous User',
               };
             } catch (err) {
-              // If we can't fetch the account, just use the invitation data
-              console.warn('Failed to fetch account for invitation:', err);
+              console.warn('Failed to fetch account for referral:', err);
               return {
-                ...invitation,
+                ...referral,
                 username: null,
               };
             }
           }
           return {
-            ...invitation,
+            ...referral,
             username: null,
           };
         })
       );
-      
-      setInvitations(enrichedData);
+
+      setReferrals(enrichedData);
     } catch (err: any) {
       console.error('Error loading referrals:', err);
-      // Show more specific error messages
       let errorMessage = 'Failed to load referrals. Please try again.';
       if (err?.code === 'failed-precondition' || err?.message?.includes('index')) {
-        errorMessage = 'Loading referrals... (Index is being created. This may take a few minutes.)';
+        errorMessage =
+          'Loading referrals... (Index is being created. This may take a few minutes.)';
       } else if (err?.message) {
         errorMessage = `Error: ${err.message}`;
       }
@@ -81,98 +76,36 @@ export const MyReferralsView: React.FC<MyReferralsViewProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [referrerWalletAddress]);
 
-  const handleResendEmail = async (invitation: EnrichedReferralInvitation) => {
-    if (!invitation.invitedEmail || invitation.status === 'activated') {
-      return;
-    }
-
-    if (!referralCode || !referralLink || !referrerName) {
-      addToast({
-        type: 'error',
-        title: '❌ Cannot Resend',
-        message: 'Missing referral information. Please try again.',
-      });
-      return;
-    }
-
-    // Check EmailJS configuration first
-    if (!emailJSService.isConfigured()) {
-      addToast({
-        type: 'warning',
-        title: '⚠️ Email Service Not Configured',
-        message: 'Email service is not available. You can share your referral link manually.',
-      });
-      return;
-    }
-
-    setResendingEmail(invitation.id);
-
-    try {
-      await emailJSService.sendReferralInvitation({
-        user_email: invitation.invitedEmail,
-        referral_code: referralCode,
-        referral_link: referralLink,
-        referrer_name: referrerName,
-        personal_message: undefined,
-      });
-
-      addToast({
-        type: 'success',
-        title: '✅ Email Resent!',
-        message: `Invitation email has been resent to ${invitation.invitedEmail}.`,
-      });
-    } catch (error: any) {
-      console.error('Error resending email:', error);
-      
-      // Provide more specific error messages
-      let errorMessage = 'Failed to resend email. Please try again.';
-      
-      if (error?.message) {
-        errorMessage = error.message;
-      } else if (error?.code === 'NETWORK_ERROR' || error?.message?.includes('fetch')) {
-        errorMessage = 'Network error. Please check your internet connection and try again.';
-      } else if (error?.message?.includes('configuration') || error?.message?.includes('EmailJS')) {
-        errorMessage = 'Email service configuration error. Please contact support.';
-      } else if (error?.status === 0 || error?.message?.includes('CORS')) {
-        errorMessage = 'Network or CORS error. Please check your EmailJS configuration.';
-      }
-      
-      addToast({
-        type: 'error',
-        title: '❌ Resend Failed',
-        message: errorMessage,
-      });
-    } finally {
-      setResendingEmail(null);
-    }
-  };
+  useEffect(() => {
+    loadReferrals();
+  }, [loadReferrals]);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
-        <span className="ml-3 text-white">Loading referrals...</span>
+      <div className='flex items-center justify-center py-8'>
+        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500'></div>
+        <span className='ml-3 text-white'>Loading referrals...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center py-8">
-        <div className="mb-4">
-          <div className="text-4xl mb-2">⚠️</div>
-          <p className="text-red-400 mb-2 font-medium">{error}</p>
+      <div className='text-center py-8'>
+        <div className='mb-4'>
+          <div className='text-4xl mb-2'>⚠️</div>
+          <p className='text-red-400 mb-2 font-medium'>{error}</p>
           {error.includes('Index') && (
-            <p className="text-sm text-white/60 mt-2">
+            <p className='text-sm text-white/60 mt-2'>
               Firebase is creating an index. This usually takes 1-2 minutes.
             </p>
           )}
         </div>
         <button
-          onClick={loadInvitations}
-          className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition"
+          onClick={loadReferrals}
+          className='px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition'
         >
           🔄 Retry
         </button>
@@ -180,167 +113,107 @@ export const MyReferralsView: React.FC<MyReferralsViewProps> = ({
     );
   }
 
-  if (invitations.length === 0) {
+  if (referrals.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="mb-4">
-          <div className="text-6xl mb-4">👥</div>
-          <h3 className="text-xl font-bold text-white mb-2">No Referrals Yet</h3>
-          <p className="text-white/60 mb-4 max-w-md mx-auto">
-            Start building your referral network! Invite friends and earn points when they join.
+      <div className='text-center py-12'>
+        <div className='mb-4'>
+          <div className='text-6xl mb-4'>👥</div>
+          <h3 className='text-xl font-bold text-white mb-2'>No Referrals Yet</h3>
+          <p className='text-white/60 mb-4 max-w-md mx-auto'>
+            Start building your referral network! Share your referral code and earn points when friends join.
           </p>
         </div>
-        <div className="bg-white/5 rounded-lg p-4 border border-white/10 max-w-md mx-auto">
-          <p className="text-sm text-white/80 mb-2">💡 How it works:</p>
-          <ul className="text-left text-sm text-white/60 space-y-1">
-            <li>• Go to the <span className="text-cyan-400">📧 Email Invitation</span> tab</li>
-            <li>• Enter your friend's email address</li>
-            <li>• Send them your referral code</li>
-            <li>• Earn points when they join! 🎉</li>
+        <div className='bg-white/5 rounded-lg p-4 border border-white/10 max-w-md mx-auto'>
+          <p className='text-sm text-white/80 mb-2'>💡 How it works:</p>
+          <ul className='text-left text-sm text-white/60 space-y-1'>
+            <li>
+              • Share your referral code from the <span className='text-cyan-400'>🎴 Nexus Card</span> tab
+            </li>
+            <li>• Friends apply your code in the <span className='text-cyan-400'>🎁 Apply Code</span> tab</li>
+            <li>• You both earn bonus points! 🎉</li>
+            <li>• Track all your referrals here</li>
           </ul>
         </div>
       </div>
     );
   }
 
+  const totalPoints = referrals.reduce((sum, r) => sum + (r.pointsEarned || 0), 0);
+
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-bold text-white">My Referrals</h3>
+    <div className='space-y-4'>
+      <div className='flex justify-between items-center mb-4'>
+        <h3 className='text-lg font-bold text-white'>My Referrals</h3>
         <button
-          onClick={loadInvitations}
-          className="text-sm text-cyan-400 hover:text-cyan-300 transition"
-          title="Refresh"
+          onClick={loadReferrals}
+          className='text-sm text-cyan-400 hover:text-cyan-300 transition'
+          title='Refresh'
         >
           🔄 Refresh
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      {/* Summary Stats */}
+      <div className='grid grid-cols-2 gap-4 mb-4'>
+        <div className='bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-lg p-4'>
+          <div className='text-2xl font-bold text-green-400'>{referrals.length}</div>
+          <div className='text-sm text-white/70'>Total Referrals</div>
+        </div>
+        <div className='bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 border border-cyan-500/30 rounded-lg p-4'>
+          <div className='text-2xl font-bold text-cyan-400'>+{totalPoints}</div>
+          <div className='text-sm text-white/70'>Points Earned</div>
+        </div>
+      </div>
+
+      {/* Referrals Table */}
+      <div className='overflow-x-auto'>
+        <table className='w-full text-sm'>
           <thead>
-            <tr className="border-b border-white/20">
-              <th className="text-left py-3 px-4 text-white/80 font-semibold">Username</th>
-              <th className="text-left py-3 px-4 text-white/80 font-semibold">Wallet</th>
-              <th className="text-left py-3 px-4 text-white/80 font-semibold">Email</th>
-              <th className="text-left py-3 px-4 text-white/80 font-semibold">Invited</th>
-              <th className="text-left py-3 px-4 text-white/80 font-semibold">Activated</th>
-              <th className="text-left py-3 px-4 text-white/80 font-semibold">Status</th>
-              <th className="text-right py-3 px-4 text-white/80 font-semibold">Points</th>
-              <th className="text-center py-3 px-4 text-white/80 font-semibold">Actions</th>
+            <tr className='border-b border-white/20'>
+              <th className='text-left py-3 px-4 text-white/80 font-semibold'>User</th>
+              <th className='text-left py-3 px-4 text-white/80 font-semibold'>Wallet Address</th>
+              <th className='text-left py-3 px-4 text-white/80 font-semibold'>Date Joined</th>
+              <th className='text-right py-3 px-4 text-white/80 font-semibold'>Points Earned</th>
             </tr>
           </thead>
           <tbody>
-            {invitations.map((invitation) => (
+            {referrals.map(referral => (
               <tr
-                key={invitation.id}
-                className="border-b border-white/10 hover:bg-white/5 transition-colors"
+                key={referral.id}
+                className='border-b border-white/10 hover:bg-white/5 transition-colors'
               >
-                <td className="py-3 px-4 text-white">
-                  {invitation.status === 'activated' && invitation.username
-                    ? invitation.username
-                    : invitation.invitedEmail.split('@')[0]}
+                <td className='py-3 px-4 text-white'>
+                  <div className='flex items-center gap-2'>
+                    <div className='w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold text-xs'>
+                      {referral.username?.[0]?.toUpperCase() || '?'}
+                    </div>
+                    <span>{referral.username || 'Anonymous User'}</span>
+                  </div>
                 </td>
-                <td className="py-3 px-4 text-white/70 font-mono text-xs">
-                  {invitation.status === 'activated' && invitation.referredWalletAddress
-                    ? formatWalletAddress(invitation.referredWalletAddress)
+                <td className='py-3 px-4 text-white/70 font-mono text-xs'>
+                  {referral.referredWalletAddress
+                    ? formatWalletAddress(referral.referredWalletAddress)
                     : '-'}
                 </td>
-                <td className="py-3 px-4 text-white/70 text-xs">
-                  {invitation.invitedEmail}
-                </td>
-                <td className="py-3 px-4 text-white/60 text-xs">
-                  {invitation.invitedAt
-                    ? formatDate(invitation.invitedAt.toDate(), {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })
+                <td className='py-3 px-4 text-white/60 text-xs'>
+                  {referral.activatedAt && referral.activatedAt.toDate
+                    ? formatDate(referral.activatedAt.toDate(), {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })
                     : '-'}
                 </td>
-                <td className="py-3 px-4 text-white/60 text-xs">
-                  {invitation.activatedAt
-                    ? formatDate(invitation.activatedAt.toDate(), {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })
-                    : '-'}
-                </td>
-                <td className="py-3 px-4">
-                  <span
-                    className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                      invitation.status === 'activated'
-                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                        : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                    }`}
-                  >
-                    {invitation.status === 'activated' ? '✅ Activated' : '⏳ Pending'}
+                <td className='py-3 px-4 text-right'>
+                  <span className='text-green-400 font-semibold'>
+                    +{referral.pointsEarned || 0}
                   </span>
-                </td>
-                <td className="py-3 px-4 text-right">
-                  {invitation.status === 'activated' && invitation.pointsEarned ? (
-                    <span className="text-green-400 font-semibold">
-                      +{invitation.pointsEarned}
-                    </span>
-                  ) : (
-                    <span className="text-white/30">-</span>
-                  )}
-                </td>
-                <td className="py-3 px-4 text-center">
-                  {invitation.status === 'pending' && invitation.invitedEmail ? (
-                    <button
-                      onClick={() => handleResendEmail(invitation)}
-                      disabled={resendingEmail === invitation.id}
-                      className="px-3 py-1.5 text-xs bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 border border-cyan-500/30 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                      title="Resend invitation email"
-                    >
-                      {resendingEmail === invitation.id ? (
-                        <span className="flex items-center gap-1">
-                          <span className="animate-spin">⏳</span>
-                          Sending...
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-1">
-                          📧 Resend
-                        </span>
-                      )}
-                    </button>
-                  ) : (
-                    <span className="text-white/20">-</span>
-                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      <div className="mt-4 p-4 bg-white/5 rounded-lg border border-white/10">
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-white/60">
-            Total Referrals: <span className="text-white font-semibold">{invitations.length}</span>
-          </span>
-          <span className="text-white/60">
-            Activated: <span className="text-green-400 font-semibold">
-              {invitations.filter(i => i.status === 'activated').length}
-            </span>
-          </span>
-          <span className="text-white/60">
-            Pending: <span className="text-yellow-400 font-semibold">
-              {invitations.filter(i => i.status === 'pending').length}
-            </span>
-          </span>
-          <span className="text-white/60">
-            Total Points: <span className="text-cyan-400 font-semibold">
-              {invitations
-                .filter(i => i.status === 'activated')
-                .reduce((sum, i) => sum + (i.pointsEarned || 0), 0)}
-            </span>
-          </span>
-        </div>
-      </div>
     </div>
   );
 };
-

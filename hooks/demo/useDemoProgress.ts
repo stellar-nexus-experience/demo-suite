@@ -72,7 +72,14 @@ export const useDemoProgress = (
         // Add completion badge if demo is completed
         if (isCompleted) {
           await addBadge({
-            id: demoId === 'hello-milestone' ? 'escrow_expert' : demoId === 'dispute-resolution' ? 'trust_guardian' : demoId === 'micro-marketplace' ? 'stellar_champion' : 'escrow_expert',
+            id:
+              demoId === 'hello-milestone'
+                ? 'escrow_expert'
+                : demoId === 'dispute-resolution'
+                  ? 'trust_guardian'
+                  : demoId === 'micro-marketplace'
+                    ? 'stellar_champion'
+                    : 'escrow_expert',
             name: `${demoName} Master`,
             description: `Completed the ${demoName} demo successfully`,
             icon: '🏆',

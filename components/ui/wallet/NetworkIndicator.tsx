@@ -144,7 +144,7 @@ export const NetworkIndicator: React.FC<NetworkIndicatorProps> = ({
 
               {currentNetwork !== 'PUBLIC' && (
                 <button
-                  onClick={(e) => {
+                  onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
                     // Disabled: mainnet not available in demo
@@ -158,7 +158,9 @@ export const NetworkIndicator: React.FC<NetworkIndicatorProps> = ({
                     <div>
                       <div className='text-white font-medium flex items-center space-x-2'>
                         <span>Mainnet</span>
-                        <span className='px-1.5 py-0.5 text-[10px] rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-400/30'>Coming Soon</span>
+                        <span className='px-1.5 py-0.5 text-[10px] rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-400/30'>
+                          Coming Soon
+                        </span>
                       </div>
                       <div className='text-xs text-white/70'>Public Stellar Network</div>
                     </div>

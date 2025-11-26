@@ -8,14 +8,14 @@ export interface TransactionRecord {
   message: string;
   timestamp: Date;
   type:
-    | 'escrow'
-    | 'milestone'
-    | 'fund'
-    | 'approve'
-    | 'release'
-    | 'dispute'
-    | 'demo_completion'
-    | 'badge_earned';
+  | 'escrow'
+  | 'milestone'
+  | 'fund'
+  | 'approve'
+  | 'release'
+  | 'dispute'
+  | 'demo_completion'
+  | 'badge_earned';
   demoId?: string;
   amount?: string;
   asset?: string;
@@ -57,6 +57,11 @@ export interface Account {
     username?: string;
   };
 
+  // Referral system
+  referralCode?: string;
+  referredBy?: string;
+  referredAt?: Date;
+
   // Stats (nested object for tracking statistics)
   stats?: {
     totalPoints?: number;
@@ -65,6 +70,8 @@ export interface Account {
     totalPointsEarned?: number;
     totalTimeSpent?: number;
     streakDays?: number;
+    referralsCount?: number;
+    totalReferralPoints?: number;
   };
 
   // Transaction history - now stored in separate collection
@@ -190,8 +197,6 @@ export interface Quest {
   unlockRequirements?: string[]; // Badge IDs required to unlock this quest
 }
 
-
-
 // Predefined badges configuration (static data)
 export const PREDEFINED_BADGES = [
   // Demo Badges (Main Badges)
@@ -245,7 +250,7 @@ export const PREDEFINED_BADGES = [
     category: 'special',
     rarity: 'legendary',
   },
-  
+
   // Quest Badges (Extra Badges)
   {
     id: 'social_butterfly',
@@ -311,7 +316,8 @@ export const PREDEFINED_QUESTS: Quest[] = [
   {
     id: 'follow_both_accounts',
     title: 'Social Butterfly',
-    description: 'Follow @n3xusEx on X to stay updated with the latest Nexus news and Web3 innovations',
+    description:
+      'Follow @n3xusEx on X to stay updated with the latest Nexus news and Web3 innovations',
     category: 'social',
     type: 'follow',
     requirements: {
@@ -331,11 +337,13 @@ export const PREDEFINED_QUESTS: Quest[] = [
   {
     id: 'post_hashtags',
     title: 'Share the Love',
-    description: '🚀 Share your Nexus Experience journey! Post about your progress, achievements, and learnings. Use the hashtags below and download your Referral Card from the Referral Center to share your progress with friends!',
+    description:
+      '🚀 Share your Nexus Experience journey! Post about your progress, achievements, and learnings. Use the hashtags below and download your Referral Card from the Referral Center to share your progress with friends!',
     category: 'social',
     type: 'post',
     requirements: {
-      action: 'Post about Nexus Experience with hashtags: #NexusExperience #TrustlessWork #StellarBlockchain #BuildOnStellar',
+      action:
+        'Post about Nexus Experience with hashtags: #NexusExperience #TrustlessWork #StellarBlockchain #BuildOnStellar',
       target: '#NexusExperience #Web3Learning #TrustlessWork #StellarBlockchain #BuildOnStellar',
       verification: 'manual',
     },
@@ -351,7 +359,8 @@ export const PREDEFINED_QUESTS: Quest[] = [
   {
     id: 'join_discord',
     title: 'Join the Community',
-    description: 'Join the Nexus Discord server to connect with fellow builders, see the global leaderboard rankings, and stay updated with the community!',
+    description:
+      'Join the Nexus Discord server to connect with fellow builders, see the global leaderboard rankings, and stay updated with the community!',
     category: 'community',
     type: 'join',
     requirements: {
@@ -371,7 +380,8 @@ export const PREDEFINED_QUESTS: Quest[] = [
   {
     id: 'claim_quest_master_badge',
     title: 'Quest Master Badge',
-    description: 'Congratulations! You\'ve completed all quests! 🎉 Now it\'s time to build your own product. Visit the Starter Kits section to download templates and start creating your Web3 projects!',
+    description:
+      "Congratulations! You've completed all quests! 🎉 Now it's time to build your own product. Visit the Starter Kits section to download templates and start creating your Web3 projects!",
     category: 'community',
     type: 'complete',
     requirements: {

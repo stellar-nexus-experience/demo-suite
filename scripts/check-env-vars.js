@@ -24,20 +24,16 @@ const results = [];
 requiredVars.forEach(varName => {
   const value = process.env[varName];
   const isSet = !!value && value.trim() !== '';
-  const isPlaceholder = value && (
-    value.includes('placeholder') || 
-    value.includes('your_') ||
-    value === ''
-  );
+  const isPlaceholder =
+    value && (value.includes('placeholder') || value.includes('your_') || value === '');
 
   if (!isSet || isPlaceholder) {
     allSet = false;
     results.push(`❌ ${varName}: ${isSet ? 'Placeholder value' : 'NOT SET'}`);
   } else {
     // Show first and last few chars for security
-    const masked = value.length > 10 
-      ? `${value.substring(0, 4)}...${value.substring(value.length - 4)}`
-      : '***';
+    const masked =
+      value.length > 10 ? `${value.substring(0, 4)}...${value.substring(value.length - 4)}` : '***';
     results.push(`✅ ${varName}: ${masked}`);
   }
 });
@@ -67,4 +63,3 @@ console.log('\n💡 Remember: .env files are LOCAL ONLY and not uploaded to Verc
 console.log('   You must manually set environment variables in Vercel dashboard.\n');
 
 process.exit(allSet ? 0 : 1);
-

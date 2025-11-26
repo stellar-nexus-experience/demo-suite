@@ -52,7 +52,7 @@ export const BADGE_COLORS = {
 
 // Badge SVG Icons
 export const BADGE_SVG_ICONS = {
-  'welcome_explorer': (id: string, size: string = 'w-8 h-8') => (
+  welcome_explorer: (id: string, size: string = 'w-8 h-8') => (
     <svg viewBox='0 0 64 64' className={size}>
       <defs>
         <radialGradient id={`g-welcome-${id}`} cx='50%' cy='50%' r='50%'>
@@ -69,7 +69,7 @@ export const BADGE_SVG_ICONS = {
     </svg>
   ),
 
-  'escrow_expert': (id: string, size: string = 'w-8 h-8') => (
+  escrow_expert: (id: string, size: string = 'w-8 h-8') => (
     <svg viewBox='0 0 64 64' className={size}>
       <defs>
         <linearGradient id={`g-escrow-${id}`} x1='0' y1='0' x2='1' y2='1'>
@@ -83,7 +83,7 @@ export const BADGE_SVG_ICONS = {
     </svg>
   ),
 
-  'trust_guardian': (id: string, size: string = 'w-8 h-8') => (
+  trust_guardian: (id: string, size: string = 'w-8 h-8') => (
     <svg viewBox='0 0 64 64' className={size}>
       <defs>
         <linearGradient id={`g-trust-${id}`} x1='0' y1='0' x2='1' y2='1'>
@@ -107,7 +107,7 @@ export const BADGE_SVG_ICONS = {
     </svg>
   ),
 
-  'stellar_champion': (id: string, size: string = 'w-8 h-8') => (
+  stellar_champion: (id: string, size: string = 'w-8 h-8') => (
     <svg viewBox='0 0 64 64' className={size}>
       <defs>
         <radialGradient id={`g-stellar-${id}`} cx='50%' cy='50%' r='50%'>
@@ -122,7 +122,7 @@ export const BADGE_SVG_ICONS = {
     </svg>
   ),
 
-  'nexus_master': (id: string, size: string = 'w-8 h-8') => (
+  nexus_master: (id: string, size: string = 'w-8 h-8') => (
     <svg viewBox='0 0 64 64' className={size}>
       <defs>
         <linearGradient id={`g-nexus-${id}`} x1='0' y1='0' x2='1' y2='1'>
@@ -136,8 +136,6 @@ export const BADGE_SVG_ICONS = {
       <circle cx='32' cy='32' r='4' fill='#ffffff' opacity='0.8' />
     </svg>
   ),
-
-
 } as const;
 
 // Badge sound effect
@@ -145,7 +143,7 @@ export const BADGE_SOUND = '/sounds/intro.mp3';
 
 // Centralized badge definitions with assets
 export const BADGE_ASSETS: Record<string, BadgeAsset> = {
-  'welcome_explorer': {
+  welcome_explorer: {
     id: 'welcome_explorer',
     name: 'Welcome Explorer',
     description: 'Joined the Nexus Experience community',
@@ -154,7 +152,7 @@ export const BADGE_ASSETS: Record<string, BadgeAsset> = {
     earningPoints: 10,
     colors: BADGE_COLORS.common,
   },
-  'escrow_expert': {
+  escrow_expert: {
     id: 'escrow_expert',
     name: 'Escrow Expert',
     description: 'Mastered the basic escrow flow',
@@ -163,7 +161,7 @@ export const BADGE_ASSETS: Record<string, BadgeAsset> = {
     earningPoints: 30,
     colors: BADGE_COLORS.rare,
   },
-  'trust_guardian': {
+  trust_guardian: {
     id: 'trust_guardian',
     name: 'Trust Guardian',
     description: 'Resolved conflicts like a true arbitrator',
@@ -172,7 +170,7 @@ export const BADGE_ASSETS: Record<string, BadgeAsset> = {
     earningPoints: 50,
     colors: BADGE_COLORS.epic,
   },
-  'stellar_champion': {
+  stellar_champion: {
     id: 'stellar_champion',
     name: 'Stellar Champion',
     description: 'Mastered the micro-task marketplace',
@@ -181,7 +179,7 @@ export const BADGE_ASSETS: Record<string, BadgeAsset> = {
     earningPoints: 100,
     colors: BADGE_COLORS.epic,
   },
-  'nexus_master': {
+  nexus_master: {
     id: 'nexus_master',
     name: 'Nexus Master',
     description: 'Master of all trustless work demos',

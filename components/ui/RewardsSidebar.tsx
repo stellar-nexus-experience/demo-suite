@@ -41,7 +41,6 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
     };
   }, [isOpen, onClose]);
 
-
   // Helper functions for badge styling using centralized assets
   const getRarityColor = (rarity: string) => {
     const colors = BADGE_COLORS[rarity as keyof typeof BADGE_COLORS] || BADGE_COLORS.common;
@@ -97,10 +96,10 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
   const getExperienceProgress = () => {
     const currentLevel = getLevel();
     const currentExp = safeAccount.experience || 0;
-    
+
     // Calculate XP within current level (0-1000 for each level)
     const expInCurrentLevel = currentExp % 1000;
-    
+
     return {
       current: expInCurrentLevel,
       next: 1000, // Each level requires 1000 XP
@@ -138,7 +137,12 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
     const phases = [
       { id: 0, name: 'Trustless Scout', image: '/images/character/baby.png', minLevel: 1 },
       { id: 1, name: 'Blockchain Explorer', image: '/images/character/teen.png', minLevel: 5 },
-      { id: 2, name: 'Stellar Expert', image: '/images/character/nexus-prime-chat.png', minLevel: 10 }
+      {
+        id: 2,
+        name: 'Stellar Expert',
+        image: '/images/character/nexus-prime-chat.png',
+        minLevel: 10,
+      },
     ];
     return phases.filter(phase => level >= phase.minLevel);
   };
@@ -152,13 +156,18 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
     const phases = [
       { id: 0, name: 'Trustless Scout', image: '/images/character/baby.png', minLevel: 1 },
       { id: 1, name: 'Blockchain Explorer', image: '/images/character/teen.png', minLevel: 5 },
-      { id: 2, name: 'Stellar Expert', image: '/images/character/nexus-prime-chat.png', minLevel: 10 }
+      {
+        id: 2,
+        name: 'Stellar Expert',
+        image: '/images/character/nexus-prime-chat.png',
+        minLevel: 10,
+      },
     ];
-    
+
     // Find the highest phase the user has unlocked
     const unlockedPhases = phases.filter(phase => level >= phase.minLevel);
     const highestUnlockedPhase = unlockedPhases[unlockedPhases.length - 1];
-    
+
     if (highestUnlockedPhase) {
       // Set the selected phase to the highest unlocked phase
       const phaseIndex = phases.findIndex(phase => phase.id === highestUnlockedPhase.id);
@@ -211,8 +220,18 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
                     className='absolute -left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 border border-white/30 transition-all duration-200 hover:scale-110'
                     title={`Previous phase (${availablePhases[selectedCharacterPhase > 0 ? selectedCharacterPhase - 1 : availablePhases.length - 1]?.name})`}
                   >
-                    <svg className='w-4 h-4 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
+                    <svg
+                      className='w-4 h-4 text-white'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M15 19l-7-7 7-7'
+                      />
                     </svg>
                   </button>
                   <button
@@ -220,8 +239,18 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
                     className='absolute -right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 border border-white/30 transition-all duration-200 hover:scale-110'
                     title={`Next phase (${availablePhases[selectedCharacterPhase < availablePhases.length - 1 ? selectedCharacterPhase + 1 : 0]?.name})`}
                   >
-                    <svg className='w-4 h-4 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                    <svg
+                      className='w-4 h-4 text-white'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M9 5l7 7-7 7'
+                      />
                     </svg>
                   </button>
                 </>
@@ -237,7 +266,7 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
                   style={{
                     animation: 'pulse 2s ease-in-out infinite',
                   }}
-                  onError={(e) => {
+                  onError={e => {
                     console.warn('Image failed to load:', currentPhase.image);
                   }}
                 />
@@ -262,30 +291,50 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
               {/* Glow Effect */}
               <div className='absolute inset-0 bg-gradient-to-r from-purple-400/20 to-blue-400/20 rounded-full blur-lg scale-110'></div>
             </div>
-            
+
             {/* Badge Display for Current Phase */}
             <div className='mt-3 flex flex-col items-center'>
               <div className='text-xs text-gray-400 mb-1'>Current Badge</div>
-              <div className={`
+              <div
+                className={`
                 w-36 px-4 py-2 rounded-lg border-2 shadow-lg transition-all duration-300
-                ${selectedCharacterPhase === 0 ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-400/50' : 
-                  selectedCharacterPhase === 1 ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border-blue-400/50' : 
-                  'bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-purple-400/50'}
-              `}>
+                ${
+                  selectedCharacterPhase === 0
+                    ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-400/50'
+                    : selectedCharacterPhase === 1
+                      ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border-blue-400/50'
+                      : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-purple-400/50'
+                }
+              `}
+              >
                 <div className='flex items-center gap-2'>
                   <span className='text-2xl'>
-                    {selectedCharacterPhase === 0 ? '🌱' : selectedCharacterPhase === 1 ? '🚀' : '⭐'}
+                    {selectedCharacterPhase === 0
+                      ? '🌱'
+                      : selectedCharacterPhase === 1
+                        ? '🚀'
+                        : '⭐'}
                   </span>
                   <div className='text-center'>
-                    <div className={`text-sm font-bold transition-colors duration-300
-                      ${selectedCharacterPhase === 0 ? 'text-green-300' : 
-                        selectedCharacterPhase === 1 ? 'text-blue-300' : 
-                        'text-purple-300'}
-                    `}>
+                    <div
+                      className={`text-sm font-bold transition-colors duration-300
+                      ${
+                        selectedCharacterPhase === 0
+                          ? 'text-green-300'
+                          : selectedCharacterPhase === 1
+                            ? 'text-blue-300'
+                            : 'text-purple-300'
+                      }
+                    `}
+                    >
                       {currentPhase?.name || 'Trustless Scout'}
                     </div>
                     <div className='text-xs text-gray-400'>
-                      {selectedCharacterPhase === 0 ? 'Level 1+' : selectedCharacterPhase === 1 ? 'Level 5+' : 'Level 10+'}
+                      {selectedCharacterPhase === 0
+                        ? 'Level 1+'
+                        : selectedCharacterPhase === 1
+                          ? 'Level 5+'
+                          : 'Level 10+'}
                     </div>
                   </div>
                 </div>
@@ -323,26 +372,36 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
               <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse'></div>
             </div>
           </div>
-          
+
           {/* Motivational Message */}
           <div className='mt-3 text-center'>
             <p className='text-xs text-gray-400 flex items-center justify-center gap-2'>
               {level < 5 ? (
                 <>
                   <span className='text-purple-400 animate-pulse'>✨</span>
-                  <span>Help <span className='text-purple-300 font-semibold'>Nexus Prime</span> evolve to Blockchain Explorer form! (Reach Level 5)</span>
+                  <span>
+                    Help <span className='text-purple-300 font-semibold'>Nexus Prime</span> evolve
+                    to Blockchain Explorer form! (Reach Level 5)
+                  </span>
                   <span className='text-purple-400 animate-pulse'>✨</span>
                 </>
               ) : level < 10 ? (
                 <>
                   <span className='text-blue-400 animate-pulse'>🌟</span>
-                  <span>Keep going! Help <span className='text-blue-300 font-semibold'>Nexus Prime</span> reach Stellar Expert form! (Reach Level 10)</span>
+                  <span>
+                    Keep going! Help{' '}
+                    <span className='text-blue-300 font-semibold'>Nexus Prime</span> reach Stellar
+                    Expert form! (Reach Level 10)
+                  </span>
                   <span className='text-blue-400 animate-pulse'>🌟</span>
                 </>
               ) : (
                 <>
                   <span className='text-cyan-400 animate-pulse'>👑</span>
-                  <span><span className='text-cyan-300 font-semibold'>Nexus Prime</span> has reached Stellar Expert form! Keep earning XP to master the universe!</span>
+                  <span>
+                    <span className='text-cyan-300 font-semibold'>Nexus Prime</span> has reached
+                    Stellar Expert form! Keep earning XP to master the universe!
+                  </span>
                   <span className='text-cyan-400 animate-pulse'>👑</span>
                 </>
               )}
@@ -429,9 +488,15 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
       const isAllMainBadgesEarned = earnedCount === 3; // All 3 main demo badges
 
       // Separate badges into categories
-      const topBadges = ['welcome_explorer', 'escrow_expert', 'trust_guardian', 'stellar_champion', 'nexus_master'];
+      const topBadges = [
+        'welcome_explorer',
+        'escrow_expert',
+        'trust_guardian',
+        'stellar_champion',
+        'nexus_master',
+      ];
       const extraBadges = ['social_butterfly', 'hashtag_hero', 'discord_warrior', 'quest_master'];
-      
+
       const earnedTopBadges = earnedBadgeIds.filter(id => topBadges.includes(id));
       const earnedExtraBadges = earnedBadgeIds.filter(id => extraBadges.includes(id));
       const allEarnedBadges = earnedBadgeIds.length;

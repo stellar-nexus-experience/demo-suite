@@ -78,7 +78,7 @@ export const NetworkProvider = ({ children }: NetworkProviderProps) => {
 
   // Listen for network change events
   useEffect(() => {
-    const handleNetworkChange = (event: CustomEvent) => {
+    const handleNetworkChange = () => {
       // The wallet context will handle the actual state updates
     };
 
