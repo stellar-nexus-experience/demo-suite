@@ -10,7 +10,6 @@ import { AccountProvider } from '@/contexts/auth/AccountContext';
 import { NetworkProvider } from '@/contexts/wallet/NetworkContext';
 import { FirebaseProvider } from '@/contexts/data/FirebaseContext';
 import { EscrowProvider } from '@/contexts/data/EscrowContext';
-import { ExtensionErrorHandler } from '@/components/utils/ExtensionErrorHandler';
 
 interface RootProvidersProps {
   children: ReactNode;
@@ -19,7 +18,6 @@ interface RootProvidersProps {
 export const RootProviders = ({ children }: RootProvidersProps) => {
   return (
     <>
-      <ExtensionErrorHandler />
       <WalletProvider>
         <NetworkProvider>
           <AuthProvider>
