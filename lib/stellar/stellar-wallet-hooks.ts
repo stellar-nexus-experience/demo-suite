@@ -750,9 +750,7 @@ export const useWallet = (): UseWalletReturn => {
           await connect(wallet.id);
         },
         onClosed: (err: Error) => {
-          if (err) {
-            console.warn('Modal closed with error:', err);
-          }
+          // Modal closed
         },
         modalTitle: 'Connect Wallet',
         notAvailableText: 'Wallet not available',

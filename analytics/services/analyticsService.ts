@@ -93,7 +93,6 @@ export class AnalyticsService {
         feedbackRate,
       };
     } catch (error) {
-      console.error('Error fetching platform stats:', error);
       throw error;
     }
   }
@@ -178,7 +177,6 @@ export class AnalyticsService {
 
       return accountAnalytics;
     } catch (error) {
-      console.error('Error fetching account analytics:', error);
       throw error;
     }
   }
@@ -271,7 +269,6 @@ export class AnalyticsService {
         feedbackTrends,
       };
     } catch (error) {
-      console.error('Error fetching feedback analytics:', error);
       throw error;
     }
   }
@@ -352,7 +349,6 @@ export class AnalyticsService {
 
       return demoAnalytics;
     } catch (error) {
-      console.error('Error fetching demo analytics:', error);
       throw error;
     }
   }
@@ -458,7 +454,6 @@ export class AnalyticsService {
         topPerformingUsers,
       };
     } catch (error) {
-      console.error('Error fetching user engagement metrics:', error);
       throw error;
     }
   }
@@ -484,7 +479,6 @@ export class AnalyticsService {
         recentActivity,
       };
     } catch (error) {
-      console.error('Error fetching analytics dashboard:', error);
       throw error;
     }
   }
@@ -494,7 +488,6 @@ export class AnalyticsService {
     try {
       return await accountService.getAllAccounts();
     } catch (error) {
-      console.error('Error fetching all accounts:', error);
       return [];
     }
   }
@@ -503,7 +496,6 @@ export class AnalyticsService {
     try {
       return await mandatoryFeedbackService.getRecentFeedback(1000); // Get last 1000 feedback entries
     } catch (error) {
-      console.error('Error fetching all feedback:', error);
       return [];
     }
   }

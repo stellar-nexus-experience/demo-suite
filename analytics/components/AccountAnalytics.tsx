@@ -64,7 +64,6 @@ export const AccountAnalytics: React.FC<AccountAnalyticsProps> = ({ className = 
       const accountData = await AnalyticsService.getAccountAnalytics();
       setAccounts(accountData);
     } catch (err) {
-      console.error('Error loading account analytics:', err);
       setError('Failed to load account analytics');
     } finally {
       setLoading(false);

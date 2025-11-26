@@ -156,7 +156,6 @@ class GameSocialService {
 
       return users;
     } catch (error) {
-      console.error('Error searching users:', error);
       return [];
     }
   }
@@ -187,7 +186,6 @@ class GameSocialService {
 
       return { success: true };
     } catch (error) {
-      console.error('Error sending message:', error);
       throw error;
     }
   }
@@ -212,7 +210,6 @@ class GameSocialService {
 
       return messages.reverse(); // Return in chronological order
     } catch (error) {
-      console.error('Error fetching messages:', error);
       return [];
     }
   }
@@ -259,7 +256,7 @@ class GameSocialService {
         await Promise.all(messagesToDelete.map(doc => deleteDoc(doc.ref)));
       }
     } catch (error) {
-      console.error('Error cleaning old messages:', error);
+      // Error cleaning old messages
     }
   }
 
@@ -301,7 +298,6 @@ class GameSocialService {
 
       return { success: true, id: docRef.id };
     } catch (error) {
-      console.error('Error creating challenge:', error);
       throw error;
     }
   }
@@ -327,7 +323,6 @@ class GameSocialService {
 
       return challenges;
     } catch (error) {
-      console.error('Error fetching challenges:', error);
       return [];
     }
   }
@@ -366,7 +361,6 @@ class GameSocialService {
 
       return { success: true };
     } catch (error) {
-      console.error('Error accepting challenge:', error);
       throw error;
     }
   }
@@ -394,7 +388,6 @@ class GameSocialService {
 
       return { success: true, pointsReward: challenge.pointsReward };
     } catch (error) {
-      console.error('Error completing challenge:', error);
       throw error;
     }
   }
@@ -419,7 +412,6 @@ class GameSocialService {
 
       return { success: true };
     } catch (error) {
-      console.error('Error deleting challenge:', error);
       throw error;
     }
   }
@@ -448,7 +440,6 @@ class GameSocialService {
 
       return { success: true };
     } catch (error) {
-      console.error('Error sending direct message:', error);
       throw error;
     }
   }
@@ -498,7 +489,6 @@ class GameSocialService {
 
       return allMessages;
     } catch (error) {
-      console.error('Error fetching direct messages:', error);
       return [];
     }
   }
@@ -509,7 +499,6 @@ class GameSocialService {
       await updateDoc(messageRef, { read: true });
       return { success: true };
     } catch (error) {
-      console.error('Error marking message as read:', error);
       throw error;
     }
   }
@@ -536,7 +525,6 @@ class GameSocialService {
 
       return users;
     } catch (error) {
-      console.error('Error fetching active users:', error);
       return [];
     }
   }

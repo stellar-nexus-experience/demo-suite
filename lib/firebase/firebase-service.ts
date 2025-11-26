@@ -280,7 +280,6 @@ export const accountService = {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      console.warn('Transaction not found to update:', transactionHash);
       return;
     }
 

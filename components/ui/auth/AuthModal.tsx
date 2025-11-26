@@ -284,7 +284,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode }) =
         onClose();
       }
     } catch (err) {
-      console.error('Error in signIn:', err);
+      // Error in signIn
     } finally {
       setIsSubmitting(false);
     }

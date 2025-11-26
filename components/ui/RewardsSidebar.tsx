@@ -267,7 +267,7 @@ export const RewardsSidebar: React.FC<RewardsDropdownProps> = ({ isOpen, onClose
                     animation: 'pulse 2s ease-in-out infinite',
                   }}
                   onError={e => {
-                    console.warn('Image failed to load:', currentPhase.image);
+                    // Image failed to load
                   }}
                 />
               )}

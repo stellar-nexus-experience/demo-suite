@@ -92,7 +92,6 @@ export class AccountService {
         }
       } catch (error) {
         // Silently fail - account is created, referral just didn't apply
-        console.warn('Failed to apply referral code during account creation:', error);
       }
     }
 

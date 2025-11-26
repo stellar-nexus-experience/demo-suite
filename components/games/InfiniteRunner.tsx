@@ -219,7 +219,6 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
             }
           );
         } catch (scoreError) {
-          console.error('Failed to submit score to leaderboard:', scoreError);
           // Don't fail the entire save if leaderboard submission fails
         }
 
@@ -232,7 +231,6 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
           duration: 5000,
         });
       } catch (error) {
-        console.error('Failed to save game progress:', error);
         addToast({
           type: 'error',
           title: 'Save Failed',
@@ -365,7 +363,7 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
             'achievement'
           );
         } catch (error) {
-          console.error('Failed to complete challenge:', error);
+          // Failed to complete challenge
         }
       }
     });
@@ -528,7 +526,6 @@ const InfiniteRunner: React.FC<InfiniteRunnerProps> = ({ gameId, gameTitle, embe
           duration: 3000,
         });
       } catch (error) {
-        console.error('Failed to deduct points:', error);
         addToast({
           type: 'error',
           title: 'Error',

@@ -69,7 +69,6 @@ try {
 } catch (error) {
   // In browser, we must have config - fail clearly
   if (typeof window !== 'undefined') {
-    console.error('Firebase initialization failed:', error);
     throw error;
   }
 

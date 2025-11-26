@@ -293,7 +293,6 @@ export const UserDropdown = () => {
       setIsEditingName(false);
       setTempName('');
     } catch (error) {
-      console.error('Error saving display name:', error);
       addToast({
         type: 'error',
         title: '❌ Save Failed',

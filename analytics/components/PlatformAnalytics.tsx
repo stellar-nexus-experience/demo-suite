@@ -66,7 +66,6 @@ export const PlatformAnalytics: React.FC<PlatformAnalyticsProps> = ({ className 
       setPlatformStats(stats);
       setUserEngagement(engagement);
     } catch (err) {
-      console.error('Error loading platform analytics:', err);
       setError('Failed to load analytics data');
     } finally {
       setLoading(false);

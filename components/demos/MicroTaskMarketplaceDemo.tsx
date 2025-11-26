@@ -482,7 +482,7 @@ export const MicroTaskMarketplaceDemo = ({
 
       await hooks.fundEscrow(payload);
     } catch (error) {
-      console.error('Error funding escrow:', error);
+      // Error funding escrow
     }
   }
 

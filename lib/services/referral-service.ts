@@ -51,7 +51,6 @@ export async function validateReferralCode(
 
   // Validate format using constant pattern
   if (!REFERRAL_CODE.PATTERN.test(pendingReferralCode)) {
-    console.warn('Referral Code Format Error:', pendingReferralCode);
     return { referrerWalletAddress: null, applied: false, referrerAccount: null };
   }
 
@@ -59,7 +58,6 @@ export async function validateReferralCode(
   const referrerAccount = await accountService.getAccountByReferralCode(pendingReferralCode);
 
   if (!referrerAccount) {
-    console.warn('Referral Code Not Found:', pendingReferralCode);
     return { referrerWalletAddress: null, applied: false, referrerAccount: null };
   }
 
@@ -67,7 +65,6 @@ export async function validateReferralCode(
 
   // Prevent self-referral
   if (referrerWalletAddress === userWalletAddress) {
-    console.warn('Self-Referral Attempt Blocked');
     return { referrerWalletAddress: null, applied: false, referrerAccount: null };
   }
 
@@ -146,7 +143,6 @@ export async function applyReferralCodeForExistingUser(
       bonusEarned: referredBonusPoints,
     };
   } catch (error) {
-    console.error('Error during the application of the referral:', error);
     return { success: false, message: 'Internal error applying referral code.' };
   }
 }

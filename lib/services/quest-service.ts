@@ -152,7 +152,6 @@ export class QuestService {
         );
       } catch (notificationError) {
         // No interrumpir el flujo principal si la notificación falla🚫
-        console.error('QuestService: Failed to send quest notification:', notificationError);
       }
 
       return {
@@ -161,7 +160,6 @@ export class QuestService {
         rewards: quest.rewards,
       };
     } catch (error) {
-      console.error('Error completing quest:', error);
       return { success: false, message: 'Failed to complete quest' };
     }
   }
@@ -211,7 +209,6 @@ export class QuestService {
         completed: false,
       };
     } catch (error) {
-      console.error('Error updating quest progress:', error);
       return { success: false, message: 'Failed to update quest progress' };
     }
   }

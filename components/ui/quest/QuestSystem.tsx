@@ -86,7 +86,7 @@ export const QuestSystem: React.FC<QuestSystemProps> = ({
         }
       }
     } catch (error) {
-      console.error('Error completing quest:', error);
+      // Error completing quest
     }
   };
 

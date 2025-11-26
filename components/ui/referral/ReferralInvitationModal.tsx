@@ -59,7 +59,6 @@ const ApplyCodeView: React.FC<ApplyCodeViewProps> = ({
       }
     } catch (error) {
       setStatusMessage('Network or internal error.');
-      console.error(error);
     } finally {
       setLoading(false);
     }

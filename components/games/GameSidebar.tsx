@@ -135,7 +135,7 @@ const GameSidebar: React.FC<GameSidebarProps> = ({
         const stats = await gameScoresService.getGameStats(gameId);
         setGameStats(stats);
       } catch (error) {
-        console.error('Failed to load leaderboard:', error);
+        // Failed to load leaderboard
       }
     };
 
