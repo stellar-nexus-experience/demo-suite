@@ -57,7 +57,7 @@ export const NotificationBell: React.FC = () => {
     try {
       await notificationService.markAsRead(notificationId);
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      // Error marking notification as read
     }
   };
 
@@ -67,7 +67,7 @@ export const NotificationBell: React.FC = () => {
     try {
       await notificationService.markAllAsRead(account.id);
     } catch (error) {
-      console.error('Error marking all as read:', error);
+      // Error marking all as read
     }
   };
 

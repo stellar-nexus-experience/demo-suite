@@ -99,7 +99,7 @@ export const TransactionProvider = ({ children }: TransactionProviderProps) => {
       }));
       setTransactions(formattedTransactions);
     } catch (error) {
-      console.error('Failed to refresh transactions:', error);
+      // Failed to refresh transactions
     } finally {
       setIsLoading(false);
     }
@@ -148,7 +148,7 @@ export const TransactionProvider = ({ children }: TransactionProviderProps) => {
 
         await accountService.addTransaction(walletData.publicKey, transactionPayload);
       } catch (error) {
-        console.error('Failed to save transaction to Firebase:', error);
+        // Failed to save transaction to Firebase
       }
     }
 
@@ -164,7 +164,7 @@ export const TransactionProvider = ({ children }: TransactionProviderProps) => {
       try {
         await accountService.updateTransaction(walletData.publicKey, hash, status, message);
       } catch (error) {
-        console.error('Failed to update transaction in Firebase:', error);
+        // Failed to update transaction in Firebase
       }
     }
   };

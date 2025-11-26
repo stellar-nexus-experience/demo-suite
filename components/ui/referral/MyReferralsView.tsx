@@ -48,7 +48,6 @@ export const MyReferralsView: React.FC<MyReferralsViewProps> = ({
                 username: account?.profile?.displayName || account?.displayName || 'Anonymous User',
               };
             } catch (err) {
-              console.warn('Failed to fetch account for referral:', err);
               return {
                 ...referral,
                 username: null,
@@ -64,7 +63,6 @@ export const MyReferralsView: React.FC<MyReferralsViewProps> = ({
 
       setReferrals(enrichedData);
     } catch (err: any) {
-      console.error('Error loading referrals:', err);
       let errorMessage = 'Failed to load referrals. Please try again.';
       if (err?.code === 'failed-precondition' || err?.message?.includes('index')) {
         errorMessage =

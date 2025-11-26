@@ -26,7 +26,7 @@ export const NetworkIndicator: React.FC<NetworkIndicatorProps> = ({
       await switchNetwork(network);
       setShowDropdown(false);
     } catch (error) {
-      console.error('Error switching network:', error);
+      // Error switching network
     } finally {
       setIsSwitching(false);
     }

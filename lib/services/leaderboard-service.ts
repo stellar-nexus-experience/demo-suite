@@ -66,7 +66,6 @@ export class LeaderboardService {
 
       return entries;
     } catch (error) {
-      console.error('Error fetching top users:', error);
       return [];
     }
   }
@@ -98,7 +97,6 @@ export class LeaderboardService {
         topUsers: topUsersWithCurrentUser,
       };
     } catch (error) {
-      console.error('Error fetching leaderboard with user:', error);
       return {
         totalUsers: 0,
         topUsers: [],
@@ -133,7 +131,6 @@ export class LeaderboardService {
       }
       return undefined; // User not found
     } catch (error) {
-      console.error('Error getting user rank:', error);
       return undefined;
     }
   }
@@ -146,7 +143,6 @@ export class LeaderboardService {
       const querySnapshot = await getDocs(q);
       return querySnapshot.size;
     } catch (error) {
-      console.error('Error getting total user count:', error);
       return 0;
     }
   }
@@ -191,7 +187,6 @@ export class LeaderboardService {
 
       return entries;
     } catch (error) {
-      console.error('Error getting users around user:', error);
       return [];
     }
   }

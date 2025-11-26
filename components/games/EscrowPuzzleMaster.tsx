@@ -222,7 +222,6 @@ export default function EscrowPuzzleMaster() {
         duration: 3000,
       });
     } catch (error) {
-      console.error('Failed to deduct points:', error);
       addToast({
         type: 'error',
         title: 'Error',
@@ -374,7 +373,6 @@ export default function EscrowPuzzleMaster() {
         });
       }
     } catch (error) {
-      console.error('Failed to save score:', error);
       addToast({
         type: 'error',
         title: 'Save Failed',

@@ -53,7 +53,6 @@ export const FeedbackAnalytics: React.FC<FeedbackAnalyticsProps> = ({ className 
       const data = await AnalyticsService.getFeedbackAnalytics();
       setFeedbackData(data);
     } catch (err) {
-      console.error('Error loading feedback analytics:', err);
       setError('Failed to load feedback analytics');
     } finally {
       setLoading(false);

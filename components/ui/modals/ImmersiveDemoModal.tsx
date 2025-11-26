@@ -1041,9 +1041,6 @@ export const ImmersiveDemoModal = ({
                                         // 🚩 CORRECCIÓN CRÍTICA: Usa ?? '' para manejar null/undefined como string vacío
                                         const finalUrl = transaction.stellarExpertUrl ?? '';
 
-                                        console.log('HASH en el Modal:', transaction.hash);
-                                        console.log('URL EXPERT en el Modal:', finalUrl); // Mostrará '' si está vacío
-
                                         // 1. Verificar si la URL REAL está presente (si no es una cadena vacía)
                                         if (finalUrl) {
                                           window.open(finalUrl, '_blank', 'noopener,noreferrer');

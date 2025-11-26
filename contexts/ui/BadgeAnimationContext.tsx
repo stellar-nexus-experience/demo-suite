@@ -29,6 +29,7 @@ export const useBadgeAnimation = () => {
       showBadgeAnimation: () => {
         // Badge animation skipped - provider not found
       },
+      isAnimationVisible: false,
     };
   }
   return context;

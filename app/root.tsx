@@ -24,11 +24,11 @@ export const RootProviders = ({ children }: RootProvidersProps) => {
             <ToastProvider>
               <AccountProvider>
                 <TransactionProvider>
-                  <FirebaseProvider>
-                    <BadgeAnimationProvider>
+                  <BadgeAnimationProvider>
+                    <FirebaseProvider>
                       <EscrowProvider>{children}</EscrowProvider>
-                    </BadgeAnimationProvider>
-                  </FirebaseProvider>
+                    </FirebaseProvider>
+                  </BadgeAnimationProvider>
                 </TransactionProvider>
               </AccountProvider>
             </ToastProvider>

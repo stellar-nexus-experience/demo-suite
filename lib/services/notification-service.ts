@@ -77,7 +77,6 @@ class NotificationService {
 
       return docRef.id;
     } catch (error) {
-      console.error('Error creating notification:', error);
       throw error;
     }
   }
@@ -121,7 +120,6 @@ class NotificationService {
         read: true,
       });
     } catch (error) {
-      console.error('Error marking notification as read:', error);
       throw error;
     }
   }
@@ -146,7 +144,6 @@ class NotificationService {
 
       await Promise.all(updatePromises);
     } catch (error) {
-      console.error('Error marking all notifications as read:', error);
       throw error;
     }
   }
@@ -165,7 +162,6 @@ class NotificationService {
       const snapshot = await getDocs(q);
       return snapshot.size;
     } catch (error) {
-      console.error('Error getting unread count:', error);
       return 0;
     }
   }
@@ -336,7 +332,6 @@ class NotificationService {
         demoName,
       });
     } catch (error) {
-      console.error('Error en notifyDemoCompleted:', error);
       return null;
     }
   }
@@ -364,7 +359,6 @@ class NotificationService {
         questName,
       });
     } catch (error) {
-      console.error('Error en notifyQuestCompleted:', error);
       return null;
     }
   }

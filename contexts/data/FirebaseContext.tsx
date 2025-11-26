@@ -105,7 +105,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       try {
         await loadDemoStats();
       } catch (error) {
-        console.error('Error loading demo stats:', error);
+        // Error loading demo stats
       }
 
       if (!walletData?.publicKey) {
@@ -183,7 +183,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       const accountData = await accountService.getAccountByWalletAddress(walletData.publicKey);
       setAccount(accountData);
     } catch (error) {
-      console.error('Error loading account data:', error);
       addToast({
         title: 'Error',
         message: 'Failed to load account data.',
@@ -220,7 +219,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
 
       setDemoStats(stats);
     } catch (error) {
-      console.error('Error loading demo stats:', error);
       // Don't show error toast for demo stats as it's not critical
     }
   };
@@ -337,7 +335,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
       try {
         await demoStatsService.incrementCompletion(demoId, completionTimeMinutes, finalScore);
       } catch (statsError) {
-        console.error('FirebaseContext: Failed to update demo stats:', statsError);
         // Don't fail the demo completion if stats tracking fails
       }
 
@@ -438,7 +435,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
           });
         }
       } catch (transactionError) {
-        console.error('FirebaseContext: Failed to add transaction to history:', transactionError);
         // Don't fail the demo completion if transaction logging fails
       }
 
@@ -513,7 +509,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
         duration: 3000,
       });
     } catch (error) {
-      console.error('Failed to clap demo:', error);
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to clap demo. Please try again.';
       addToast({
@@ -547,7 +542,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
 
       return feedbackId;
     } catch (error) {
-      console.error('Failed to submit mandatory feedback:', error);
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to submit feedback. Please try again.';
       addToast({
@@ -566,7 +560,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
     try {
       return await mandatoryFeedbackService.hasUserSubmittedFeedback(walletData.publicKey, demoId);
     } catch (error) {
-      console.error('Failed to check feedback submission:', error);
       return false;
     }
   };
@@ -578,7 +571,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
     try {
       return await mandatoryFeedbackService.getUserFeedback(walletData.publicKey);
     } catch (error) {
-      console.error('Failed to get user feedback:', error);
       return [];
     }
   };
@@ -588,7 +580,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
     try {
       return await mandatoryFeedbackService.getDemoFeedbackStats(demoId);
     } catch (error) {
-      console.error('Failed to get demo feedback stats:', error);
       return {
         totalFeedback: 0,
         averageRating: 0,

@@ -399,7 +399,6 @@ export const WalletSidebar = ({
                             }
                           }, 1500);
                         } catch (error) {
-                          console.error('Wallet modal error:', error);
                           const errorMessage =
                             error instanceof Error ? error.message : 'Unknown error';
 
@@ -870,7 +869,6 @@ export const WalletSidebar = ({
                             }
                           }, 1500);
                         } catch (error) {
-                          console.error('Wallet modal error:', error);
                           const errorMessage =
                             error instanceof Error ? error.message : 'Unknown error';
 

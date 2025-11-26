@@ -36,7 +36,7 @@ export const PokemonReferralCard: React.FC<PokemonReferralCardProps> = ({
           const rank = await leaderboardService.getUserRank(account.walletAddress);
           setUserRanking(rank);
         } catch (error) {
-          console.error('Error fetching user ranking:', error);
+          // Error fetching user ranking
         }
       }
     };
@@ -214,7 +214,6 @@ export const PokemonReferralCard: React.FC<PokemonReferralCardProps> = ({
           break;
       }
     } catch (error) {
-      console.error('Error sharing:', error);
       addToast({
         type: 'error',
         title: '❌ Share Failed',

@@ -80,7 +80,7 @@ export const DemoFeedbackModal: React.FC<DemoFeedbackModalProps> = ({
 
       onClose();
     } catch (err) {
-      console.error('Error in demo feedback:', err);
+      // Error in demo feedback
     } finally {
       setIsSubmitting(false);
     }
