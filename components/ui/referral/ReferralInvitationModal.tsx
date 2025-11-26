@@ -8,6 +8,7 @@ import { PokemonReferralCard } from './PokemonReferralCard';
 import { MyReferralsView } from './MyReferralsView';
 import { ReferralModalTab } from '@/lib/constants/modal.constants';
 import { REFERRAL_CODE } from '@/lib/constants/referral.constants';
+import { useToast } from '@/contexts/ui/ToastContext';
 
 interface ReferralInvitationModalProps {
   isOpen: boolean;
@@ -115,6 +116,7 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
   showBonusModal,
 }) => {
   const [activeTab, setActiveTab] = useState<ReferralModalTab>(ReferralModalTab.CARD);
+  const { addToast } = useToast();
 
   // If user has already applied a referral code and is on the apply-code tab, switch to card tab
   useEffect(() => {
@@ -130,6 +132,23 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
   const referralLink = `${window.location.origin}/?ref=${referralCode}`;
   const referrerName = account?.profile?.displayName || 'Nexus Explorer';
 
+  const handleCopyReferralCode = async () => {
+    try {
+      await navigator.clipboard.writeText(referralCode);
+      addToast({
+        title: 'Copied!',
+        message: `Referral code ${referralCode} copied to clipboard`,
+        type: 'success',
+      });
+    } catch (error) {
+      addToast({
+        title: 'Copy Failed',
+        message: 'Failed to copy referral code. Please try again.',
+        type: 'error',
+      });
+    }
+  };
+
   return (
     <div
       className='fixed inset-0 flex items-center justify-center z-50 p-4'
@@ -139,7 +158,33 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
       <div className='bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 w-full max-w-2xl mx-4 border border-white/20 shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto'>
         <div className='relative z-10'>
           <div className='flex justify-between items-center p-4 border-b border-gray-700'>
-            <h2 className='text-xl font-bold'>Referral Center</h2>
+            <div className='flex items-center gap-3'>
+              <h2 className='text-xl font-bold'>Referral Center</h2>
+              <div className='flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg border border-white/20'>
+                <span className='text-sm font-mono text-cyan-400 font-semibold'>{referralCode}</span>
+                <button
+                  onClick={handleCopyReferralCode}
+                  className='p-1.5 hover:bg-white/20 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-400'
+                  aria-label='Copy referral code'
+                  title='Copy referral code'
+                >
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='h-4 w-4 text-white'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z'
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
 
             {/* AÑADIR ESTE BOTÓN DE CIERRE */}
           </div>
