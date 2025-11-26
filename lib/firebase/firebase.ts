@@ -24,7 +24,7 @@ function getFirebaseConfig() {
   if (missingFields.length > 0) {
     throw new Error(
       `Missing required Firebase configuration: ${missingFields.join(', ')}. ` +
-      `Please set NEXT_PUBLIC_FIREBASE_${missingFields.join(', NEXT_PUBLIC_FIREBASE_')} environment variables.`
+        `Please set NEXT_PUBLIC_FIREBASE_${missingFields.join(', NEXT_PUBLIC_FIREBASE_')} environment variables.`
     );
   }
 
@@ -72,7 +72,7 @@ try {
     console.error('Firebase initialization failed:', error);
     throw error;
   }
-  
+
   // During build, if config is missing, we still need to throw
   // This ensures the build fails if env vars aren't set, rather than silently using placeholder
   throw error;

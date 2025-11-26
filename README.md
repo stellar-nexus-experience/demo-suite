@@ -1,6 +1,7 @@
 <div align="center">
 
 # 🌟 STELLAR NEXUS EXPERIENCE 🌟
+
 ### **The Escrow Arsenal | Master Trustless Work on Stellar**
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/josegomez-dev/stellar-nexus-experience)
@@ -11,9 +12,12 @@
 [![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)](https://firebase.google.com/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-**🎮 Experience the future of Web3 learning through interactive demos on Stellar blockchain**
+**🎮 Experience the future of Web3 learning through interactive demos on Stellar
+blockchain**
 
-[🚀 Live Demo](https://stellar-nexus-experience.vercel.app/) | [📚 Documentation](#-documentation) | [🎯 Features](#-key-features) | [🏆 Badges](#-the-escrow-arsenal-badges)
+[🚀 Live Demo](https://stellar-nexus-experience.vercel.app/) |
+[📚 Documentation](#-documentation) | [🎯 Features](#-key-features) |
+[🏆 Badges](#-the-escrow-arsenal-badges)
 
 <img src="https://img.shields.io/badge/Status-Live-success?style=for-the-badge" alt="Status" />
 <img src="https://img.shields.io/badge/Network-Stellar%20Testnet-7D00FF?style=for-the-badge" alt="Network" />
@@ -23,7 +27,9 @@
 
 ### 🎭 **Early adopters. Real builders. Stellar impact.**
 
-*The Escrow Arsenal turns early adoption into an adventure—earn XP, unlock badges, and co-create the future of Web3 alongside the first wave of Founders, Builders, and Developers.*
+_The Escrow Arsenal turns early adoption into an adventure—earn XP, unlock
+badges, and co-create the future of Web3 alongside the first wave of Founders,
+Builders, and Developers._
 
 </div>
 
@@ -31,13 +37,18 @@
 
 ## 🎯 **What is Stellar Nexus Experience?**
 
-**STELLAR NEXUS EXPERIENCE** is a revolutionary Web3 learning platform that transforms complex blockchain concepts into accessible, gamified experiences on the **Stellar blockchain**. Through our **Escrow Arsenal** demo suite, users master trustless work patterns while earning badges, XP, and unlocking exclusive content.
+**STELLAR NEXUS EXPERIENCE** is a revolutionary Web3 learning platform that
+transforms complex blockchain concepts into accessible, gamified experiences on
+the **Stellar blockchain**. Through our **Escrow Arsenal** demo suite, users
+master trustless work patterns while earning badges, XP, and unlocking exclusive
+content.
 
 ### 🌟 **Why This Matters**
 
 - 🎮 **Interactive Learning**: Hands-on demos replace boring documentation
 - 🔐 **Real Blockchain**: Actual Stellar network transactions, not simulations
-- 🤖 **AI-Powered Guidance**: NEXUS PRIME AI guardian walks you through every step
+- 🤖 **AI-Powered Guidance**: NEXUS PRIME AI guardian walks you through every
+  step
 - 🏆 **Gamified Progress**: Level up, earn badges, and unlock achievements
 - 🚀 **Production Ready**: Battle-tested architecture for enterprise use
 - 🌐 **Open Source**: Built for the community, by the community
@@ -52,22 +63,22 @@ Master the art of trustless work and earn these **legendary badges**:
 
 ### 🎖️ **Demo Mastery Badges**
 
-| Badge | Name | Description | Points | Rarity |
-|:-----:|:----:|:-----------:|:------:|:------:|
-| 🌟 | **Welcome Explorer** | Joined the Nexus Experience community | 10 XP | Common |
-| 💼 | **Escrow Expert** | Mastered basic escrow flow (Demo 1) | 30 XP | Rare |
-| ⚖️ | **Trust Guardian** | Resolved conflicts like a true arbitrator (Demo 2) | 50 XP | Epic |
-| 🏆 | **Stellar Champion** | Mastered micro-task marketplace (Demo 3) | 100 XP | Epic |
-| 👑 | **Nexus Master** | Master of ALL trustless work demos | 200 XP | **LEGENDARY** |
+| Badge |         Name         |                    Description                     | Points |    Rarity     |
+| :---: | :------------------: | :------------------------------------------------: | :----: | :-----------: |
+|  🌟   | **Welcome Explorer** |       Joined the Nexus Experience community        | 10 XP  |    Common     |
+|  💼   |  **Escrow Expert**   |        Mastered basic escrow flow (Demo 1)         | 30 XP  |     Rare      |
+|  ⚖️   |  **Trust Guardian**  | Resolved conflicts like a true arbitrator (Demo 2) | 50 XP  |     Epic      |
+|  🏆   | **Stellar Champion** |      Mastered micro-task marketplace (Demo 3)      | 100 XP |     Epic      |
+|  👑   |   **Nexus Master**   |         Master of ALL trustless work demos         | 200 XP | **LEGENDARY** |
 
 ### 🎯 **Quest & Community Badges**
 
-| Badge | Name | Challenge | Points | Unlock |
-|:-----:|:----:|:---------:|:------:|:------:|
-| 🐦 | **Social Butterfly** | Follow Nexus on X | 25 XP | Social Quest |
-| #️⃣ | **Hashtag Hero** | Post about #NexusExperience | 30 XP | Social Quest |
-| 💬 | **Discord Warrior** | Join our Discord community | 35 XP | Community Quest |
-| 🎯 | **Quest Master** | Complete ALL quests | 100 XP | Ultimate Badge |
+| Badge |         Name         |          Challenge          | Points |     Unlock      |
+| :---: | :------------------: | :-------------------------: | :----: | :-------------: |
+|  🐦   | **Social Butterfly** |      Follow Nexus on X      | 25 XP  |  Social Quest   |
+|  #️⃣   |   **Hashtag Hero**   | Post about #NexusExperience | 30 XP  |  Social Quest   |
+|  💬   | **Discord Warrior**  | Join our Discord community  | 35 XP  | Community Quest |
+|  🎯   |   **Quest Master**   |     Complete ALL quests     | 100 XP | Ultimate Badge  |
 
 </div>
 
@@ -75,7 +86,8 @@ Master the art of trustless work and earn these **legendary badges**:
 
 ## 🎮 **The Escrow Arsenal | Interactive Demo Suite**
 
-Experience **trustless work patterns** through three progressive demos on Stellar:
+Experience **trustless work patterns** through three progressive demos on
+Stellar:
 
 <div align="center">
 
@@ -94,8 +106,9 @@ graph LR
 
 </div>
 
-### **1. 🍼 Baby Steps to Riches** 
-*Basic Escrow Flow | Beginner Friendly*
+### **1. 🍼 Baby Steps to Riches**
+
+_Basic Escrow Flow | Beginner Friendly_
 
 <div align="center">
 <img src="https://img.shields.io/badge/Status-✅%20Available-success?style=flat-square" alt="Available" />
@@ -105,6 +118,7 @@ graph LR
 </div>
 
 **What You'll Learn:**
+
 - ✅ Initialize escrow contracts on Stellar
 - 💰 Fund escrow with Stellar assets
 - 📋 Complete milestone-based payments
@@ -112,6 +126,7 @@ graph LR
 - 🔐 Understanding trustless transactions
 
 **Key Concepts:**
+
 - Smart Contract basics on Stellar
 - Multi-signature accounts
 - Time-locked transactions
@@ -120,7 +135,8 @@ graph LR
 ---
 
 ### **2. 🎭 Drama Queen Escrow**
-*Dispute Resolution & Arbitration | Intermediate*
+
+_Dispute Resolution & Arbitration | Intermediate_
 
 <div align="center">
 <img src="https://img.shields.io/badge/Status-✅%20Available-success?style=flat-square" alt="Available" />
@@ -130,6 +146,7 @@ graph LR
 </div>
 
 **What You'll Learn:**
+
 - ⚖️ Raise and manage disputes
 - 📝 Present evidence and arguments
 - 👨‍⚖️ Arbitrator decision-making process
@@ -137,6 +154,7 @@ graph LR
 - 🛡️ Protecting both parties fairly
 
 **Key Concepts:**
+
 - Three-party escrow systems
 - Evidence management
 - Fair arbitration protocols
@@ -145,7 +163,8 @@ graph LR
 ---
 
 ### **3. 💼 Gig Economy Madness**
-*Micro-Task Marketplace | Advanced*
+
+_Micro-Task Marketplace | Advanced_
 
 <div align="center">
 <img src="https://img.shields.io/badge/Status-✅%20Available-success?style=flat-square" alt="Available" />
@@ -155,6 +174,7 @@ graph LR
 </div>
 
 **What You'll Learn:**
+
 - 📋 Create and post micro-tasks
 - 👥 Worker discovery and assignment
 - 💵 Automatic payment distribution
@@ -162,6 +182,7 @@ graph LR
 - 🔄 Multi-task escrow management
 
 **Key Concepts:**
+
 - Marketplace mechanics
 - Worker reputation systems
 - Bulk payment processing
@@ -170,7 +191,8 @@ graph LR
 ---
 
 ### **4. 👑 Nexus Master Achievement**
-*The Ultimate Challenge | Legendary*
+
+_The Ultimate Challenge | Legendary_
 
 <div align="center">
 <img src="https://img.shields.io/badge/Status-🔒%20Unlock%20by%20Completing%20All%20Demos-critical?style=flat-square" alt="Locked" />
@@ -180,6 +202,7 @@ graph LR
 </div>
 
 **Requirements:**
+
 - ✅ Complete ALL three main demos
 - ✅ Earn Escrow Expert badge
 - ✅ Earn Trust Guardian badge
@@ -187,6 +210,7 @@ graph LR
 - 🎯 Claim your place among the elite!
 
 **Rewards:**
+
 - 👑 **Legendary Nexus Master Badge**
 - 🎮 **Unlock Nexus Web3 Playground** (Mini-games & Advanced Features)
 - ⭐ **Elite Leaderboard Status**
@@ -200,13 +224,13 @@ Watch NEXUS PRIME evolve as you level up through the platform!
 
 <div align="center">
 
-| Phase | Level | Character | Description |
-|:-----:|:-----:|:---------:|:-----------:|
-| 🍼 | 1-4 | **Baby** | Just starting your Web3 journey |
-| 🧑 | 5-9 | **Teen** | Growing your blockchain knowledge |
-| 👨‍💼 | 10+ | **Expert** | NEXUS PRIME - Master of trustless work |
+| Phase | Level | Character  |              Description               |
+| :---: | :---: | :--------: | :------------------------------------: |
+|  🍼   |  1-4  |  **Baby**  |    Just starting your Web3 journey     |
+|  🧑   |  5-9  |  **Teen**  |   Growing your blockchain knowledge    |
+|  👨‍💼   |  10+  | **Expert** | NEXUS PRIME - Master of trustless work |
 
-*Level up by earning XP through demos, quests, and community engagement!*
+_Level up by earning XP through demos, quests, and community engagement!_
 
 </div>
 
@@ -215,26 +239,31 @@ Watch NEXUS PRIME evolve as you level up through the platform!
 ## ⚡ **Key Features**
 
 ### 🎯 **Interactive Learning Platform**
+
 - ✅ **Real Stellar Blockchain Integration** - Actual transactions on testnet
 - 🎮 **Gamified Experience** - Level up, earn badges, unlock achievements
-- 🤖 **AI Guardian (NEXUS PRIME)** - Voice-guided tutorials and context-aware help
+- 🤖 **AI Guardian (NEXUS PRIME)** - Voice-guided tutorials and context-aware
+  help
 - 📊 **Progress Tracking** - Real-time XP, levels, and completion stats
 - 🏆 **Leaderboard System** - Compete with other builders
 - 🎨 **Modern UI/UX** - Beautiful, responsive design with smooth animations
 
 ### 🔐 **Wallet Integration**
+
 - 💼 **Freighter Wallet** - Native Stellar wallet support
 - 🔑 **Albedo Wallet** - Alternative wallet option
 - ✍️ **Manual Address Input** - Connect with any Stellar address
 - 🌐 **Multi-Network Support** - Testnet and Mainnet ready
 
 ### 🎓 **Learning & Education**
+
 - 📚 **Step-by-Step Tutorials** - Guided learning paths
 - 🎤 **Voice Narration** - AI-powered audio instructions
 - 💡 **Interactive Tooltips** - Contextual help everywhere
 - 📖 **Comprehensive Documentation** - Learn at your own pace
 
 ### 🎁 **Rewards & Gamification**
+
 - 🎖️ **Badge System** - Collect 9 unique badges
 - ⚡ **XP & Leveling** - 1000 XP per level
 - 🎯 **Quest System** - Social and community challenges
@@ -242,6 +271,7 @@ Watch NEXUS PRIME evolve as you level up through the platform!
 - 🏅 **Referral Program** - Invite friends and earn bonuses
 
 ### 📊 **Analytics & Tracking**
+
 - 📈 **User Analytics Dashboard** - Track community growth
 - 💬 **Feedback System** - Mandatory feedback collection
 - 🎯 **Demo Completion Rates** - Performance metrics
@@ -254,6 +284,7 @@ Watch NEXUS PRIME evolve as you level up through the platform!
 ### **For Users** 👥
 
 1. **Visit the Live App**
+
    ```
    https://stellar-nexus-experience.vercel.app/
    ```
@@ -261,7 +292,6 @@ Watch NEXUS PRIME evolve as you level up through the platform!
 2. **Connect Your Wallet**
    - Install [Freighter](https://www.freighter.app/) for Stellar
    - Or use any Stellar-compatible wallet
-   
 3. **Start Learning**
    - Click the **Tutorial** button on the hero section
    - Meet **NEXUS PRIME**, your AI guardian
@@ -323,20 +353,24 @@ NEXT_PUBLIC_DEBUG_MODE=false
 <div align="center">
 
 ### **Frontend**
+
 ![Next.js](https://img.shields.io/badge/Next.js%2014-000000?style=for-the-badge&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 ### **Backend & Database**
+
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 ![Firestore](https://img.shields.io/badge/Firestore-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
 ### **Blockchain**
+
 ![Stellar](https://img.shields.io/badge/Stellar-7D00FF?style=for-the-badge&logo=stellar&logoColor=white)
 ![Stellar SDK](https://img.shields.io/badge/Stellar%20SDK-7D00FF?style=for-the-badge&logo=stellar&logoColor=white)
 
 ### **DevOps & Deployment**
+
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 
@@ -359,18 +393,18 @@ NEXT_PUBLIC_DEBUG_MODE=false
 
 <div align="center">
 
-| Metric | Value |
-|:------:|:-----:|
-| **Total Demos** | 3 Interactive + 1 Master Achievement |
-| **Badge Collection** | 9 Unique Badges (5 Demo + 4 Quest) |
-| **XP System** | 1000 XP per Level |
-| **Character Phases** | 3 Evolution Stages |
-| **Quest Challenges** | 4 Social & Community Quests |
-| **Supported Networks** | Stellar Testnet & Mainnet |
-| **Wallet Support** | Freighter, Albedo, Manual Input |
-| **Languages** | TypeScript, JavaScript |
-| **Lines of Code** | 15,000+ |
-| **Components** | 100+ Reusable Components |
+|         Metric         |                Value                 |
+| :--------------------: | :----------------------------------: |
+|    **Total Demos**     | 3 Interactive + 1 Master Achievement |
+|  **Badge Collection**  |  9 Unique Badges (5 Demo + 4 Quest)  |
+|     **XP System**      |          1000 XP per Level           |
+|  **Character Phases**  |          3 Evolution Stages          |
+|  **Quest Challenges**  |     4 Social & Community Quests      |
+| **Supported Networks** |      Stellar Testnet & Mainnet       |
+|   **Wallet Support**   |   Freighter, Albedo, Manual Input    |
+|     **Languages**      |        TypeScript, JavaScript        |
+|   **Lines of Code**    |               15,000+                |
+|     **Components**     |       100+ Reusable Components       |
 
 </div>
 
@@ -379,24 +413,28 @@ NEXT_PUBLIC_DEBUG_MODE=false
 ## 🎯 **Use Cases**
 
 ### **For Web3 Projects** 🏢
+
 - 📚 **Educate Users** - Transform technical docs into interactive experiences
 - 🎯 **Demo Your Tech** - Showcase complex features hands-on
 - 🚀 **Onboard New Users** - Reduce learning curve dramatically
 - 🎮 **Gamify Adoption** - Make learning fun and engaging
 
 ### **For Developers** 👨‍💻
+
 - 🧪 **Test Integration** - Real Stellar blockchain functionality
 - 🔧 **Framework Reference** - Production-ready architecture template
 - 🎨 **UI/UX Inspiration** - Modern Web3 design patterns
 - 📚 **Learn Best Practices** - Stellar development patterns
 
 ### **For Educators** 👨‍🏫
+
 - 📖 **Interactive Teaching** - Demonstrate blockchain in action
 - 🎯 **Real-World Examples** - Practical Web3 applications
 - 🤖 **AI-Assisted Learning** - NEXUS PRIME guides students
 - 🎮 **Engagement** - Gamification increases retention
 
 ### **For Businesses** 💼
+
 - 💡 **Explore Solutions** - Test decentralized work patterns
 - 🔍 **Research Opportunities** - Study different Web3 models
 - 🎯 **Proof of Concept** - Validate integration before building
@@ -408,51 +446,51 @@ NEXT_PUBLIC_DEBUG_MODE=false
 
 <div align="center">
 
-### **Phase 1: Foundation** ✅ *COMPLETED*
+### **Phase 1: Foundation** ✅ _COMPLETED_
 
-| Feature | Status |
-|:--------|:------:|
-| Core Architecture & Design System | ✅ |
-| Stellar Blockchain Integration | ✅ |
-| 3 Interactive Demos (Escrow Arsenal) | ✅ |
-| Badge & XP System | ✅ |
-| AI Guardian (NEXUS PRIME) | ✅ |
-| Firebase Integration | ✅ |
-| Wallet Support (Freighter/Albedo) | ✅ |
-| Quest & Referral System | ✅ |
-| Leaderboard System | ✅ |
-| Mini-Games Playground | ✅ |
-| Analytics Dashboard | ✅ |
-
----
-
-### **Phase 2: Enhancement** 🚧 *IN PROGRESS*
-
-| Feature | Status |
-|:--------|:------:|
-| Mobile App (React Native) | 🔄 |
-| Advanced AI Capabilities | 🔄 |
-| More Interactive Demos | 🔄 |
-| NFT Badges on Stellar | 📋 |
-| DAO Governance Demo | 📋 |
-| Multi-Language Support | 📋 |
+| Feature                              | Status |
+| :----------------------------------- | :----: |
+| Core Architecture & Design System    |   ✅   |
+| Stellar Blockchain Integration       |   ✅   |
+| 3 Interactive Demos (Escrow Arsenal) |   ✅   |
+| Badge & XP System                    |   ✅   |
+| AI Guardian (NEXUS PRIME)            |   ✅   |
+| Firebase Integration                 |   ✅   |
+| Wallet Support (Freighter/Albedo)    |   ✅   |
+| Quest & Referral System              |   ✅   |
+| Leaderboard System                   |   ✅   |
+| Mini-Games Playground                |   ✅   |
+| Analytics Dashboard                  |   ✅   |
 
 ---
 
-### **Phase 3: Expansion** 🔮 *PLANNED*
+### **Phase 2: Enhancement** 🚧 _IN PROGRESS_
 
-| Feature | Status |
-|:--------|:------:|
-| Multi-Chain Support (Ethereum, Solana) | 📅 |
-| Plugin System for Custom Demos | 📅 |
-| Community Marketplace | 📅 |
-| Educational Partnerships | 📅 |
-| Enterprise Solutions | 📅 |
-| White-Label Options | 📅 |
+| Feature                   | Status |
+| :------------------------ | :----: |
+| Mobile App (React Native) |   🔄   |
+| Advanced AI Capabilities  |   🔄   |
+| More Interactive Demos    |   🔄   |
+| NFT Badges on Stellar     |   📋   |
+| DAO Governance Demo       |   📋   |
+| Multi-Language Support    |   📋   |
+
+---
+
+### **Phase 3: Expansion** 🔮 _PLANNED_
+
+| Feature                                | Status |
+| :------------------------------------- | :----: |
+| Multi-Chain Support (Ethereum, Solana) |   📅   |
+| Plugin System for Custom Demos         |   📅   |
+| Community Marketplace                  |   📅   |
+| Educational Partnerships               |   📅   |
+| Enterprise Solutions                   |   📅   |
+| White-Label Options                    |   📅   |
 
 </div>
 
-*Legend: ✅ Completed | 🔄 In Progress | 📋 Next Up | 📅 Future*
+_Legend: ✅ Completed | 🔄 In Progress | 📋 Next Up | 📅 Future_
 
 ---
 
@@ -463,11 +501,13 @@ We welcome contributions from the **Stellar** and **Web3** community!
 ### **How to Contribute**
 
 1. **Fork the Repository**
+
    ```bash
    git fork https://github.com/josegomez-dev/stellar-nexus-experience
    ```
 
 2. **Create a Feature Branch**
+
    ```bash
    git checkout -b feature/amazing-feature
    ```
@@ -478,6 +518,7 @@ We welcome contributions from the **Stellar** and **Web3** community!
    - Add tests if applicable
 
 4. **Run Quality Checks**
+
    ```bash
    npm run lint
    npm run type-check
@@ -504,18 +545,22 @@ We welcome contributions from the **Stellar** and **Web3** community!
 ## 📚 **Documentation**
 
 ### **Developer Resources**
+
 - 📖 [Testing Guide](__tests__/README.md) - Comprehensive testing strategy
 - 🔐 [Environment Setup](.env.example) - Configuration guide
 - 🎨 [Design System](components/README.md) - Design tokens and patterns
 - 🏗️ [Architecture](docs/ARCHITECTURE.md) - System design overview
 
 ### **Stellar Resources**
-- 🌟 [Stellar Documentation](https://developers.stellar.org) - Official Stellar docs
+
+- 🌟 [Stellar Documentation](https://developers.stellar.org) - Official Stellar
+  docs
 - 💼 [Freighter Wallet](https://freighter.app/) - Recommended Stellar wallet
 - 🔍 [Stellar Expert](https://stellar.expert/) - Blockchain explorer
 - 🎓 [Stellar Quest](https://quest.stellar.org/) - Learn Stellar development
 
 ### **Framework Resources**
+
 - ⚡ [Next.js Documentation](https://nextjs.org/docs) - Next.js framework guide
 - 🔥 [Firebase Documentation](https://firebase.google.com/docs) - Firebase setup
 - 🎨 [TailwindCSS](https://tailwindcss.com/docs) - Utility-first CSS
@@ -525,6 +570,7 @@ We welcome contributions from the **Stellar** and **Web3** community!
 ## 🏆 **Why Choose Stellar Nexus Experience?**
 
 ### **For Stellar Projects** 🌟
+
 - ✅ **Native Integration** - Built specifically for Stellar blockchain
 - 🎯 **Proven Onboarding** - Reduce learning time by 70%
 - 🤖 **AI Support** - NEXUS PRIME handles user questions
@@ -532,6 +578,7 @@ We welcome contributions from the **Stellar** and **Web3** community!
 - 🔧 **Production Ready** - Battle-tested architecture
 
 ### **For the Community** 🤝
+
 - ⚡ **Open Source** - MIT licensed, community-driven
 - 🔒 **Secure** - Best practices and security audits
 - 🧪 **Well-Tested** - Comprehensive test coverage
@@ -539,6 +586,7 @@ We welcome contributions from the **Stellar** and **Web3** community!
 - 🌍 **Accessible** - Built for everyone
 
 ### **For Your Project** 🚀
+
 - 📦 **Easy Integration** - Fork and customize
 - 🎨 **Beautiful UI** - Modern, responsive design
 - ⚙️ **Configurable** - Adapt to your needs
@@ -549,7 +597,9 @@ We welcome contributions from the **Stellar** and **Web3** community!
 
 ## 📊 **Analytics & Metrics**
 
-Visit our **[Analytics Dashboard](https://stellar-nexus-experience.vercel.app/analytics)** to see:
+Visit our
+**[Analytics Dashboard](https://stellar-nexus-experience.vercel.app/analytics)**
+to see:
 
 - 📈 **Real-time Engagement** - Active users and interactions
 - 💬 **User Feedback** - Ratings and satisfaction scores
@@ -589,7 +639,8 @@ Visit our **[Analytics Dashboard](https://stellar-nexus-experience.vercel.app/an
 
 ### **📸 Screenshots Coming Soon!**
 
-*We're preparing stunning screenshots and demo videos to showcase the platform. Stay tuned!*
+_We're preparing stunning screenshots and demo videos to showcase the platform.
+Stay tuned!_
 
 </div>
 
@@ -597,7 +648,8 @@ Visit our **[Analytics Dashboard](https://stellar-nexus-experience.vercel.app/an
 
 ## 📄 **License**
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE)
+file for details.
 
 ```
 MIT License - Free to use, modify, and distribute
@@ -610,13 +662,15 @@ Built with ❤️ for the Stellar and Web3 community
 
 ## 🌟 **Join the Revolution**
 
-**The Escrow Arsenal** is more than just a demo platform—it's a movement to make Web3 accessible to everyone through **interactive learning**, **gamification**, and **AI-powered guidance**.
+**The Escrow Arsenal** is more than just a demo platform—it's a movement to make
+Web3 accessible to everyone through **interactive learning**, **gamification**,
+and **AI-powered guidance**.
 
 ### **Together, we're building the future of trustless work on Stellar** 🚀
 
 ---
 
-*Built with ❤️ by the community, for the community*
+_Built with ❤️ by the community, for the community_
 
 **Welcome to the Stellar Nexus Experience!** 🌟🤖🚀
 

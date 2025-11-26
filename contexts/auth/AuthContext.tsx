@@ -92,18 +92,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
           const userData = JSON.parse(existingUser);
           setUser(userData);
-        } catch (err) {
-        }
+        } catch (err) {}
       } else {
         // Auto-create user account when wallet connects
         const autoCreateUser = async () => {
           try {
             const defaultUsername = `User_${walletData.publicKey.slice(0, 8)}`;
             // Auto-create account is handled by Firebase context
-          } catch (error) {
-          }
+          } catch (error) {}
         };
-        
+
         autoCreateUser();
       }
     } else if (!isConnected && user) {
@@ -144,7 +142,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Save to localStorage (will be replaced with Firebase later)
       localStorage.setItem(`user_${walletAddress}`, JSON.stringify(newUser));
       setUser(newUser);
-
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to create account';
       setError(errorMessage);
@@ -170,7 +167,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Update last login time
       localStorage.setItem(`user_${walletAddress}`, JSON.stringify(user));
       setUser(user);
-
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to sign in';
       setError(errorMessage);
@@ -184,8 +180,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setUser(null);
       setError(null);
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 
   const updateUser = async (updates: Partial<User>): Promise<void> => {
@@ -233,7 +228,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       localStorage.setItem(`user_${user.walletAddress}`, JSON.stringify(updatedUser));
       setUser(updatedUser);
-
     } catch (err) {
       throw new Error('Failed to update demo progress');
     }
@@ -262,7 +256,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       localStorage.setItem(`user_${user.walletAddress}`, JSON.stringify(updatedUser));
       setUser(updatedUser);
-
     } catch (err) {
       throw new Error('Failed to add badge');
     }
@@ -305,7 +298,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       setIsLoading(true);
-      
+
       // Create user in local storage (existing logic)
       const newUser: User = {
         id: walletData.publicKey,
@@ -321,7 +314,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       localStorage.setItem(`user_${walletData.publicKey}`, JSON.stringify(newUser));
       setUser(newUser);
-      
     } catch (err) {
       throw new Error('Failed to initialize user');
     } finally {

@@ -13,10 +13,18 @@ import { getAllBadges } from '@/lib/firebase/firebase-types';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { accountService } from '@/lib/firebase/firebase-service';
 import { ReferralInvitationModal } from '@/components/ui/referral';
+import { ReferralBonusModal } from '@/components/ui/modals/ReferralBonusModal';
 import Image from 'next/image';
 
 export const UserDropdown = () => {
-  const { isConnected, walletData, disconnect, connect, isFreighterAvailable, isLoading: walletLoading } = useGlobalWallet();
+  const {
+    isConnected,
+    walletData,
+    disconnect,
+    connect,
+    isFreighterAvailable,
+    isLoading: walletLoading,
+  } = useGlobalWallet();
   const { isAuthenticated, user, getUserStats, updateUser } = useAuth();
   const { account, refreshAccountData } = useFirebase();
   const { addToast } = useToast();
@@ -29,6 +37,19 @@ export const UserDropdown = () => {
   const [isDisconnecting, setIsDisconnecting] = useState(false);
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // State for bonus modal
+  const [bonusModalData, setBonusModalData] = useState<{
+    isOpen: boolean;
+    referrerName: string;
+    bonus: number;
+    referralCode: string;
+  }>({
+    isOpen: false,
+    referrerName: '',
+    bonus: 0,
+    referralCode: '',
+  });
 
   // Listen for custom event to open dropdown and referral center
   useEffect(() => {
@@ -58,12 +79,17 @@ export const UserDropdown = () => {
     }
 
     // Check if user has earned all 5 top badges
-    const topBadges = ['welcome_explorer', 'escrow_expert', 'trust_guardian', 'stellar_champion', 'nexus_master'];
+    const topBadges = [
+      'welcome_explorer',
+      'escrow_expert',
+      'trust_guardian',
+      'stellar_champion',
+      'nexus_master',
+    ];
     const hasAllTopBadges = topBadges.every(badgeId => badgesEarnedArray.includes(badgeId));
 
     return hasAllTopBadges;
   }, [account]);
-
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -284,6 +310,15 @@ export const UserDropdown = () => {
     setTempName('');
   };
 
+  const handleShowBonusModal = (referrerName: string, bonus: number, referralCode: string) => {
+    setBonusModalData({
+      isOpen: true,
+      referrerName,
+      bonus,
+      referralCode,
+    });
+  };
+
   return (
     <div className='relative' ref={dropdownRef}>
       {/* Avatar Button */}
@@ -367,9 +402,8 @@ export const UserDropdown = () => {
                   <div className='flex items-center space-x-2'>
                     <Tooltip content={displayName} position='bottom'>
                       <h3
-                        className={`text-white font-semibold text-sm truncate transition-colors duration-200 ${
-                          isConnected ? 'cursor-pointer hover:text-blue-300' : 'cursor-default'
-                        }`}
+                        className={`text-white font-semibold text-sm truncate transition-colors duration-200 ${isConnected ? 'cursor-pointer hover:text-blue-300' : 'cursor-default'
+                          }`}
                         onClick={isConnected ? handleStartEditing : undefined}
                         title={isConnected ? 'Click to edit name' : 'Connect wallet to edit name'}
                       >
@@ -403,7 +437,6 @@ export const UserDropdown = () => {
                 </div> */}
               </div>
             </div>
-            
           </div>
 
           {/* Menu Items */}
@@ -412,11 +445,10 @@ export const UserDropdown = () => {
               <>
                 <a
                   href='/'
-                  className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 text-sm ${
-                    pathname === '/'
+                  className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 text-sm ${pathname === '/'
                       ? 'text-white bg-blue-500/20 border border-blue-500/30'
                       : 'text-white/80 hover:text-white hover:bg-white/10'
-                  }`}
+                    }`}
                 >
                   <span className='text-lg'>
                     <Image
@@ -444,13 +476,12 @@ export const UserDropdown = () => {
                         e.preventDefault();
                       }
                     }}
-                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 text-sm mb-2 ${
-                      !miniGamesUnlocked
+                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 text-sm mb-2 ${!miniGamesUnlocked
                         ? 'text-white/40 cursor-not-allowed'
                         : pathname === '/mini-games'
                           ? 'text-white bg-purple-500/20 border border-purple-500/30'
                           : 'text-white/80 hover:text-white hover:bg-white/10'
-                    }`}
+                      }`}
                   >
                     <span className='text-lg'>
                       <Image
@@ -487,7 +518,7 @@ export const UserDropdown = () => {
                     onClick={() => {
                       // Close the dropdown
                       setIsOpen(false);
-                      
+
                       // Dispatch event to open leaderboard sidebar (works on all pages)
                       window.dispatchEvent(new CustomEvent('openLeaderboard'));
                     }}
@@ -510,7 +541,7 @@ export const UserDropdown = () => {
                 </div>
 
                 <hr />
-              
+
                 <button
                   onClick={handleDisconnect}
                   disabled={isDisconnecting || walletLoading}
@@ -539,6 +570,17 @@ export const UserDropdown = () => {
         isOpen={isReferralModalOpen}
         onClose={() => setIsReferralModalOpen(false)}
         account={account}
+        onAccountUpdate={refreshAccountData}
+        showBonusModal={handleShowBonusModal}
+      />
+
+      {/* Referral Bonus Modal */}
+      <ReferralBonusModal
+        isOpen={bonusModalData.isOpen}
+        onClose={() => setBonusModalData(prev => ({ ...prev, isOpen: false }))}
+        referrerName={bonusModalData.referrerName}
+        bonusEarned={bonusModalData.bonus}
+        referralCode={bonusModalData.referralCode}
       />
     </div>
   );

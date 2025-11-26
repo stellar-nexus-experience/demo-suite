@@ -13,12 +13,12 @@ export const Footer = () => {
           {/* App Information */}
           <div className='max-w-2xl mx-auto'>
             <div className='flex items-center justify-center space-x-3 mb-4'>
-              <div className=''>
+              <div className='-mt-4'>
                 <Image
                   src='/images/logo/logoicon.png'
                   alt='STELLAR NEXUS'
-                  width={100}
-                  height={100}
+                  width={150}
+                  height={150}
                 />
               </div>
               <div>
@@ -33,8 +33,11 @@ export const Footer = () => {
               </div>
             </div>
             <p className='text-white/80 text-sm mb-4'>
-              Master the art of <span className='text-brand-200 font-semibold'>Trustless Work</span> escrow management on the&nbsp;
-              <span className='text-brand-200 font-semibold'>Stellar</span> blockchain. <br /> Experience the future of decentralized work with <span className='text-brand-200 font-semibold'>Stellar Nexus Experience</span>.
+              Master the art of <span className='text-brand-200 font-semibold'>Trustless Work</span>{' '}
+              escrow management on the&nbsp;
+              <span className='text-brand-200 font-semibold'>Stellar</span> blockchain. <br />{' '}
+              Experience the future of decentralized work with{' '}
+              <span className='text-brand-200 font-semibold'>Stellar Nexus Experience</span>.
             </p>
           </div>
         </div>

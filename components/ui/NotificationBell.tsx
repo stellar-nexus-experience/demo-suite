@@ -25,7 +25,7 @@ export const NotificationBell: React.FC = () => {
 
     const unsubscribe = notificationService.subscribeToUserNotifications(
       account.id,
-      (newNotifications) => {
+      newNotifications => {
         setNotifications(newNotifications);
         const unread = newNotifications.filter(n => !n.read).length;
         setUnreadCount(unread);
@@ -63,7 +63,7 @@ export const NotificationBell: React.FC = () => {
 
   const handleMarkAllAsRead = async () => {
     if (!account) return;
-    
+
     try {
       await notificationService.markAllAsRead(account.id);
     } catch (error) {
@@ -85,9 +85,8 @@ export const NotificationBell: React.FC = () => {
       }
     }
     // ✅ AÑADIDO: Navegación para Logros
-     else if (notification.type === 'demo_completed' || notification.type === 'quest_completed') {
-      
-       //router.push('/profile/rewards') //eso es una ruta que se podria crear gorro
+    else if (notification.type === 'demo_completed' || notification.type === 'quest_completed') {
+      //router.push('/profile/rewards') //eso es una ruta que se podria crear gorro
     }
 
     setIsOpen(false);
@@ -107,14 +106,12 @@ export const NotificationBell: React.FC = () => {
         return '😔';
       case 'challenge_expired':
         return '⏰';
-       // ✅ AÑADIDO: Notificación de Demo/Misión
+      // ✅ AÑADIDO: Notificación de Demo/Misión
       case 'demo_completed':
       case 'quest_completed':
-        return '🎖️'; // O '🏆' o '';  
+        return '🎖️'; // O '🏆' o '';
       default:
         return '🔔';
-     
-      
     }
   };
 
@@ -135,7 +132,7 @@ export const NotificationBell: React.FC = () => {
       // ✅ AÑADIDO: Notificación de Demostración/Misión
       case 'demo_completed':
       case 'quest_completed':
-        return 'from-yellow-600/20 to-purple-600/20 border-yellow-500/30'  
+        return 'from-yellow-600/20 to-purple-600/20 border-yellow-500/30';
       default:
         return 'from-white/5 to-white/10 border-white/20';
     }
@@ -162,12 +159,7 @@ export const NotificationBell: React.FC = () => {
         className='relative p-2 rounded-lg hover:bg-white/10 transition-all duration-200'
         aria-label='Notifications'
       >
-        <svg
-          className='w-6 h-6 text-white'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
-        >
+        <svg className='w-6 h-6 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
           <path
             strokeLinecap='round'
             strokeLinejoin='round'
@@ -211,7 +203,7 @@ export const NotificationBell: React.FC = () => {
               </div>
             ) : (
               <div className='space-y-2'>
-                {notifications.map((notification) => (
+                {notifications.map(notification => (
                   <button
                     key={notification.id}
                     onClick={() => handleNotificationClick(notification)}
@@ -230,9 +222,7 @@ export const NotificationBell: React.FC = () => {
                       {/* Content */}
                       <div className='flex-1 min-w-0'>
                         <div className='flex items-start justify-between gap-2 mb-1'>
-                          <h4 className='text-white font-semibold text-sm'>
-                            {notification.title}
-                          </h4>
+                          <h4 className='text-white font-semibold text-sm'>{notification.title}</h4>
                           {!notification.read && (
                             <div className='w-2 h-2 bg-cyan-400 rounded-full flex-shrink-0 mt-1 animate-pulse' />
                           )}
@@ -240,27 +230,25 @@ export const NotificationBell: React.FC = () => {
                         <p className='text-white/80 text-xs mb-2 break-words'>
                           {notification.message}
                         </p>
-                        
+
                         <div className='flex items-center gap-2 flex-wrap'>
-                        {notification.data?.pointsAmount && (
-                          <div className='inline-flex items-center gap-1 text-xs font-semibold text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded'>
-                            💰 {notification.data.pointsAmount} points
-                          </div>
-                        )}
-                        {/* Mostrar XP Ganado (NUEVO) */}
-                        {notification.data?.xpEarned && (
-                          <div className='inline-flex items-center gap-1 text-xs font-semibold text-green-400 bg-green-500/20 px-2 py-1 rounded'>
-                            ✨ {notification.data.xpEarned} XP
-                          </div>
-                        )}
-                        {/* Mostrar Insignia Ganada (NUEVO) */}
-                        {notification.data?.badgeName && (
-
-
-                           <div className='inline-flex items-center gap-1 text-xs font-semibold text-purple-400 bg-purple-500/20 px-2 py-1 rounded'>
-                            🏅 {notification.data.badgeName}
+                          {notification.data?.pointsAmount && (
+                            <div className='inline-flex items-center gap-1 text-xs font-semibold text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded'>
+                              💰 {notification.data.pointsAmount} points
                             </div>
-                        )}
+                          )}
+                          {/* Mostrar XP Ganado (NUEVO) */}
+                          {notification.data?.xpEarned && (
+                            <div className='inline-flex items-center gap-1 text-xs font-semibold text-green-400 bg-green-500/20 px-2 py-1 rounded'>
+                              ✨ {notification.data.xpEarned} XP
+                            </div>
+                          )}
+                          {/* Mostrar Insignia Ganada (NUEVO) */}
+                          {notification.data?.badgeName && (
+                            <div className='inline-flex items-center gap-1 text-xs font-semibold text-purple-400 bg-purple-500/20 px-2 py-1 rounded'>
+                              🏅 {notification.data.badgeName}
+                            </div>
+                          )}
                         </div>
 
                         <div className='text-white/40 text-xs mt-2'>
@@ -287,4 +275,3 @@ export const NotificationBell: React.FC = () => {
     </div>
   );
 };
-

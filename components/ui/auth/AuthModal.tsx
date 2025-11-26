@@ -253,7 +253,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode }) =
     setFormData({ username: '', email: '' });
   }, [mode]);
 
-
   // Handle escape key to close modal
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -290,7 +289,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode }) =
       setIsSubmitting(false);
     }
   };
-
 
   const switchMode = () => {
     setCurrentMode(currentMode === 'signup' ? 'signin' : 'signup');
@@ -537,7 +535,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, mode }) =
           </svg>
         </button>
       </div>
-
     </div>
   );
 };

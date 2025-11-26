@@ -143,7 +143,9 @@ export default function RetroArcadeSidebar({
                       <div className='flex items-center space-x-3'>
                         <div className='text-2xl'>{gameOption.icon}</div>
                         <div className='flex-1 min-w-0'>
-                          <h4 className='font-bold text-white text-sm truncate'>{gameOption.title}</h4>
+                          <h4 className='font-bold text-white text-sm truncate'>
+                            {gameOption.title}
+                          </h4>
                           <p className='text-white/60 text-xs truncate'>{gameOption.subtitle}</p>
                         </div>
                         <div className='text-right flex-shrink-0'>

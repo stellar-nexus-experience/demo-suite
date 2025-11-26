@@ -23,25 +23,29 @@ export const AccountAnalytics: React.FC<AccountAnalyticsProps> = ({ className = 
   const getThemeClasses = () => {
     if (theme === 'light') {
       return {
-        container: 'bg-gradient-to-br from-white to-gray-50 border-gray-200/50 text-gray-800 backdrop-blur-sm rounded-2xl shadow-2xl',
+        container:
+          'bg-gradient-to-br from-white to-gray-50 border-gray-200/50 text-gray-800 backdrop-blur-sm rounded-2xl shadow-2xl',
         card: 'bg-gradient-to-br from-white to-gray-50 border-gray-200/50 hover:from-gray-50 hover:to-gray-100 backdrop-blur-sm rounded-xl shadow-lg',
         text: 'text-gray-800',
         textSecondary: 'text-gray-600',
         textMuted: 'text-gray-500',
         input: 'bg-white border-gray-300 text-gray-800 placeholder-gray-500',
         select: 'bg-white border-gray-300 text-gray-800',
-        statsCard: 'bg-gradient-to-br from-white to-gray-50 border-gray-200/50 backdrop-blur-sm rounded-xl shadow-lg',
+        statsCard:
+          'bg-gradient-to-br from-white to-gray-50 border-gray-200/50 backdrop-blur-sm rounded-xl shadow-lg',
       };
     } else {
       return {
-        container: 'bg-gradient-to-br from-slate-900 to-slate-800 border-white/20 text-white backdrop-blur-sm rounded-2xl shadow-2xl',
+        container:
+          'bg-gradient-to-br from-slate-900 to-slate-800 border-white/20 text-white backdrop-blur-sm rounded-2xl shadow-2xl',
         card: 'bg-gradient-to-br from-slate-800/60 to-slate-900/60 border-white/20 hover:from-slate-700/60 hover:to-slate-800/60 backdrop-blur-sm rounded-xl shadow-lg',
         text: 'text-white',
         textSecondary: 'text-gray-300',
         textMuted: 'text-gray-400',
         input: 'bg-white/5 border-white/20 text-white placeholder-gray-400',
         select: 'bg-white/5 border-white/20 text-white',
-        statsCard: 'bg-gradient-to-br from-slate-800/60 to-slate-900/60 border-white/20 backdrop-blur-sm rounded-xl shadow-lg',
+        statsCard:
+          'bg-gradient-to-br from-slate-800/60 to-slate-900/60 border-white/20 backdrop-blur-sm rounded-xl shadow-lg',
       };
     }
   };
@@ -203,23 +207,23 @@ export const AccountAnalytics: React.FC<AccountAnalyticsProps> = ({ className = 
 
         {/* Summary Stats */}
         <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mb-6'>
-            <div className={`p-3 ${themeClasses.statsCard}`}>
+          <div className={`p-3 ${themeClasses.statsCard}`}>
             <p className={`text-2xl font-bold ${themeClasses.text}`}>{accounts.length}</p>
             <p className={`text-sm ${themeClasses.textSecondary}`}>Total Users</p>
           </div>
-            <div className={`p-3 ${themeClasses.statsCard}`}>
+          <div className={`p-3 ${themeClasses.statsCard}`}>
             <p className='text-2xl font-bold text-green-600'>
               {accounts.filter(a => a.isActive).length}
             </p>
             <p className={`text-sm ${themeClasses.textSecondary}`}>Active Users</p>
           </div>
-            <div className={`p-3 ${themeClasses.statsCard}`}>
+          <div className={`p-3 ${themeClasses.statsCard}`}>
             <p className='text-2xl font-bold text-blue-600'>
               {accounts.reduce((sum, a) => sum + a.totalPoints, 0).toLocaleString()}
             </p>
             <p className={`text-sm ${themeClasses.textSecondary}`}>Total Points</p>
           </div>
-            <div className={`p-3 ${themeClasses.statsCard}`}>
+          <div className={`p-3 ${themeClasses.statsCard}`}>
             <p className='text-2xl font-bold text-purple-600'>
               {accounts.reduce((sum, a) => sum + a.demosCompleted.length, 0)}
             </p>

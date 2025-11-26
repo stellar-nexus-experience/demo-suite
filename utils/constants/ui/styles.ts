@@ -109,4 +109,3 @@ export const Z_INDEX = {
   preloader: 99999,
   startScreen: 100000,
 } as const;
-

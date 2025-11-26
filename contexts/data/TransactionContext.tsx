@@ -1,7 +1,13 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
-import { useFirebase } from './FirebaseContext';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+  useCallback,
+} from 'react';
 import { useGlobalWallet } from '../wallet/WalletContext';
 import { accountService } from '@/lib/firebase/firebase-service';
 import { TransactionRecord } from '@/lib/firebase/firebase-types';
@@ -11,7 +17,15 @@ export interface TransactionStatus {
   status: 'pending' | 'success' | 'failed';
   message: string;
   timestamp: Date;
-  type: 'escrow' | 'milestone' | 'fund' | 'approve' | 'release' | 'dispute' | 'demo_completion' | 'badge_earned';
+  type:
+    | 'escrow'
+    | 'milestone'
+    | 'fund'
+    | 'approve'
+    | 'release'
+    | 'dispute'
+    | 'demo_completion'
+    | 'badge_earned';
   demoId?: string;
   amount?: string;
   asset?: string;
@@ -20,7 +34,6 @@ export interface TransactionStatus {
   points?: number;
   badgeId?: string;
 }
-
 
 export function cleanObject<T extends Record<string, any>>(obj: T): T {
   const newObj = { ...obj };
@@ -32,8 +45,6 @@ export function cleanObject<T extends Record<string, any>>(obj: T): T {
   });
   return newObj;
 }
-
-
 
 interface TransactionContextType {
   transactions: TransactionStatus[];
@@ -103,7 +114,9 @@ export const TransactionProvider = ({ children }: TransactionProviderProps) => {
     }
   }, [walletData?.publicKey, refreshTransactions]);
 
-  const addTransaction = async (transaction: Omit<TransactionStatus, 'timestamp'>): Promise<TransactionStatus> => {
+  const addTransaction = async (
+    transaction: Omit<TransactionStatus, 'timestamp'>
+  ): Promise<TransactionStatus> => {
     const newTransaction: TransactionStatus = {
       ...transaction,
       timestamp: new Date(),
@@ -113,31 +126,31 @@ export const TransactionProvider = ({ children }: TransactionProviderProps) => {
     setTransactions(prev => [newTransaction, ...prev]);
 
     // Persist to Firebase
-     if (walletData?.publicKey) {
-  try {
-    const rawPayload = {
-      id: newTransaction.hash,
-      hash: newTransaction.hash,
-      status: newTransaction.status,
-      message: newTransaction.message,
-      type: newTransaction.type,
-      demoId: newTransaction.demoId,
-      amount: newTransaction.amount,
-      asset: newTransaction.asset,
-      explorerUrl: newTransaction.explorerUrl,
-      stellarExpertUrl: newTransaction.stellarExpertUrl,
-      points: newTransaction.points,
-      badgeId: newTransaction.badgeId,
-    };
+    if (walletData?.publicKey) {
+      try {
+        const rawPayload = {
+          id: newTransaction.hash,
+          hash: newTransaction.hash,
+          status: newTransaction.status,
+          message: newTransaction.message,
+          type: newTransaction.type,
+          demoId: newTransaction.demoId,
+          amount: newTransaction.amount,
+          asset: newTransaction.asset,
+          explorerUrl: newTransaction.explorerUrl,
+          stellarExpertUrl: newTransaction.stellarExpertUrl,
+          points: newTransaction.points,
+          badgeId: newTransaction.badgeId,
+        };
 
-    // ⬇️ APLICA LA LIMPIEZA AQUÍ ⬇️
-    const transactionPayload = cleanObject(rawPayload); 
-    
-    await accountService.addTransaction(walletData.publicKey, transactionPayload);
-  } catch (error) {
-    console.error('Failed to save transaction to Firebase:', error);
-  }
-}
+        // ⬇️ APLICA LA LIMPIEZA AQUÍ ⬇️
+        const transactionPayload = cleanObject(rawPayload);
+
+        await accountService.addTransaction(walletData.publicKey, transactionPayload);
+      } catch (error) {
+        console.error('Failed to save transaction to Firebase:', error);
+      }
+    }
 
     return newTransaction;
   };

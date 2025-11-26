@@ -51,7 +51,7 @@ export const testAccountLoading = async (publicKey: string) => {
     const { Server } = StellarSDK;
     const server = await getStellarServer('https://horizon-testnet.stellar.org');
 
-      const account = await server.loadAccount(publicKey);
+    const account = await server.loadAccount(publicKey);
 
     return {
       success: true,

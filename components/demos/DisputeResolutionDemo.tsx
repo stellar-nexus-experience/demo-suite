@@ -63,7 +63,7 @@ export const DisputeResolutionDemo = () => {
 
   // Individual loading states for each milestone
   const [milestoneLoadingStates, setMilestoneLoadingStates] = useState<Record<string, boolean>>({});
-  
+
   // Individual loading states for each dispute resolution
   const [disputeLoadingStates, setDisputeLoadingStates] = useState<Record<string, boolean>>({});
 
@@ -950,7 +950,9 @@ export const DisputeResolutionDemo = () => {
           {/* Role Selection - Only show after escrow is funded */}
           {contractId && escrowData?.metadata?.funded && (
             <div className='mb-6 sm:mb-8 p-4 sm:p-6 bg-white/5 rounded-lg border border-white/20'>
-              <h3 className='text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4'>👤 Select Your Role</h3>
+              <h3 className='text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4'>
+                👤 Select Your Role
+              </h3>
               <div className='flex flex-col sm:flex-row gap-3 sm:gap-0 sm:space-x-4'>
                 {(['client', 'worker', 'arbitrator'] as const).map(role => {
                   // Check if worker button should be highlighted (user needs to switch to worker for pending milestones)
@@ -991,7 +993,10 @@ export const DisputeResolutionDemo = () => {
                     shouldHighlightWorker || shouldHighlightClient || shouldHighlightArbitrator;
 
                   return (
-                    <div key={role} className={`${isHighlighted ? 'relative' : ''} w-full sm:w-auto`}>
+                    <div
+                      key={role}
+                      className={`${isHighlighted ? 'relative' : ''} w-full sm:w-auto`}
+                    >
                       <button
                         onClick={() => setCurrentRole(role)}
                         className={`w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base ${
@@ -1038,7 +1043,8 @@ export const DisputeResolutionDemo = () => {
                 })}
               </div>
               <p className='text-xs sm:text-sm text-white/60 mt-2 sm:mt-3'>
-                Current role: <span className='text-warning-300 capitalize font-semibold'>{currentRole}</span>
+                Current role:{' '}
+                <span className='text-warning-300 capitalize font-semibold'>{currentRole}</span>
               </p>
             </div>
           )}
@@ -1289,7 +1295,9 @@ export const DisputeResolutionDemo = () => {
           {contractId && escrowData?.metadata?.funded && (
             <div className='mb-6 sm:mb-8'>
               <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6'>
-                <h3 className='text-lg sm:text-xl font-semibold text-white'>📋 Milestones Management</h3>
+                <h3 className='text-lg sm:text-xl font-semibold text-white'>
+                  📋 Milestones Management
+                </h3>
                 {/* Single notification for role guidance */}
                 {currentRole !== 'worker' && milestones.some(m => m.status === 'pending') && (
                   <div className='px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500/10 border border-blue-400/30 rounded-lg w-full sm:w-auto'>
@@ -1316,8 +1324,12 @@ export const DisputeResolutionDemo = () => {
                   >
                     <div className='flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4 mb-3 sm:mb-4'>
                       <div className='flex-1 w-full sm:w-auto'>
-                        <h4 className='text-base sm:text-lg font-semibold text-white mb-1.5 sm:mb-2'>{milestone.title}</h4>
-                        <p className='text-sm sm:text-base text-white/70 mb-2 sm:mb-3'>{milestone.description}</p>
+                        <h4 className='text-base sm:text-lg font-semibold text-white mb-1.5 sm:mb-2'>
+                          {milestone.title}
+                        </h4>
+                        <p className='text-sm sm:text-base text-white/70 mb-2 sm:mb-3'>
+                          {milestone.description}
+                        </p>
                         <div className='flex items-center gap-2 sm:gap-4 text-sm flex-wrap'>
                           <span className='text-warning-300 font-semibold'>
                             {(parseInt(milestone.amount) / 100000).toFixed(1)} USDC
@@ -1392,7 +1404,9 @@ export const DisputeResolutionDemo = () => {
                     {/* Dispute Input for Client */}
                     {currentRole === 'client' && milestone.status === 'completed' && (
                       <div className='mt-3 sm:mt-4 p-3 sm:p-4 bg-red-500/10 border border-red-400/30 rounded-lg'>
-                        <h5 className='text-xs sm:text-sm font-medium text-red-300 mb-2'>Raise Dispute</h5>
+                        <h5 className='text-xs sm:text-sm font-medium text-red-300 mb-2'>
+                          Raise Dispute
+                        </h5>
                         <div className='flex space-x-2'>
                           <input
                             type='text'

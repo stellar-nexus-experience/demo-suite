@@ -96,7 +96,10 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ classNam
       <div className={themeClasses.headerContainer}>
         <div className='flex items-center justify-between'>
           <div>
-            <div className='flex items-center space-x-2 cursor-pointer' onClick={() => router.push('/')}>
+            <div
+              className='flex items-center space-x-2 cursor-pointer'
+              onClick={() => router.push('/')}
+            >
               <Image src='/images/logo/logoicon.png' alt='Nexus Logo' width={100} height={100} />
               <Image src='/images/logo/iconletter.png' alt='Nexus Logo' width={100} height={100} />
             </div>
@@ -129,9 +132,11 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ classNam
               <span className='mr-2'>{view.icon}</span>
               {view.label}
               {view.comingSoon && (
-                <div className={`absolute -top-2 -right-2 bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs font-bold px-2 py-1 rounded-full border-2 ${
-                  theme === 'light' ? 'border-white' : 'border-gray-900'
-                } animate-pulse shadow-lg`}>
+                <div
+                  className={`absolute -top-2 -right-2 bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs font-bold px-2 py-1 rounded-full border-2 ${
+                    theme === 'light' ? 'border-white' : 'border-gray-900'
+                  } animate-pulse shadow-lg`}
+                >
                   Soon
                 </div>
               )}

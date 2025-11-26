@@ -1,14 +1,14 @@
-import { 
-  collection, 
-  doc, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  query, 
-  where, 
-  orderBy, 
-  limit, 
-  getDocs, 
+import {
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+  limit,
+  getDocs,
   getDoc,
   serverTimestamp,
   Timestamp,
@@ -107,17 +107,22 @@ class GameSocialService {
   /**
    * Search users by username (for @ mentions)
    */
-  async searchUsers(searchQuery: string, maxResults: number = 10): Promise<Array<{
-    id: string;
-    username: string;
-    displayName: string;
-    walletAddress: string;
-    level: number;
-    points: number;
-  }>> {
+  async searchUsers(
+    searchQuery: string,
+    maxResults: number = 10
+  ): Promise<
+    Array<{
+      id: string;
+      username: string;
+      displayName: string;
+      walletAddress: string;
+      level: number;
+      points: number;
+    }>
+  > {
     try {
       const normalizedQuery = searchQuery.toLowerCase().trim();
-      
+
       // Query users where username starts with the search query
       const usersQuery = query(
         collection(db, 'accounts'),
@@ -131,7 +136,7 @@ class GameSocialService {
           const data = doc.data();
           const username = data.profile?.username || '';
           const displayName = data.profile?.displayName || username || 'Anonymous';
-          
+
           return {
             id: doc.id,
             username,
@@ -141,10 +146,11 @@ class GameSocialService {
             points: data.totalPoints || 0,
           };
         })
-        .filter(user => 
-          user.username.toLowerCase().includes(normalizedQuery) ||
-          user.displayName.toLowerCase().includes(normalizedQuery) ||
-          user.walletAddress.toLowerCase().includes(normalizedQuery)
+        .filter(
+          user =>
+            user.username.toLowerCase().includes(normalizedQuery) ||
+            user.displayName.toLowerCase().includes(normalizedQuery) ||
+            user.walletAddress.toLowerCase().includes(normalizedQuery)
         )
         .slice(0, maxResults);
 
@@ -156,8 +162,14 @@ class GameSocialService {
   }
 
   // ============ GAME CHAT ============
-  
-  async sendGameMessage(gameId: string, userId: string, username: string, message: string, type: GameMessage['type'] = 'chat') {
+
+  async sendGameMessage(
+    gameId: string,
+    userId: string,
+    username: string,
+    message: string,
+    type: GameMessage['type'] = 'chat'
+  ) {
     try {
       const messageData = {
         gameId,
@@ -169,10 +181,10 @@ class GameSocialService {
       };
 
       await addDoc(collection(db, MESSAGES_COLLECTION), messageData);
-      
+
       // Clean old messages if limit exceeded
       await this.cleanOldMessages(gameId);
-      
+
       return { success: true };
     } catch (error) {
       console.error('Error sending message:', error);
@@ -190,10 +202,13 @@ class GameSocialService {
       );
 
       const snapshot = await getDocs(q);
-      const messages: GameMessage[] = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as GameMessage));
+      const messages: GameMessage[] = snapshot.docs.map(
+        doc =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          }) as GameMessage
+      );
 
       return messages.reverse(); // Return in chronological order
     } catch (error) {
@@ -202,7 +217,11 @@ class GameSocialService {
     }
   }
 
-  subscribeToGameMessages(gameId: string, callback: (messages: GameMessage[]) => void, maxMessages: number = 50) {
+  subscribeToGameMessages(
+    gameId: string,
+    callback: (messages: GameMessage[]) => void,
+    maxMessages: number = 50
+  ) {
     const q = query(
       collection(db, MESSAGES_COLLECTION),
       where('gameId', '==', gameId),
@@ -210,12 +229,15 @@ class GameSocialService {
       limit(maxMessages)
     );
 
-    return onSnapshot(q, (snapshot) => {
-      const messages: GameMessage[] = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as GameMessage));
-      
+    return onSnapshot(q, snapshot => {
+      const messages: GameMessage[] = snapshot.docs.map(
+        doc =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          }) as GameMessage
+      );
+
       callback(messages.reverse());
     });
   }
@@ -229,14 +251,12 @@ class GameSocialService {
       );
 
       const snapshot = await getDocs(q);
-      
+
       if (snapshot.size > MAX_MESSAGES_PER_GAME) {
         // Delete oldest messages
         const messagesToDelete = snapshot.docs.slice(MAX_MESSAGES_PER_GAME);
-        
-        await Promise.all(
-          messagesToDelete.map(doc => deleteDoc(doc.ref))
-        );
+
+        await Promise.all(messagesToDelete.map(doc => deleteDoc(doc.ref)));
       }
     } catch (error) {
       console.error('Error cleaning old messages:', error);
@@ -244,7 +264,7 @@ class GameSocialService {
   }
 
   // ============ CHALLENGES ============
-  
+
   async createChallenge(
     gameId: string,
     challengerId: string,
@@ -278,7 +298,7 @@ class GameSocialService {
       };
 
       const docRef = await addDoc(collection(db, CHALLENGES_COLLECTION), challengeData);
-      
+
       return { success: true, id: docRef.id };
     } catch (error) {
       console.error('Error creating challenge:', error);
@@ -297,10 +317,13 @@ class GameSocialService {
       );
 
       const snapshot = await getDocs(q);
-      const challenges: Challenge[] = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as Challenge));
+      const challenges: Challenge[] = snapshot.docs.map(
+        doc =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          }) as Challenge
+      );
 
       return challenges;
     } catch (error) {
@@ -318,12 +341,15 @@ class GameSocialService {
       limit(30)
     );
 
-    return onSnapshot(q, (snapshot) => {
-      const challenges: Challenge[] = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as Challenge));
-      
+    return onSnapshot(q, snapshot => {
+      const challenges: Challenge[] = snapshot.docs.map(
+        doc =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          }) as Challenge
+      );
+
       callback(challenges);
     });
   }
@@ -331,7 +357,7 @@ class GameSocialService {
   async acceptChallenge(challengeId: string, userId: string, username: string) {
     try {
       const challengeRef = doc(db, CHALLENGES_COLLECTION, challengeId);
-      
+
       await updateDoc(challengeRef, {
         status: 'accepted',
         acceptedBy: userId,
@@ -349,17 +375,17 @@ class GameSocialService {
     try {
       const challengeRef = doc(db, CHALLENGES_COLLECTION, challengeId);
       const challengeDoc = await getDoc(challengeRef);
-      
+
       if (!challengeDoc.exists()) {
         throw new Error('Challenge not found');
       }
 
       const challenge = challengeDoc.data() as Challenge;
-      
+
       // Transfer points from challenger to completer
       // This should be done through a Cloud Function for security
       // For now, just mark as completed
-      
+
       await updateDoc(challengeRef, {
         status: 'completed',
         completedBy: userId,
@@ -377,20 +403,20 @@ class GameSocialService {
     try {
       const challengeRef = doc(db, CHALLENGES_COLLECTION, challengeId);
       const challengeDoc = await getDoc(challengeRef);
-      
+
       if (!challengeDoc.exists()) {
         throw new Error('Challenge not found');
       }
 
       const challenge = challengeDoc.data() as Challenge;
-      
+
       // Only challenger can delete their own challenge
       if (challenge.challengerId !== userId) {
         throw new Error('Unauthorized to delete this challenge');
       }
 
       await deleteDoc(challengeRef);
-      
+
       return { success: true };
     } catch (error) {
       console.error('Error deleting challenge:', error);
@@ -399,7 +425,7 @@ class GameSocialService {
   }
 
   // ============ DIRECT MESSAGES ============
-  
+
   async sendDirectMessage(
     senderId: string,
     senderName: string,
@@ -419,7 +445,7 @@ class GameSocialService {
       };
 
       await addDoc(collection(db, DIRECT_MESSAGES_COLLECTION), messageData);
-      
+
       return { success: true };
     } catch (error) {
       console.error('Error sending direct message:', error);
@@ -446,22 +472,29 @@ class GameSocialService {
 
       const [sentSnapshot, receivedSnapshot] = await Promise.all([
         getDocs(sentQuery),
-        getDocs(receivedQuery)
+        getDocs(receivedQuery),
       ]);
 
-      const sentMessages = sentSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as DirectMessage));
+      const sentMessages = sentSnapshot.docs.map(
+        doc =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          }) as DirectMessage
+      );
 
-      const receivedMessages = receivedSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as DirectMessage));
+      const receivedMessages = receivedSnapshot.docs.map(
+        doc =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          }) as DirectMessage
+      );
 
       // Combine and sort by date
-      const allMessages = [...sentMessages, ...receivedMessages]
-        .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis());
+      const allMessages = [...sentMessages, ...receivedMessages].sort(
+        (a, b) => b.createdAt.toMillis() - a.createdAt.toMillis()
+      );
 
       return allMessages;
     } catch (error) {
@@ -482,7 +515,7 @@ class GameSocialService {
   }
 
   // ============ USERS LIST ============
-  
+
   async getActiveUsers(maxUsers: number = 20) {
     try {
       // Get recently active users from account service
@@ -510,4 +543,3 @@ class GameSocialService {
 }
 
 export const gameSocialService = new GameSocialService();
-

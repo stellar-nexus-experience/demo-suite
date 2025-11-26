@@ -42,4 +42,3 @@ export const LeaderboardSection = ({ onOpenLeaderboard }: LeaderboardSectionProp
     </div>
   );
 };
-

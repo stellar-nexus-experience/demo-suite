@@ -119,7 +119,10 @@ export const InteractiveTutorialSection = ({
                 />
               </div>
               <div className='font-semibold text-white/90 mb-2 text-base'>Quick Start</div>
-              <div className='text-white/70'>Learn the basics in just a few minutes by going through the <span className='text-brand-300 font-bold'>Trustless Work</span> demos</div>
+              <div className='text-white/70'>
+                Learn the basics in just a few minutes by going through the{' '}
+                <span className='text-brand-300 font-bold'>Trustless Work</span> demos
+              </div>
             </div>
           </div>
 
@@ -138,7 +141,10 @@ export const InteractiveTutorialSection = ({
                 />
               </div>
               <div className='font-semibold text-white/90 mb-2 text-base'>Hands-on</div>
-              <div className='text-white/70'>Interactive games and real scenarios to test your skills in the <span className='text-brand-300 font-bold'>Nexus Web3 Playground</span></div>
+              <div className='text-white/70'>
+                Interactive games and real scenarios to test your skills in the{' '}
+                <span className='text-brand-300 font-bold'>Nexus Web3 Playground</span>
+              </div>
             </div>
           </div>
 
@@ -154,7 +160,7 @@ export const InteractiveTutorialSection = ({
                   width={50}
                   height={50}
                   className='rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20'
-                  style={{ width: 'auto', height: 'auto', margin: '0 auto' }}
+                  style={{ height: 'auto', margin: '0 auto' }}
                 />
               </div>
               <div className='font-semibold text-white/90 mb-2 text-base'>NEXUS PRIME</div>
@@ -166,4 +172,3 @@ export const InteractiveTutorialSection = ({
     </section>
   );
 };
-

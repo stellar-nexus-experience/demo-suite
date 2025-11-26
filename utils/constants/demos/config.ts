@@ -214,7 +214,7 @@ export const DEMO_COLOR_VALUES: Record<string, Record<number, string>> = {
 export const getDemoButtonColors = (demoColor: string) => {
   const mapping = DEMO_COLOR_MAPPINGS.button[demoColor as keyof typeof DEMO_COLOR_MAPPINGS.button];
   if (mapping) return mapping;
-  
+
   return {
     gradient: 'from-brand-500 via-accent-500 to-brand-400',
     hoverGradient: 'hover:from-brand-600 hover:via-accent-600 hover:to-brand-500',
@@ -225,7 +225,7 @@ export const getDemoButtonColors = (demoColor: string) => {
 export const getDemoBadgeColors = (demoColor: string) => {
   const mapping = DEMO_COLOR_MAPPINGS.badge[demoColor as keyof typeof DEMO_COLOR_MAPPINGS.badge];
   if (mapping) return mapping;
-  
+
   return {
     gradient: 'from-brand-500 to-brand-400',
     background: 'from-brand-500/20 to-brand-400/20',
@@ -238,14 +238,14 @@ export const getDemoBadgeColors = (demoColor: string) => {
 export const getDemoColorValue = (demoColor: string, variant: number) => {
   const colors = DEMO_COLOR_VALUES[demoColor];
   if (colors && colors[variant]) return colors[variant];
-  
+
   // Default to brand colors
   return variant === 1 ? '#0ea5e9' : variant === 2 ? '#38bdf8' : '#7dd3fc';
 };
 
 export const getDemoCardColors = (demoColor: string, isCompleted: boolean = false) => {
   const config = DEMO_COLOR_MAPPINGS.card[demoColor as keyof typeof DEMO_COLOR_MAPPINGS.card];
-  
+
   if (!config) {
     return {
       background: 'bg-gradient-to-br from-white/5 to-white/10',
@@ -262,9 +262,13 @@ export const getDemoCardColors = (demoColor: string, isCompleted: boolean = fals
   const baseOpacity = isCompleted ? config.completedOpacity : config.baseOpacity;
   const hoverOpacity = isCompleted ? config.completedHoverOpacity : config.hoverOpacity;
   const borderOpacity = isCompleted ? config.completedBorderOpacity : config.borderOpacity;
-  const hoverBorderOpacity = isCompleted ? config.completedHoverBorderOpacity : config.hoverBorderOpacity;
+  const hoverBorderOpacity = isCompleted
+    ? config.completedHoverBorderOpacity
+    : config.hoverBorderOpacity;
   const shadowOpacity = isCompleted ? config.completedShadowOpacity : config.shadowOpacity;
-  const hoverShadowOpacity = isCompleted ? config.completedHoverShadowOpacity : config.hoverShadowOpacity;
+  const hoverShadowOpacity = isCompleted
+    ? config.completedHoverShadowOpacity
+    : config.hoverShadowOpacity;
 
   // Map demo colors to actual color names
   const colorMap: Record<string, string> = {

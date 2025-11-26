@@ -18,6 +18,7 @@ import {
 import { db } from '../firebase/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import { UserAccount } from '@/utils/types/account';
+import { REFERRAL_REWARDS } from '../../utils/constants/referral/constants';
 import { getBadgeById } from '../firebase/firebase-types';
 // Removed unused service imports
 
@@ -35,12 +36,19 @@ export class AccountService {
   async createAccount(
     walletAddress: string,
     publicKey: string,
-    network: string
+    network: string,
+    pendingReferralCode?: string | null
   ): Promise<any> {
     // Use wallet address as account ID (matches Firebase example structure)
     const accountId = walletAddress;
 
     const now = Timestamp.now();
+
+    // ===============================================
+    // 🎯 PASO CRUCIAL: Generar el código de referido
+    // Últimos 8 caracteres del walletAddress, en mayúsculas.
+    const referralCode = walletAddress.slice(-8).toUpperCase();
+    // ===============================================
 
     // Match the exact structure from firebase-service.ts and Firebase example
     const newAccount = {
@@ -51,6 +59,11 @@ export class AccountService {
       level: 1,
       experience: 0,
       totalPoints: 0,
+
+      // 👇 CAMPO NUEVO AÑADIDO (referralCode) 👇
+      referralCode: referralCode,
+      // 👆 CAMPO NUEVO AÑADIDO (referralCode) 👆
+
       demosCompleted: [],
       badgesEarned: [],
       clappedDemos: [],
@@ -66,6 +79,22 @@ export class AccountService {
     };
 
     await setDoc(doc(db, 'accounts', accountId), newAccount);
+
+    // Apply referral code if provided (from URL parameter or other source)
+    if (pendingReferralCode) {
+      try {
+        const { validateReferralCode } = await import('./referral-service');
+        const validation = await validateReferralCode(walletAddress, pendingReferralCode);
+
+        if (validation.applied && validation.referrerWalletAddress && validation.referrerAccount) {
+          const { applyReferralCodeForExistingUser } = await import('./referral-service');
+          await applyReferralCodeForExistingUser(walletAddress, pendingReferralCode);
+        }
+      } catch (error) {
+        // Silently fail - account is created, referral just didn't apply
+        console.warn('Failed to apply referral code during account creation:', error);
+      }
+    }
 
     // Points tracking is done in the account document itself (no separate pointsTransactions collection)
 
@@ -97,11 +126,48 @@ export class AccountService {
     return docSnap.data() as UserAccount;
   }
 
+  async getAccountByReferralCode(referralCode: string): Promise<UserAccount | null> {
+    const accountsRef = collection(db, 'accounts');
+
+    // Crea la consulta para buscar el código en el campo 'referralCode'
+    const q = query(accountsRef, where('referralCode', '==', referralCode), limit(1));
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      return null;
+    }
+
+    // Devuelve la primera cuenta encontrada.
+    const accountDoc = querySnapshot.docs[0];
+
+    return {
+      walletAddress: accountDoc.id,
+
+      ...accountDoc.data(),
+    } as UserAccount;
+  }
+
   // Update account
   async updateAccount(accountId: string, updates: Partial<UserAccount>): Promise<void> {
     const accountRef = doc(db, 'accounts', accountId);
     await updateDoc(accountRef, {
       ...updates,
+      updatedAt: serverTimestamp(),
+    });
+  }
+
+  async incrementReferralStats(walletAddress: string): Promise<void> {
+    // Asegúrate de importar doc, updateDoc, increment, serverTimestamp y REFERRAL_REWARDS.
+    const accountRef = doc(db, 'accounts', walletAddress);
+
+    // Usamos las constantes de recompensa del referidor
+    const referrerPoints = REFERRAL_REWARDS.REFERRER_POINTS;
+
+    await updateDoc(accountRef, {
+      // Nuevos campos en el esquema:
+      referralsCount: increment(1), // Suma 1 al contador
+      totalReferralPoints: increment(referrerPoints), // Suma los puntos ganados
       updatedAt: serverTimestamp(),
     });
   }
@@ -136,7 +202,7 @@ export class AccountService {
     const isFirstCompletion = currentDemo?.status !== 'completed';
 
     const pointsEarned = this.calculateDemoPoints(demoId, score, isFirstCompletion);
-    
+
     // Calculate new experience and level
     const currentExperience = account.profile?.experience || account.experience || 0;
     const experienceGained = pointsEarned * 2; // Experience is 2x points
@@ -227,17 +293,17 @@ export class AccountService {
   async awardBadge(accountId: string, badgeId: string): Promise<void> {
     const badge = getBadgeById(badgeId);
     const badgePoints = badge?.earningPoints || 0;
-    
+
     // Get current account to calculate new level
     const accountDoc = await getDoc(doc(db, 'accounts', accountId));
     const account = accountDoc.data() as UserAccount;
-    
+
     // Calculate new experience and level (badges give points but experience is 2x points)
     const currentExperience = account.profile?.experience || account.experience || 0;
     const experienceGained = badgePoints * 2; // Experience is 2x points
     const newExperience = currentExperience + experienceGained;
     const newLevel = Math.floor(newExperience / 1000) + 1;
-    
+
     const accountRef = doc(db, 'accounts', accountId);
     await updateDoc(accountRef, {
       badgesEarned: arrayUnion(badgeId), // Add to badges array

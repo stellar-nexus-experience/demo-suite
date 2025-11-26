@@ -17,22 +17,24 @@ interface RootProvidersProps {
 
 export const RootProviders = ({ children }: RootProvidersProps) => {
   return (
-    <WalletProvider>
-      <NetworkProvider>
-        <AuthProvider>
-          <ToastProvider>
-            <AccountProvider>
-              <TransactionProvider>
-                <FirebaseProvider>
-                  <BadgeAnimationProvider>
-                    <EscrowProvider>{children}</EscrowProvider>
-                  </BadgeAnimationProvider>
-                </FirebaseProvider>
-              </TransactionProvider>
-            </AccountProvider>
-          </ToastProvider>
-        </AuthProvider>
-      </NetworkProvider>
-    </WalletProvider>
+    <>
+      <WalletProvider>
+        <NetworkProvider>
+          <AuthProvider>
+            <ToastProvider>
+              <AccountProvider>
+                <TransactionProvider>
+                  <FirebaseProvider>
+                    <BadgeAnimationProvider>
+                      <EscrowProvider>{children}</EscrowProvider>
+                    </BadgeAnimationProvider>
+                  </FirebaseProvider>
+                </TransactionProvider>
+              </AccountProvider>
+            </ToastProvider>
+          </AuthProvider>
+        </NetworkProvider>
+      </WalletProvider>
+    </>
   );
 };

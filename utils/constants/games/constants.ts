@@ -115,8 +115,18 @@ export const MINI_GAMES: MiniGame[] = [
     estimatedRelease: 'Beta Available',
     donationGoal: 0,
     currentDonations: 0,
-    features: ['Smart Contract Basics', 'Wallet Security', 'DeFi Fundamentals', 'Interactive Quests'],
-    achievements: ['First Transaction', 'Smart Contract Master', 'DeFi Explorer', 'Blockchain Pioneer'],
+    features: [
+      'Smart Contract Basics',
+      'Wallet Security',
+      'DeFi Fundamentals',
+      'Interactive Quests',
+    ],
+    achievements: [
+      'First Transaction',
+      'Smart Contract Master',
+      'DeFi Explorer',
+      'Blockchain Pioneer',
+    ],
   },
   {
     id: 'escrow-puzzle-master',
@@ -249,4 +259,3 @@ export const getDifficultyColor = (difficulty: GameDifficulty): string => {
 export const getStatusColor = (status: GameStatus): string => {
   return GAME_COLORS.status[status] || GAME_COLORS.status.default;
 };
-

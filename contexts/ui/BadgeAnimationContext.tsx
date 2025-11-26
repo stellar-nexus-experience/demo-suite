@@ -46,7 +46,7 @@ export const BadgeAnimationProvider: React.FC<BadgeAnimationProviderProps> = ({ 
     // Create a BadgeWithPoints by adding the earningPoints property
     const badgeWithPoints: BadgeWithPoints = {
       ...badge,
-      earningPoints: points || 0
+      earningPoints: points || 0,
     };
     setAnimationState({ badge: badgeWithPoints, points });
     setIsVisible(true);

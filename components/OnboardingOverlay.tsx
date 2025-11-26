@@ -21,10 +21,7 @@ interface OnboardingOverlayProps {
   // currentDemo prop removed as unused
 }
 
-export const OnboardingOverlay = ({
-  isActive,
-  onComplete,
-}: OnboardingOverlayProps) => {
+export const OnboardingOverlay = ({ isActive, onComplete }: OnboardingOverlayProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   // Removed unused highlightedElement state
   const [activeTab, setActiveTab] = useState('wallet-setup');
@@ -98,19 +95,19 @@ export const OnboardingOverlay = ({
     // Start auto-play
     setIsAutoPlaying(true);
     setIsTtsEnabled(true); // Enable TTS for auto-play
-    
+
     const autoPlayNext = () => {
       const currentSteps = getOnboardingSteps(activeTab);
-      
+
       if (currentStep < currentSteps.length - 1) {
         // Move to next step in current tab
         const nextStepIndex = currentStep + 1;
         setCurrentStep(nextStepIndex);
         const step = currentSteps[nextStepIndex];
-        
+
         // Speak the step
         speakMessage(`${step.title}. ${step.description}`);
-        
+
         // Schedule next auto-play
         const timeout = setTimeout(autoPlayNext, 8000); // 8 seconds per step
         setAutoPlayTimeout(timeout);
@@ -121,13 +118,13 @@ export const OnboardingOverlay = ({
           const nextTab = demoTabs[currentTabIndex + 1];
           setActiveTab(nextTab.id);
           setCurrentStep(0);
-          
+
           // Get first step of new tab
           const newSteps = getOnboardingSteps(nextTab.id);
           if (newSteps.length > 0) {
             const firstStep = newSteps[0];
             speakMessage(`${firstStep.title}. ${firstStep.description}`);
-            
+
             // Schedule next auto-play
             const timeout = setTimeout(autoPlayNext, 8000);
             setAutoPlayTimeout(timeout);
@@ -145,7 +142,7 @@ export const OnboardingOverlay = ({
     if (currentSteps.length > 0) {
       const step = currentSteps[currentStep];
       speakMessage(`${step.title}. ${step.description}`);
-      
+
       // Schedule next auto-play
       const timeout = setTimeout(autoPlayNext, 8000);
       setAutoPlayTimeout(timeout);
@@ -267,7 +264,7 @@ export const OnboardingOverlay = ({
             id: 'understand-mainnet',
             title: 'Step 1: Understanding Mainnet vs Testnet 🌐',
             description:
-              'Testnet uses fake money for learning. Mainnet uses real XLM and real value. Only migrate when you\'re confident and ready to use real funds.',
+              "Testnet uses fake money for learning. Mainnet uses real XLM and real value. Only migrate when you're confident and ready to use real funds.",
             target: 'body',
             position: 'top',
             characterPosition: 'left',
@@ -344,7 +341,7 @@ export const OnboardingOverlay = ({
             id: 'mainnet-ready',
             title: '🚀 Mainnet Migration Complete!',
             description:
-              'You\'re now on the real Stellar network! Use real XLM for trustless work transactions. Remember to always double-check amounts before confirming transactions.',
+              "You're now on the real Stellar network! Use real XLM for trustless work transactions. Remember to always double-check amounts before confirming transactions.",
             target: 'body',
             position: 'bottom',
             characterPosition: 'right',
@@ -393,7 +390,7 @@ export const OnboardingOverlay = ({
             id: 'tech-tree-progress',
             title: 'Step 4: Track Your Progress 🎯',
             description:
-              'See which technologies you\'ve mastered and which ones are still locked. Complete demos and quests to unlock new branches of the tech tree.',
+              "See which technologies you've mastered and which ones are still locked. Complete demos and quests to unlock new branches of the tech tree.",
             target: 'body',
             position: 'bottom',
             characterPosition: 'right',
@@ -415,7 +412,7 @@ export const OnboardingOverlay = ({
             id: 'tech-tree-ready',
             title: '🌳 Tech Tree Explorer Ready!',
             description:
-              'You\'re now ready to explore the Trustless Work Tech Tree! Use it as your guide to learn new technologies and track your progress in the ecosystem.',
+              "You're now ready to explore the Trustless Work Tech Tree! Use it as your guide to learn new technologies and track your progress in the ecosystem.",
             target: 'body',
             position: 'bottom',
             characterPosition: 'right',
@@ -756,7 +753,7 @@ export const OnboardingOverlay = ({
             id: 'quest-completion',
             title: '🎉 Quest Master!',
             description:
-              'You\'re now ready to embark on your quest journey! Complete quests regularly to maximize your XP gains and unlock all available badges.',
+              "You're now ready to embark on your quest journey! Complete quests regularly to maximize your XP gains and unlock all available badges.",
             target: 'body',
             position: 'bottom',
             characterPosition: 'right',
@@ -898,7 +895,7 @@ export const OnboardingOverlay = ({
             id: 'referral-success',
             title: '🎉 Referral Master!',
             description:
-              'You\'re ready to start referring friends! Share your Nexus card, send invitations, and help grow the trustless work community.',
+              "You're ready to start referring friends! Share your Nexus card, send invitations, and help grow the trustless work community.",
             target: 'body',
             position: 'bottom',
             characterPosition: 'right',
@@ -936,7 +933,7 @@ export const OnboardingOverlay = ({
             id: 'leaderboard-features',
             title: 'Step 3: Leaderboard Features ⭐',
             description:
-              'View top performers, filter by region, see your progress, and compare with friends. Get inspired by the community\'s achievements.',
+              "View top performers, filter by region, see your progress, and compare with friends. Get inspired by the community's achievements.",
             target: 'body',
             position: 'top',
             characterPosition: 'left',
@@ -969,7 +966,7 @@ export const OnboardingOverlay = ({
             id: 'leaderboard-ready',
             title: '🚀 Ready to Compete!',
             description:
-              'You\'re ready to climb the leaderboard! Complete quests, refer friends, and engage with the community to maximize your ranking.',
+              "You're ready to climb the leaderboard! Complete quests, refer friends, and engage with the community to maximize your ranking.",
             target: 'body',
             position: 'bottom',
             characterPosition: 'right',
@@ -1073,7 +1070,7 @@ export const OnboardingOverlay = ({
             id: 'starters-complete',
             title: '🎉 Ready to Build!',
             description:
-              'You\'re now equipped with all the tools and knowledge to build your own trustless work applications. Start with our starter kits and customize them for your needs!',
+              "You're now equipped with all the tools and knowledge to build your own trustless work applications. Start with our starter kits and customize them for your needs!",
             target: 'body',
             position: 'top',
             characterPosition: 'left',
@@ -1231,8 +1228,9 @@ export const OnboardingOverlay = ({
                   src='/images/character/nexus-prime-chat.png'
                   alt='Trustless Work'
                   width={50}
-                  height={32}
+                  height={50}
                   className='rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20'
+                  style={{ height: 'auto' }}
                 />
               </div>
               <h2 className='text-2xl font-bold text-white'>Tutorial</h2>
@@ -1319,7 +1317,10 @@ export const OnboardingOverlay = ({
             })}
           </div>
           <div className='mt-2 text-center'>
-            <p className='text-xs text-gray-400'>💡 Start with wallet setup, explore the tech tree, then demos and community features, migrate to mainnet when ready</p>
+            <p className='text-xs text-gray-400'>
+              💡 Start with wallet setup, explore the tech tree, then demos and community features,
+              migrate to mainnet when ready
+            </p>
           </div>
         </div>
 
@@ -1331,7 +1332,7 @@ export const OnboardingOverlay = ({
               <h3 className='text-xl font-bold text-white mb-2'>{currentStepData.title}</h3>
               <p className='text-white/80 leading-relaxed'>{currentStepData.description}</p>
             </div>
-            
+
             {/* Image Content */}
             {currentStepData.image && (
               <div className='flex-shrink-0 w-full lg:w-80'>
@@ -1342,7 +1343,7 @@ export const OnboardingOverlay = ({
                     width={320}
                     height={240}
                     className='w-full h-auto rounded-lg shadow-lg'
-                    onError={(e) => {
+                    onError={e => {
                       // Fallback to placeholder if image doesn't exist
                       e.currentTarget.src = '/images/tutorial/placeholder.svg';
                     }}

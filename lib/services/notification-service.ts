@@ -1,23 +1,23 @@
-import { 
-  collection, 
-  addDoc, 
-  query, 
-  where, 
-  orderBy, 
-  onSnapshot, 
-  updateDoc, 
-  doc, 
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  updateDoc,
+  doc,
   Timestamp,
   getDocs,
-  limit
+  limit,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 
-export type NotificationType = 
-  | 'challenge_received' 
-  | 'challenge_accepted' 
-  | 'challenge_completed' 
-  | 'challenge_won' 
+export type NotificationType =
+  | 'challenge_received'
+  | 'challenge_accepted'
+  | 'challenge_completed'
+  | 'challenge_won'
   | 'challenge_lost'
   | 'challenge_expired'
   | 'demo_completed' // ✅ NUEVO
@@ -43,12 +43,11 @@ export interface Notification {
     badgeId?: string;
     demoName?: string;
     questName?: string;
-    badgeName?: string; 
-    
+    badgeName?: string;
+
     [key: string]: any;
   };
 }
-    
 
 class NotificationService {
   private notificationsCollection = 'notifications';
@@ -74,10 +73,7 @@ class NotificationService {
         data: data || {},
       };
 
-      const docRef = await addDoc(
-        collection(db, this.notificationsCollection),
-        notificationData
-      );
+      const docRef = await addDoc(collection(db, this.notificationsCollection), notificationData);
 
       return docRef.id;
     } catch (error) {
@@ -101,9 +97,9 @@ class NotificationService {
       limit(limitCount)
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    const unsubscribe = onSnapshot(q, snapshot => {
       const notifications: Notification[] = [];
-      snapshot.forEach((doc) => {
+      snapshot.forEach(doc => {
         notifications.push({
           id: doc.id,
           ...doc.data(),
@@ -142,7 +138,7 @@ class NotificationService {
       );
 
       const snapshot = await getDocs(q);
-      const updatePromises = snapshot.docs.map((document) =>
+      const updatePromises = snapshot.docs.map(document =>
         updateDoc(doc(db, this.notificationsCollection, document.id), {
           read: true,
         })
@@ -317,8 +313,6 @@ class NotificationService {
     }
   }
 
-  
-
   /**
    * Notify demo completed
    */
@@ -334,19 +328,13 @@ class NotificationService {
       const badgeText = badgeName ? ` and unlocked the ${badgeName} badge` : '';
       const message = `You completed the '${demoName}' demo! You earned ${xpEarned} XP and ${pointsEarned} points${badgeText}.`;
 
-      return this.createNotification(
-        userId,
-        'demo_completed',
-        '🏆 ¡Demo Completed!',
-        message,
-        {
-          demoId,
-          xpEarned,
-          pointsEarned,
-          badgeName,
-          demoName,
-        }
-      );
+      return this.createNotification(userId, 'demo_completed', '🏆 ¡Demo Completed!', message, {
+        demoId,
+        xpEarned,
+        pointsEarned,
+        badgeName,
+        demoName,
+      });
     } catch (error) {
       console.error('Error en notifyDemoCompleted:', error);
       return null;
@@ -365,27 +353,21 @@ class NotificationService {
     badgeName?: string
   ): Promise<string | null> {
     try {
-      const badgemessage = badgeName ?  `and unlocked the ${badgeName} badge` : '';
+      const badgemessage = badgeName ? `and unlocked the ${badgeName} badge` : '';
       const message = `You completed the mission: ${questName}! You earned ${xpEarned} XP and ${pointsEarned} points${badgemessage}.`;
 
-      return this.createNotification(
-        userId,
-        'quest_completed',
-        '✅🫡¡Misión Completed!',
-        message,
-        {
-          questId,
-          xpEarned,
-          pointsEarned,
-          badgeName,
-          questName,
-        }
-      );
+      return this.createNotification(userId, 'quest_completed', '✅🫡¡Misión Completed!', message, {
+        questId,
+        xpEarned,
+        pointsEarned,
+        badgeName,
+        questName,
+      });
     } catch (error) {
       console.error('Error en notifyQuestCompleted:', error);
       return null;
     }
   }
-} 
+}
 
 export const notificationService = new NotificationService();
