@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { NexusPrime } from '@/components/layout/NexusPrime';
+import { DocsSidebar } from '@/components/docs/DocsSidebar';
 import { useGlobalWallet } from '@/contexts/wallet/WalletContext';
 import Image from 'next/image';
 
@@ -11,6 +12,8 @@ export default function DocsPage() {
   const { isConnected } = useGlobalWallet();
   const [activeTab, setActiveTab] = useState('developer'); // 'developer' or 'founder'
   const [activeSection, setActiveSection] = useState('starters');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [sidebarTab, setSidebarTab] = useState<'developer' | 'founder'>('developer');
   const [isLoading, setIsLoading] = useState(() => {
     // Check if this is the first time loading the page
     if (typeof window !== 'undefined') {
@@ -20,6 +23,12 @@ export default function DocsPage() {
     return true;
   });
   const [loadingProgress, setLoadingProgress] = useState(0);
+
+  // Handle opening sidebar with specific tab
+  const openSidebar = (tab: 'developer' | 'founder') => {
+    setSidebarTab(tab);
+    setIsSidebarOpen(true);
+  };
 
   // Loading effect - only on first load
   useEffect(() => {
@@ -1427,6 +1436,30 @@ export default VibecodingComponent;`}
           </div>
         </div>
       </main>
+
+      {/* DocsSidebar Component */}
+      <DocsSidebar
+        isOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        initialTab={sidebarTab}
+      />
+
+      {/* Floating Documentation Button */}
+      {!isSidebarOpen && (
+        <div className='fixed bottom-8 right-8 z-30 flex flex-col space-y-3'>
+          <button
+            onClick={() => openSidebar('developer')}
+            className='group p-4 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white shadow-lg transition-all duration-300 transform hover:scale-110 relative'
+            title='Open Documentation'
+          >
+            <span className='text-2xl'>📚</span>
+            {/* Tooltip */}
+            <div className='absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none'>
+              Open Documentation
+            </div>
+          </button>
+        </div>
+      )}
 
       {/* Nexus Prime */}
       <NexusPrime currentPage='docs' walletConnected={isConnected} />
