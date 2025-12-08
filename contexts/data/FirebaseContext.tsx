@@ -311,49 +311,68 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
         return;
       }
 
-      // Calculate points based on score (default 100 if no score provided)
-      const basePoints = 100;
-      const finalScore = score || 85; // Default score if not provided
-      const scoreMultiplier = Math.max(0.5, finalScore / 100);
-      const pointsEarned = Math.round(basePoints * scoreMultiplier);
+      // Determine badge and demo name first to calculate correct rewards
+      let badgeToAward = '';
+      let demoName = '';
+      switch (demoId) {
+        case 'hello-milestone':
+          badgeToAward = 'escrow_expert';
+          demoName = 'Baby Steps to Riches';
+          break;
+        case 'dispute-resolution':
+          badgeToAward = 'trust_guardian';
+          demoName = 'Drama Queen Escrow';
+          break;
+        case 'micro-marketplace':
+          badgeToAward = 'stellar_champion';
+          demoName = 'Gig Economy Madness';
+          break;
+        case 'nexus-master':
+          badgeToAward = 'nexus_master';
+          demoName = 'Nexus Master Achievement';
+          break;
+        default:
+          demoName = 'Demo';
+      }
+
+      // Calculate rewards based on badge values to match UI exactly
+      let xpEarned = 0;
+      let pointsEarned = 0;
+
+      const badgeDefinition = badgeToAward ? getBadgeById(badgeToAward) : null;
+
+      if (badgeDefinition) {
+        // Use the exact value displayed on the card
+        xpEarned = badgeDefinition.earningPoints;
+        // Maintain the 2:1 ratio (XP is usually higher than points in this system)
+        pointsEarned = Math.floor(xpEarned / 2);
+      } else {
+        // Fallback calculation if no badge is associated
+        const basePoints = 100;
+        const finalScore = score || 85;
+        const scoreMultiplier = Math.max(0.5, finalScore / 100);
+        pointsEarned = Math.round(basePoints * scoreMultiplier);
+        xpEarned = pointsEarned * 2;
+      }
 
       // Add demo to completed list in account (but not for nexus-master as it's not a real demo)
       if (demoId !== 'nexus-master') {
         await accountService.addCompletedDemo(walletData.publicKey, demoId);
       }
 
-      // Add experience and points (experience is 2x points)
-      // 🎯 MODIFICACIÓN 1: Definir xpEarned aquí para la notificación
-      const xpEarned = pointsEarned * 2; //👀
+      // Add experience and points
       await accountService.addExperienceAndPoints(
         walletData.publicKey,
-        pointsEarned * 2,
+        xpEarned,
         pointsEarned
       );
 
       // Update demo stats for global tracking
       try {
+        const finalScore = score || 85;
         await demoStatsService.incrementCompletion(demoId, completionTimeMinutes, finalScore);
       } catch (statsError) {
         // Don't fail the demo completion if stats tracking fails
-      }
-
-      // Award appropriate badge based on demo
-      let badgeToAward = '';
-      let demoName = '';
-      switch (demoId) {
-        case 'hello-milestone':
-          badgeToAward = 'escrow_expert';
-          break;
-        case 'dispute-resolution':
-          badgeToAward = 'trust_guardian';
-          break;
-        case 'micro-marketplace':
-          badgeToAward = 'stellar_champion';
-          break;
-        case 'nexus-master':
-          badgeToAward = 'nexus_master';
-          break;
       }
 
       if (badgeToAward) {
@@ -361,33 +380,29 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
 
         // 🎯 INTEGRACIÓN DE NOTIFICACIÓN DE DEMOSTRACIÓN 🎯
 
-        // 1. Obtener la definición de la insignia usando la función importada
-        const badgeDefinition = getBadgeById(badgeToAward);
-
         // 2. Obtener el nombre legible para la notificación
         const badgeName = badgeDefinition?.name || badgeToAward;
 
-        // 3. Llamar al servicio de notificación (Asumiendo que notificationService está importado)
+        // 3. Llamar al servicio de notificación
         await notificationService.notifyDemoCompleted(
           account.id,
           demoId,
-          demoName, // Nombre legible
+          demoName, // Nombre legible corregido
           xpEarned,
           pointsEarned,
-          badgeName // Nombre legible de la insignia
+          badgeName
         );
 
         // Show badge animation
-        const badge = getBadgeById(badgeToAward);
-        if (badge) {
+        if (badgeDefinition) {
           showBadgeAnimation(
             {
-              ...badge,
+              ...badgeDefinition,
               earnedAt: new Date().toISOString(),
-              rarity: badge.rarity as 'common' | 'rare' | 'epic' | 'legendary',
-              category: badge.category as 'demo' | 'milestone' | 'achievement' | 'special',
+              rarity: badgeDefinition.rarity as 'common' | 'rare' | 'epic' | 'legendary',
+              category: badgeDefinition.category as 'demo' | 'milestone' | 'achievement' | 'special',
             },
-            badge.earningPoints
+            badgeDefinition.earningPoints
           );
         }
       }

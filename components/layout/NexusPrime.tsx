@@ -439,11 +439,11 @@ export const NexusPrime: React.FC<NexusPrimeProps> = ({
 
             {/* Christmas Hat on NexusPrime */}
             <ChristmasHat
-              size={45}
+              size={85}
               style={{
                 position: 'absolute',
-                top: '-22px',
-                right: '8px',
+                top: '-26px',
+                right: '22px',
                 zIndex: 20
               }}
             />
@@ -550,8 +550,8 @@ export const NexusPrime: React.FC<NexusPrimeProps> = ({
                         onClick={previousTutorialStep}
                         disabled={tutorialStep === 0}
                         className={`flex-1 px-2 py-1.5 text-xs rounded-lg transition-colors border ${tutorialStep === 0
-                            ? 'bg-white/5 text-white/30 border-white/10 cursor-not-allowed'
-                            : 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/30'
+                          ? 'bg-white/5 text-white/30 border-white/10 cursor-not-allowed'
+                          : 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/30'
                           }`}
                       >
                         ← Previous

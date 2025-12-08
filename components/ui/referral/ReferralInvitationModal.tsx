@@ -159,7 +159,7 @@ export const ReferralInvitationModal: React.FC<ReferralInvitationModalProps> = (
           <div className='flex justify-between items-center p-4 border-b border-gray-700'>
             <div className='flex items-center gap-3'>
               <h2 className='text-xl font-bold'>Referral Center</h2>
-              <div className='flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg border border-white/20'>
+              <div className='flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg border border-white/20 ml-auto mr-2'>
                 <span className='text-sm font-mono text-cyan-400 font-semibold'>{referralCode}</span>
                 <button
                   onClick={handleCopyReferralCode}
