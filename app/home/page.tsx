@@ -34,6 +34,7 @@ import {
   LeaderboardSection,
 } from '@/components/home';
 import { DEMO_CARDS } from '@/utils/constants/demos';
+import { BackgroundSnow } from '@/components/ui/christmas/BackgroundSnow';
 
 export default function HomePageContent() {
   const { isConnected } = useGlobalWallet();
@@ -230,6 +231,9 @@ export default function HomePageContent() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-neutral-900 via-brand-900 to-neutral-900 relative overflow-hidden'>
+      {/* Christmas Background Snow */}
+      <BackgroundSnow />
+
       {/* Structured Data for SEO */}
       <script
         type='application/ld+json'

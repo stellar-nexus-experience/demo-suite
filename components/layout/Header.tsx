@@ -8,6 +8,7 @@ import { Tooltip } from '@/components/ui/Tooltip';
 import { UserDropdown } from '@/components/ui/navigation/UserDropdown';
 import { RewardsSidebar } from '@/components/ui/RewardsSidebar';
 import { NotificationBell } from '@/components/ui/NotificationBell';
+import { ChristmasHat } from '@/components/ui/christmas/ChristmasHat';
 import Image from 'next/image';
 
 export const Header = () => {
@@ -95,13 +96,22 @@ export const Header = () => {
           {/* Logo and App Name */}
           <div className='flex items-center space-x-1'>
             <div className='flex items-center space-x-2'>
-              <a href='/' className='hover:opacity-80 transition-opacity duration-300'>
+              <a href='/' className='hover:opacity-80 transition-opacity duration-300 relative inline-block'>
                 <Image
                   src='/images/logo/iconletter.png'
                   alt='STELLAR NEXUS'
                   width={80}
                   height={24}
                   style={{ width: 'auto', height: 'auto' }}
+                />
+                <ChristmasHat
+                  size={35}
+                  style={{
+                    position: 'absolute',
+                    top: '-18px',
+                    right: '-5px',
+                    zIndex: 10
+                  }}
                 />
               </a>
               <span className='font-bold'>Web3 Experience</span>
@@ -281,8 +291,8 @@ export const Header = () => {
                     }
                   }}
                   className={`block px-3 py-2 rounded-md transition-colors ${miniGamesUnlocked
-                      ? 'text-white/80 hover:text-white hover:bg-white/10'
-                      : 'text-white/40 cursor-not-allowed'
+                    ? 'text-white/80 hover:text-white hover:bg-white/10'
+                    : 'text-white/40 cursor-not-allowed'
                     }`}
                 >
                   <div className='flex items-center space-x-2'>

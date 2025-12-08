@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import '../styles/christmas-animations.css';
 import { config } from '@/lib/config';
 import { RootProviders } from './root';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
