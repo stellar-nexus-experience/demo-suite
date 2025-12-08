@@ -272,11 +272,9 @@ export default function DocsPage() {
               <div className='text-center mb-12 relative z-10'>
                 <div className='inline-block mb-4'>
                   <div className='flex items-center justify-center space-x-3'>
-                    <div className='w-12 h-1 bg-gradient-to-r from-transparent via-brand-400 to-transparent'></div>
                     <h2 className='text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-accent-400 to-brand-400'>
                       Stellar Nexus Experience
                     </h2>
-                    <div className='w-12 h-1 bg-gradient-to-r from-transparent via-brand-400 to-transparent'></div>
                   </div>
                 </div>
                 <p className='text-xl text-white/80 max-w-3xl mx-auto leading-relaxed'>

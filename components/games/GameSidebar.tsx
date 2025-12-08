@@ -435,11 +435,10 @@ const GameSidebar: React.FC<GameSidebarProps> = ({
             <div className='grid grid-cols-4 gap-1 bg-black/30 p-1 rounded-lg'>
               <button
                 onClick={() => setCurrentView('leaderboard')}
-                className={`py-2 text-xs rounded transition-all relative ${
-                  currentView === 'leaderboard'
+                className={`py-2 text-xs rounded transition-all relative ${currentView === 'leaderboard'
                     ? 'bg-yellow-600 text-white font-bold'
                     : 'text-white/60 hover:text-white/80'
-                }`}
+                  }`}
               >
                 🏆
                 <span className='absolute -top-1 -right-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[8px] font-bold px-1 rounded-full animate-pulse'>
@@ -448,31 +447,28 @@ const GameSidebar: React.FC<GameSidebarProps> = ({
               </button>
               <button
                 onClick={() => setCurrentView('chat')}
-                className={`py-2 text-xs rounded transition-all ${
-                  currentView === 'chat'
+                className={`py-2 text-xs rounded transition-all ${currentView === 'chat'
                     ? 'bg-green-600 text-white font-bold'
                     : 'text-white/60 hover:text-white/80'
-                }`}
+                  }`}
               >
                 💬
               </button>
               <button
                 onClick={() => setCurrentView('social')}
-                className={`py-2 text-xs rounded transition-all ${
-                  currentView === 'social'
+                className={`py-2 text-xs rounded transition-all ${currentView === 'social'
                     ? 'bg-pink-600 text-white font-bold'
                     : 'text-white/60 hover:text-white/80'
-                }`}
+                  }`}
               >
                 🔗
               </button>
               <button
                 onClick={() => setCurrentView('milestones')}
-                className={`py-2 text-xs rounded transition-all ${
-                  currentView === 'milestones'
+                className={`py-2 text-xs rounded transition-all ${currentView === 'milestones'
                     ? 'bg-cyan-600 text-white font-bold'
                     : 'text-white/60 hover:text-white/80'
-                }`}
+                  }`}
               >
                 🎯
               </button>
@@ -582,24 +578,22 @@ const GameSidebar: React.FC<GameSidebarProps> = ({
                     {topScores.map((scoreEntry, index) => (
                       <div
                         key={scoreEntry.id}
-                        className={`rounded-lg p-2.5 border transition-all ${
-                          scoreEntry.userId === account?.id
+                        className={`rounded-lg p-2.5 border transition-all ${scoreEntry.userId === account?.id
                             ? 'bg-gradient-to-br from-purple-600/30 to-pink-600/30 border-purple-400/50 shadow-lg'
                             : 'bg-gradient-to-br from-white/5 to-white/10 border-white/10 hover:border-yellow-400/30'
-                        }`}
+                          }`}
                       >
                         <div className='flex items-center justify-between gap-2'>
                           {/* Rank Badge */}
                           <div
-                            className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${
-                              index === 0
+                            className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${index === 0
                                 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-black shadow-lg'
                                 : index === 1
                                   ? 'bg-gradient-to-br from-gray-300 to-gray-500 text-black shadow-lg'
                                   : index === 2
                                     ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-black shadow-lg'
                                     : 'bg-white/20 text-white'
-                            }`}
+                              }`}
                           >
                             {index === 0 && '🥇'}
                             {index === 1 && '🥈'}
@@ -684,11 +678,10 @@ const GameSidebar: React.FC<GameSidebarProps> = ({
                   {messages.map(msg => (
                     <div
                       key={msg.id}
-                      className={`p-2 rounded-lg ${
-                        msg.userId === account?.id
+                      className={`p-2 rounded-lg ${msg.userId === account?.id
                           ? 'bg-purple-600/30 border border-purple-400/30'
                           : 'bg-white/5 border border-white/10'
-                      }`}
+                        }`}
                     >
                       <div className='flex items-start justify-between gap-2'>
                         <div className='flex-1 min-w-0'>
@@ -766,14 +759,6 @@ const GameSidebar: React.FC<GameSidebarProps> = ({
                   >
                     <span className='text-xl'>💼</span>
                     <span>Share on LinkedIn</span>
-                  </button>
-
-                  <button
-                    onClick={shareToDiscord}
-                    className='w-full p-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-purple-500/50 transform hover:scale-105'
-                  >
-                    <span className='text-xl'>💬</span>
-                    <span>Copy for Discord 🎴|nexus-cards</span>
                   </button>
 
                   <button
