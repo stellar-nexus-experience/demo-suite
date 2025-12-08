@@ -254,22 +254,192 @@ export default function DocsPage() {
                   className='relative z-10 text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-accent-400 to-brand-400 mb-6 drop-shadow-2xl'
                   style={{ zIndex: 1000, marginTop: '-200px' }}
                 >
-                  Starter Kits
+                  DOCS
                 </h1>
               </div>
 
-              <br />
-              <br />
+            </div>
 
-              <p className='text-xl text-white/80 max-w-3xl mx-auto'>
-                Comprehensive technical guide to building decentralized work platforms on the
-                Stellar blockchain
-              </p>
+            {/* Stellar Nexus Experience Platform Overview */}
+            <div className='mb-16 relative'>
+              {/* Background Effects */}
+              <div className='absolute inset-0 overflow-hidden pointer-events-none'>
+                <div className='absolute top-1/2 left-1/4 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl animate-pulse'></div>
+                <div className='absolute top-1/3 right-1/4 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl animate-pulse' style={{ animationDelay: '1s' }}></div>
+              </div>
 
-              {/* Powered by Trustless Work */}
-              <div className='text-center mt-4'>
-                <p className='text-brand-300/70 text-sm font-medium '>
-                  Powered by <span className='text-brand-200 font-semibold'>Trustless Work</span>
+              {/* Section Header */}
+              <div className='text-center mb-12 relative z-10'>
+                <div className='inline-block mb-4'>
+                  <div className='flex items-center justify-center space-x-3'>
+                    <div className='w-12 h-1 bg-gradient-to-r from-transparent via-brand-400 to-transparent'></div>
+                    <h2 className='text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-accent-400 to-brand-400'>
+                      Stellar Nexus Experience
+                    </h2>
+                    <div className='w-12 h-1 bg-gradient-to-r from-transparent via-brand-400 to-transparent'></div>
+                  </div>
+                </div>
+                <p className='text-xl text-white/80 max-w-3xl mx-auto leading-relaxed'>
+                  The next-generation decentralized work platform built on Stellar blockchain,
+                  empowering the future of trustless collaboration
+                </p>
+              </div>
+
+              {/* Value Proposition Cards */}
+              <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 relative z-10'>
+                {/* Decentralized Work Platform */}
+                <div className='group bg-gradient-to-br from-brand-500/10 to-brand-600/10 backdrop-blur-sm border border-brand-400/30 rounded-2xl p-6 hover:border-brand-400/60 hover:shadow-xl hover:shadow-brand-500/20 transition-all duration-300 hover:-translate-y-1'>
+                  <div className='text-4xl mb-4 group-hover:scale-110 transition-transform duration-300'>🔐</div>
+                  <h3 className='text-xl font-bold text-white mb-3'>Trustless Escrow</h3>
+                  <p className='text-white/70 text-sm leading-relaxed'>
+                    Smart contract-powered escrow mechanics ensuring secure, transparent collaboration without intermediaries
+                  </p>
+                </div>
+
+                {/* Stellar Integration */}
+                <div className='group bg-gradient-to-br from-accent-500/10 to-accent-600/10 backdrop-blur-sm border border-accent-400/30 rounded-2xl p-6 hover:border-accent-400/60 hover:shadow-xl hover:shadow-accent-500/20 transition-all duration-300 hover:-translate-y-1'>
+                  <div className='text-4xl mb-4 group-hover:scale-110 transition-transform duration-300'>⚡</div>
+                  <h3 className='text-xl font-bold text-white mb-3'>Lightning Fast</h3>
+                  <p className='text-white/70 text-sm leading-relaxed'>
+                    Built on Stellar for 3-5 second finality and ultra-low fees, perfect for global work transactions
+                  </p>
+                </div>
+
+                {/* Developer Experience */}
+                <div className='group bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-purple-400/30 rounded-2xl p-6 hover:border-purple-400/60 hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 hover:-translate-y-1'>
+                  <div className='text-4xl mb-4 group-hover:scale-110 transition-transform duration-300'>👨🏻‍💻</div>
+                  <h3 className='text-xl font-bold text-white mb-3'>Developer First</h3>
+                  <p className='text-white/70 text-sm leading-relaxed'>
+                    Comprehensive SDKs, starter kits, and documentation to build your own trustless work platform
+                  </p>
+                </div>
+
+                {/* Community Benefits */}
+                <div className='group bg-gradient-to-br from-green-500/10 to-emerald-500/10 backdrop-blur-sm border border-green-400/30 rounded-2xl p-6 hover:border-green-400/60 hover:shadow-xl hover:shadow-green-500/20 transition-all duration-300 hover:-translate-y-1'>
+                  <div className='text-4xl mb-4 group-hover:scale-110 transition-transform duration-300'>🌐</div>
+                  <h3 className='text-xl font-bold text-white mb-3'>Community Driven</h3>
+                  <p className='text-white/70 text-sm leading-relaxed'>
+                    Open-source, transparent, and built for the blockchain community with gamification and rewards
+                  </p>
+                </div>
+              </div>
+
+              {/* Key Features Showcase */}
+              <div className='bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 relative z-10'>
+                <h3 className='text-2xl font-bold text-white mb-6 text-center'>
+                  Platform Capabilities
+                </h3>
+                <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                  {/* Feature 1 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Smart Contract Escrow</h4>
+                      <p className='text-white/60 text-sm'>Automated fund management with programmable logic</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 2 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-accent-500 to-accent-600 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Instant Settlements</h4>
+                      <p className='text-white/60 text-sm'>3-5 second transaction finality on Stellar</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 3 - Multi-Signature Security with Coming Soon Badge */}
+                  <div className='flex items-start space-x-3 relative'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div className='flex-1'>
+                      <div className='flex items-center gap-2 mb-1'>
+                        <h4 className='font-semibold text-white'>Multi-Signature Security</h4>
+                        <span className='bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-2 py-0.5 rounded-full'>
+                          🔜 Soon
+                        </span>
+                      </div>
+                      <p className='text-white/60 text-sm'>Enhanced protection for complex projects</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 4 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Global Accessibility</h4>
+                      <p className='text-white/60 text-sm'>Borderless transactions, 24/7 availability</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 5 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Quest & Achievement System</h4>
+                      <p className='text-white/60 text-sm'>Gamified experience with rewards and badges</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 6 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Referral Program</h4>
+                      <p className='text-white/60 text-sm'>Earn rewards by growing the community</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 7 - Playground Games */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Playground Games</h4>
+                      <p className='text-white/60 text-sm'>Interactive games with donation system to accelerate development</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 8 - Game Development Funding */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Game Development Funding</h4>
+                      <p className='text-white/60 text-sm'>Support specific games through donations to speed up features</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 9 - Trustless Milestones */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Trustless Milestones</h4>
+                      <p className='text-white/60 text-sm'>Create custom game challenges with escrow-backed rewards</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Call to Action */}
+              <div className='text-center mt-8 relative z-10'>
+                <p className='text-white/60 text-sm'>
+                  Explore the documentation below to learn how to build on Stellar Nexus Experience
                 </p>
               </div>
             </div>
@@ -282,11 +452,10 @@ export default function DocsPage() {
                     setActiveTab('developer');
                     setActiveSection('starters');
                   }}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                    activeTab === 'developer'
-                      ? 'bg-gradient-to-r from-brand-500 to-accent-600 text-white shadow-lg'
-                      : 'text-white/70 hover:text-white'
-                  }`}
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${activeTab === 'developer'
+                    ? 'bg-gradient-to-r from-brand-500 to-accent-600 text-white shadow-lg'
+                    : 'text-white/70 hover:text-white'
+                    }`}
                 >
                   <span className='mr-2'>👨🏻‍💻</span>
                   Developer
@@ -296,11 +465,10 @@ export default function DocsPage() {
                     setActiveTab('founder');
                     setActiveSection('trustless-work');
                   }}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                    activeTab === 'founder'
-                      ? 'bg-gradient-to-r from-brand-500 to-accent-600 text-white shadow-lg'
-                      : 'text-white/70 hover:text-white'
-                  }`}
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${activeTab === 'founder'
+                    ? 'bg-gradient-to-r from-brand-500 to-accent-600 text-white shadow-lg'
+                    : 'text-white/70 hover:text-white'
+                    }`}
                 >
                   <span className='mr-2'>🚀</span>
                   Founder
@@ -319,13 +487,12 @@ export default function DocsPage() {
                     }
                   }}
                   disabled={section.id === 'vibecoding'}
-                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 relative ${
-                    activeSection === section.id
-                      ? 'bg-gradient-to-r from-brand-500 to-accent-600 text-white shadow-lg'
-                      : section.id === 'vibecoding'
-                        ? 'bg-white/5 text-white/40 cursor-not-allowed'
-                        : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
-                  }`}
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 relative ${activeSection === section.id
+                    ? 'bg-gradient-to-r from-brand-500 to-accent-600 text-white shadow-lg'
+                    : section.id === 'vibecoding'
+                      ? 'bg-white/5 text-white/40 cursor-not-allowed'
+                      : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                    }`}
                 >
                   <span className='mr-2'>{section.icon}</span>
                   {section.title}
