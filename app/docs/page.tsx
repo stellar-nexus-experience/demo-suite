@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { NexusPrime } from '@/components/layout/NexusPrime';
+import { DocsSidebar } from '@/components/docs/DocsSidebar';
 import { useGlobalWallet } from '@/contexts/wallet/WalletContext';
 import Image from 'next/image';
 
 export default function DocsPage() {
   const { isConnected } = useGlobalWallet();
-  const [activeTab, setActiveTab] = useState('developer'); // 'developer' or 'founder'
-  const [activeSection, setActiveSection] = useState('starters');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [sidebarTab, setSidebarTab] = useState<'developer' | 'founder'>('developer');
   const [isLoading, setIsLoading] = useState(() => {
     // Check if this is the first time loading the page
     if (typeof window !== 'undefined') {
@@ -20,6 +21,12 @@ export default function DocsPage() {
     return true;
   });
   const [loadingProgress, setLoadingProgress] = useState(0);
+
+  // Handle opening sidebar with specific tab
+  const openSidebar = (tab: 'developer' | 'founder') => {
+    setSidebarTab(tab);
+    setIsSidebarOpen(true);
+  };
 
   // Loading effect - only on first load
   useEffect(() => {
@@ -52,22 +59,6 @@ export default function DocsPage() {
 
     return () => clearInterval(interval);
   }, [isLoading]);
-
-  // Developer sections
-  const developerSections = [
-    { id: 'starters', title: 'Starter Kits', icon: '👨🏻‍💻' },
-    { id: 'vibecoding', title: 'Vibecoding Prompts', icon: '✨' },
-    { id: 'architecture', title: 'System Architecture', icon: '🏗️' },
-  ];
-
-  // Founder sections
-  const founderSections = [
-    { id: 'trustless-work', title: 'Trustless Work Guide', icon: '🔐' },
-    { id: 'stellar-guide', title: 'Stellar Guide', icon: '⭐' },
-    { id: 'vibecoding', title: 'Vibecoding Guide', icon: '✨' },
-  ];
-
-  const sections = activeTab === 'developer' ? developerSections : founderSections;
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-neutral-900 via-brand-900 to-neutral-900'>
@@ -212,41 +203,6 @@ export default function DocsPage() {
                     ></div>
                   </div>
 
-                  {/* Energy Wave Rings */}
-                  <div className='absolute inset-0'>
-                    <div
-                      className='absolute inset-0 rounded-full border-2 border-brand-400/40 animate-ping scale-150'
-                      style={{ animationDuration: '4s' }}
-                    ></div>
-                    <div
-                      className='absolute inset-0 rounded-full border border-accent-400/30 animate-ping scale-200'
-                      style={{ animationDuration: '5s' }}
-                    ></div>
-                    <div
-                      className='absolute inset-0 rounded-full border border-brand-300/25 animate-ping scale-250'
-                      style={{ animationDuration: '6s' }}
-                    ></div>
-                  </div>
-
-                  {/* Plasma Energy Streams */}
-                  <div className='absolute inset-0'>
-                    <div
-                      className='absolute left-0 top-1/2 w-1 h-24 bg-gradient-to-b from-transparent via-brand-400/50 to-transparent animate-pulse opacity-60'
-                      style={{ animationDuration: '3s' }}
-                    ></div>
-                    <div
-                      className='absolute right-0 top-1/2 w-1 h-20 bg-gradient-to-b from-transparent via-accent-400/50 to-transparent animate-pulse opacity-70'
-                      style={{ animationDuration: '2.5s' }}
-                    ></div>
-                    <div
-                      className='absolute top-0 left-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-brand-400/50 to-transparent animate-pulse opacity-50'
-                      style={{ animationDuration: '3.5s' }}
-                    ></div>
-                    <div
-                      className='absolute bottom-0 left-1/2 w-20 h-1 bg-gradient-to-r from-transparent via-brand-400/50 to-transparent animate-pulse opacity-65'
-                      style={{ animationDuration: '2.8s' }}
-                    ></div>
-                  </div>
                 </div>
 
                 {/* Title with Enhanced Styling */}
@@ -254,656 +210,212 @@ export default function DocsPage() {
                   className='relative z-10 text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-accent-400 to-brand-400 mb-6 drop-shadow-2xl'
                   style={{ zIndex: 1000, marginTop: '-200px' }}
                 >
-                  Starter Kits
+                  DOCS
                 </h1>
               </div>
 
-              <br />
-              <br />
+            </div>
 
-              <p className='text-xl text-white/80 max-w-3xl mx-auto'>
-                Comprehensive technical guide to building decentralized work platforms on the
-                Stellar blockchain
-              </p>
+            {/* Stellar Nexus Experience Platform Overview */}
+            <div className='mb-16 relative'>
+              {/* Background Effects */}
+              <div className='absolute inset-0 overflow-hidden pointer-events-none'>
+                <div className='absolute top-1/2 left-1/4 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl animate-pulse'></div>
+                <div className='absolute top-1/3 right-1/4 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl animate-pulse' style={{ animationDelay: '1s' }}></div>
+              </div>
 
-              {/* Powered by Trustless Work */}
-              <div className='text-center mt-4'>
-                <p className='text-brand-300/70 text-sm font-medium '>
-                  Powered by <span className='text-brand-200 font-semibold'>Trustless Work</span>
+              {/* Section Header */}
+              <div className='text-center mb-12 relative z-10'>
+                <div className='inline-block mb-4'>
+                  <div className='flex items-center justify-center space-x-3'>
+                    <h2 className='text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-accent-400 to-brand-400'>
+                      Stellar Nexus Experience
+                    </h2>
+                  </div>
+                </div>
+                <p className='text-xl text-white/80 max-w-3xl mx-auto leading-relaxed'>
+                  The next-generation decentralized work platform built on Stellar blockchain,
+                  empowering the future of trustless collaboration
                 </p>
               </div>
-            </div>
 
-            {/* Developer/Founder Tabs */}
-            <div className='flex justify-center mb-8'>
-              <div className='bg-white/10 rounded-xl p-1 border border-white/20'>
-                <button
-                  onClick={() => {
-                    setActiveTab('developer');
-                    setActiveSection('starters');
-                  }}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                    activeTab === 'developer'
-                      ? 'bg-gradient-to-r from-brand-500 to-accent-600 text-white shadow-lg'
-                      : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  <span className='mr-2'>👨🏻‍💻</span>
-                  Developer
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveTab('founder');
-                    setActiveSection('trustless-work');
-                  }}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                    activeTab === 'founder'
-                      ? 'bg-gradient-to-r from-brand-500 to-accent-600 text-white shadow-lg'
-                      : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  <span className='mr-2'>🚀</span>
-                  Founder
-                </button>
+              {/* Value Proposition Cards */}
+              <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 relative z-10'>
+                {/* Decentralized Work Platform */}
+                <div className='group bg-gradient-to-br from-brand-500/10 to-brand-600/10 backdrop-blur-sm border border-brand-400/30 rounded-2xl p-6 hover:border-brand-400/60 hover:shadow-xl hover:shadow-brand-500/20 transition-all duration-300 hover:-translate-y-1'>
+                  <div className='text-4xl mb-4 group-hover:scale-110 transition-transform duration-300'>🔐</div>
+                  <h3 className='text-xl font-bold text-white mb-3'>Trustless Escrow</h3>
+                  <p className='text-white/70 text-sm leading-relaxed'>
+                    Smart contract-powered escrow mechanics ensuring secure, transparent collaboration without intermediaries
+                  </p>
+                </div>
+
+                {/* Stellar Integration */}
+                <div className='group bg-gradient-to-br from-accent-500/10 to-accent-600/10 backdrop-blur-sm border border-accent-400/30 rounded-2xl p-6 hover:border-accent-400/60 hover:shadow-xl hover:shadow-accent-500/20 transition-all duration-300 hover:-translate-y-1'>
+                  <div className='text-4xl mb-4 group-hover:scale-110 transition-transform duration-300'>⚡</div>
+                  <h3 className='text-xl font-bold text-white mb-3'>Lightning Fast</h3>
+                  <p className='text-white/70 text-sm leading-relaxed'>
+                    Built on Stellar for 3-5 second finality and ultra-low fees, perfect for global work transactions
+                  </p>
+                </div>
+
+                {/* Developer Experience */}
+                <div className='group bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm border border-purple-400/30 rounded-2xl p-6 hover:border-purple-400/60 hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 hover:-translate-y-1'>
+                  <div className='text-4xl mb-4 group-hover:scale-110 transition-transform duration-300'>👨🏻‍💻</div>
+                  <h3 className='text-xl font-bold text-white mb-3'>Developer First</h3>
+                  <p className='text-white/70 text-sm leading-relaxed'>
+                    Comprehensive SDKs, starter kits, and documentation to build your own trustless work platform
+                  </p>
+                </div>
+
+                {/* Community Benefits */}
+                <div className='group bg-gradient-to-br from-green-500/10 to-emerald-500/10 backdrop-blur-sm border border-green-400/30 rounded-2xl p-6 hover:border-green-400/60 hover:shadow-xl hover:shadow-green-500/20 transition-all duration-300 hover:-translate-y-1'>
+                  <div className='text-4xl mb-4 group-hover:scale-110 transition-transform duration-300'>🌐</div>
+                  <h3 className='text-xl font-bold text-white mb-3'>Community Driven</h3>
+                  <p className='text-white/70 text-sm leading-relaxed'>
+                    Open-source, transparent, and built for the blockchain community with gamification and rewards
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Navigation Tabs */}
-            <div className='flex flex-wrap justify-center gap-2 mb-12'>
-              {sections.map(section => (
-                <button
-                  key={section.id}
-                  onClick={() => {
-                    if (section.id !== 'vibecoding') {
-                      setActiveSection(section.id);
-                    }
-                  }}
-                  disabled={section.id === 'vibecoding'}
-                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 relative ${
-                    activeSection === section.id
-                      ? 'bg-gradient-to-r from-brand-500 to-accent-600 text-white shadow-lg'
-                      : section.id === 'vibecoding'
-                        ? 'bg-white/5 text-white/40 cursor-not-allowed'
-                        : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
-                  }`}
-                >
-                  <span className='mr-2'>{section.icon}</span>
-                  {section.title}
-                  {section.id === 'vibecoding' && (
-                    <span className='absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg animate-pulse'>
-                      Coming Soon
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-
-            {/* Content Sections */}
-            <div className='border border-white/20 rounded-2xl p-8'>
-              {/* Vibecoding Guide */}
-              {activeSection === 'vibecoding' && (
-                <div className='space-y-8'>
-                  <div className='text-center mb-8'>
-                    <h2 className='text-3xl font-bold text-white mb-4'>✨ Vibecoding Guide</h2>
-                    <p className='text-lg text-white/80 max-w-3xl mx-auto'>
-                      The modern approach to building with rhythm, creativity, and flow. Learn how
-                      to code with vibes, not just syntax.
-                    </p>
-                  </div>
-
-                  <div className='grid md:grid-cols-2 gap-8'>
-                    {/* Vibecoding Principles */}
-                    <div className='space-y-6'>
-                      <h3 className='text-2xl font-bold text-accent-300'>
-                        🎵 Vibecoding Principles
-                      </h3>
-                      <div className='space-y-4'>
-                        <div className='bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg p-4 border border-purple-400/30'>
-                          <h4 className='font-semibold text-white mb-2'>
-                            🎶 Flow State Development
-                          </h4>
-                          <p className='text-white/80 text-sm'>
-                            Enter the zone where code flows naturally, problems solve themselves,
-                            and creativity meets technical precision.
-                          </p>
-                        </div>
-                        <div className='bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg p-4 border border-cyan-400/30'>
-                          <h4 className='font-semibold text-white mb-2'>
-                            🌊 Rhythm-Based Architecture
-                          </h4>
-                          <p className='text-white/80 text-sm'>
-                            Build systems that have natural rhythm - clean patterns, predictable
-                            flows, and harmonious data structures.
-                          </p>
-                        </div>
-                        <div className='bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg p-4 border border-green-400/30'>
-                          <h4 className='font-semibold text-white mb-2'>
-                            ✨ Creative Problem Solving
-                          </h4>
-                          <p className='text-white/80 text-sm'>
-                            Think outside the box, embrace unconventional solutions, and let
-                            creativity guide your technical decisions.
-                          </p>
-                        </div>
-                      </div>
+              {/* Key Features Showcase */}
+              <div className='bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 relative z-10'>
+                <h3 className='text-2xl font-bold text-white mb-6 text-center'>
+                  Platform Capabilities
+                </h3>
+                <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                  {/* Feature 1 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center text-white font-bold'>
+                      ✓
                     </div>
-
-                    {/* Modern Development Practices */}
-                    <div className='space-y-6'>
-                      <h3 className='text-2xl font-bold text-brand-300'>
-                        🚀 Modern Development Practices
-                      </h3>
-                      <div className='space-y-4'>
-                        <div className='bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg p-4 border border-orange-400/30'>
-                          <h4 className='font-semibold text-white mb-2'>🎯 Intent-Driven Code</h4>
-                          <p className='text-white/80 text-sm'>
-                            Write code that expresses intent clearly, making it self-documenting and
-                            maintainable.
-                          </p>
-                        </div>
-                        <div className='bg-gradient-to-br from-yellow-500/20 to-amber-500/20 rounded-lg p-4 border border-yellow-400/30'>
-                          <h4 className='font-semibold text-white mb-2'>
-                            🔥 Hot Reloading Mindset
-                          </h4>
-                          <p className='text-white/80 text-sm'>
-                            Build with instant feedback loops, rapid iteration, and continuous
-                            improvement cycles.
-                          </p>
-                        </div>
-                        <div className='bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg p-4 border border-indigo-400/30'>
-                          <h4 className='font-semibold text-white mb-2'>🌐 Web3-First Thinking</h4>
-                          <p className='text-white/80 text-sm'>
-                            Design for decentralization from the ground up, embracing trustless and
-                            permissionless architectures.
-                          </p>
-                        </div>
-                      </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Smart Contract Escrow</h4>
+                      <p className='text-white/60 text-sm'>Automated fund management with programmable logic</p>
                     </div>
                   </div>
 
-                  {/* Vibecoding Workflow */}
-                  <div className='bg-gradient-to-br from-white/5 to-white/10 rounded-xl p-6 border border-white/20'>
-                    <h3 className='text-2xl font-bold text-white mb-6'>🎼 Vibecoding Workflow</h3>
-                    <div className='grid md:grid-cols-4 gap-4'>
-                      <div className='text-center p-4 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-400/30'>
-                        <div className='text-3xl mb-3'>🎧</div>
-                        <h4 className='font-semibold text-white mb-2'>Set the Vibe</h4>
-                        <p className='text-white/80 text-sm'>
-                          Create your perfect coding environment - music, lighting, and tools that
-                          inspire creativity.
-                        </p>
-                      </div>
-                      <div className='text-center p-4 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg border border-cyan-400/30'>
-                        <div className='text-3xl mb-3'>🧠</div>
-                        <h4 className='font-semibold text-white mb-2'>Mind Mapping</h4>
-                        <p className='text-white/80 text-sm'>
-                          Visualize your solution before coding. Map out the problem space and
-                          solution architecture.
-                        </p>
-                      </div>
-                      <div className='text-center p-4 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg border border-green-400/30'>
-                        <div className='text-3xl mb-3'>⚡</div>
-                        <h4 className='font-semibold text-white mb-2'>Rapid Prototyping</h4>
-                        <p className='text-white/80 text-sm'>
-                          Build quickly, test often, iterate fast. Embrace the "build, break,
-                          rebuild" cycle.
-                        </p>
-                      </div>
-                      <div className='text-center p-4 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg border border-orange-400/30'>
-                        <div className='text-3xl mb-3'>🎨</div>
-                        <h4 className='font-semibold text-white mb-2'>Polish & Ship</h4>
-                        <p className='text-white/80 text-sm'>
-                          Refine your creation, add the finishing touches, and ship with confidence.
-                        </p>
-                      </div>
+                  {/* Feature 2 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-accent-500 to-accent-600 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Instant Settlements</h4>
+                      <p className='text-white/60 text-sm'>3-5 second transaction finality on Stellar</p>
                     </div>
                   </div>
 
-                  {/* Vibecoding Tools */}
-                  <div className='bg-gradient-to-br from-accent-500/20 to-accent-400/20 rounded-xl p-6 border border-accent-400/30'>
-                    <h3 className='text-2xl font-bold text-white mb-4'>
-                      🛠️ Vibecoding Tools & Stack
-                    </h3>
-                    <div className='grid md:grid-cols-3 gap-6'>
-                      <div>
-                        <h4 className='font-semibold text-accent-300 mb-3'>
-                          Development Environment
-                        </h4>
-                        <ul className='text-white/80 text-sm space-y-2'>
-                          <li>
-                            • <strong>VS Code:</strong> With vibecoding extensions
-                          </li>
-                          <li>
-                            • <strong>Neovim:</strong> For the terminal flow state
-                          </li>
-                          <li>
-                            • <strong>WebStorm:</strong> Full-featured IDE experience
-                          </li>
-                          <li>
-                            • <strong>Cursor:</strong> AI-powered coding assistant
-                          </li>
-                        </ul>
+                  {/* Feature 3 - Multi-Signature Security with Coming Soon Badge */}
+                  <div className='flex items-start space-x-3 relative'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div className='flex-1'>
+                      <div className='flex items-center gap-2 mb-1'>
+                        <h4 className='font-semibold text-white'>Multi-Signature Security</h4>
+                        <span className='bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-2 py-0.5 rounded-full'>
+                          🔜 Soon
+                        </span>
                       </div>
-                      <div>
-                        <h4 className='font-semibold text-accent-300 mb-3'>
-                          Frameworks & Libraries
-                        </h4>
-                        <ul className='text-white/80 text-sm space-y-2'>
-                          <li>
-                            • <strong>React:</strong> Component-based vibes
-                          </li>
-                          <li>
-                            • <strong>Next.js:</strong> Full-stack flow
-                          </li>
-                          <li>
-                            • <strong>TypeScript:</strong> Type-safe creativity
-                          </li>
-                          <li>
-                            • <strong>Tailwind:</strong> Utility-first styling
-                          </li>
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className='font-semibold text-accent-300 mb-3'>Web3 & Blockchain</h4>
-                        <ul className='text-white/80 text-sm space-y-2'>
-                          <li>
-                            • <strong>Stellar SDK:</strong> Blockchain vibes
-                          </li>
-                          <li>
-                            • <strong>Web3.js:</strong> Ethereum integration
-                          </li>
-                          <li>
-                            • <strong>Wallet Connect:</strong> Seamless connections
-                          </li>
-                          <li>
-                            • <strong>IPFS:</strong> Decentralized storage
-                          </li>
-                        </ul>
-                      </div>
+                      <p className='text-white/60 text-sm'>Enhanced protection for complex projects</p>
                     </div>
                   </div>
 
-                  {/* Vibecoding Code Example */}
-                  <div className='bg-gradient-to-br from-success-500/20 to-success-400/20 rounded-xl p-6 border border-success-400/30'>
-                    <h3 className='text-2xl font-bold text-white mb-4'>💻 Vibecoding in Action</h3>
-                    <div className='bg-white/5 rounded-lg p-4 border border-white/20'>
-                      <pre className='text-white/80 text-sm overflow-x-auto'>
-                        {`// Vibecoding: Building with rhythm and flow
-import { useVibe } from '@vibecoding/react';
-import { createFlow } from '@vibecoding/core';
-
-const VibecodingComponent = () => {
-  const { vibe, setVibe, enterFlowState } = useVibe();
-  
-  // Set the coding vibe
-  useEffect(() => {
-    setVibe({
-      music: 'lofi-hip-hop',
-      lighting: 'warm-glow',
-      energy: 'focused-creative'
-    });
-  }, []);
-
-  // Create a flow state for complex operations
-  const handleComplexOperation = async () => {
-    await enterFlowState(async () => {
-      // This code runs with enhanced focus and creativity
-      const result = await createFlow()
-        .step('analyze-problem', analyzeProblem)
-        .step('design-solution', designSolution)
-        .step('implement-code', implementCode)
-        .step('test-refine', testAndRefine)
-        .execute();
-      
-      return result;
-    });
-  };
-
-  return (
-    <div className="vibecoding-container">
-      <h2>Current Vibe: {vibe.energy}</h2>
-      <button onClick={handleComplexOperation}>
-        Enter Flow State 🎵
-      </button>
-    </div>
-  );
-};
-
-export default VibecodingComponent;`}
-                      </pre>
+                  {/* Feature 4 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Global Accessibility</h4>
+                      <p className='text-white/60 text-sm'>Borderless transactions, 24/7 availability</p>
                     </div>
                   </div>
 
-                  {/* Vibecoding Resources */}
-                  <div className='bg-gradient-to-br from-warning-500/20 to-warning-400/20 rounded-xl p-6 border border-warning-400/30'>
-                    <h3 className='text-2xl font-bold text-white mb-4'>📚 Vibecoding Resources</h3>
-                    <div className='grid md:grid-cols-2 gap-6'>
-                      <div>
-                        <h4 className='font-semibold text-warning-300 mb-3'>Learning Resources</h4>
-                        <ul className='text-white/80 text-sm space-y-2'>
-                          <li>
-                            • <strong>Vibecoding Academy:</strong> Master the art of flow coding
-                          </li>
-                          <li>
-                            • <strong>Flow State Podcast:</strong> Interviews with vibecoding
-                            masters
-                          </li>
-                          <li>
-                            • <strong>Coding Playlists:</strong> Curated music for different coding
-                            moods
-                          </li>
-                          <li>
-                            • <strong>Vibe Templates:</strong> Pre-configured development
-                            environments
-                          </li>
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className='font-semibold text-warning-300 mb-3'>Community & Tools</h4>
-                        <ul className='text-white/80 text-sm space-y-2'>
-                          <li>
-                            • <strong>Vibecoding Discord:</strong> Connect with fellow vibe coders
-                          </li>
-                          <li>
-                            • <strong>Flow Metrics:</strong> Track your coding flow states
-                          </li>
-                          <li>
-                            • <strong>Vibe Checker:</strong> Analyze your code's vibes
-                          </li>
-                          <li>
-                            • <strong>Collaborative Sessions:</strong> Pair programming with vibes
-                          </li>
-                        </ul>
-                      </div>
+                  {/* Feature 5 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Quest & Achievement System</h4>
+                      <p className='text-white/60 text-sm'>Gamified experience with rewards and badges</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 6 */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Referral Program</h4>
+                      <p className='text-white/60 text-sm'>Earn rewards by growing the community</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 7 - Playground Games */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Playground Games</h4>
+                      <p className='text-white/60 text-sm'>Interactive games with donation system to accelerate development</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 8 - Game Development Funding */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Game Development Funding</h4>
+                      <p className='text-white/60 text-sm'>Support specific games through donations to speed up features</p>
+                    </div>
+                  </div>
+
+                  {/* Feature 9 - Trustless Milestones */}
+                  <div className='flex items-start space-x-3'>
+                    <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-bold'>
+                      ✓
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-white mb-1'>Trustless Milestones</h4>
+                      <p className='text-white/60 text-sm'>Create custom game challenges with escrow-backed rewards</p>
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
 
-              {/* Founder Sections */}
-              {activeTab === 'founder' && (
-                <>
-                  {/* Trustless Work Guide */}
-                  {activeSection === 'trustless-work' && (
-                    <div className='space-y-8'>
-                      <div className='text-center mb-8'>
-                        <h2 className='text-3xl font-bold text-white mb-4'>
-                          🔐 Trustless Work Guide
-                        </h2>
-                        <p className='text-lg text-white/80 max-w-3xl mx-auto'>
-                          Everything founders need to know about Trustless Work mechanics, escrow
-                          systems, and building decentralized work platforms on Stellar.
-                        </p>
-                      </div>
-
-                      <div className='grid md:grid-cols-2 gap-8'>
-                        {/* What is Trustless Work */}
-                        <div className='space-y-6'>
-                          <h3 className='text-2xl font-bold text-brand-300'>
-                            🚀 What is Trustless Work?
-                          </h3>
-                          <div className='space-y-4'>
-                            <div className='bg-gradient-to-br from-brand-500/20 to-brand-400/20 rounded-lg p-4 border border-brand-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>
-                                🔐 Smart Contract Escrow
-                              </h4>
-                              <p className='text-white/80 text-sm'>
-                                Automated fund management with programmable logic. No
-                                intermediaries, no trust required - just code and blockchain
-                                security.
-                              </p>
-                            </div>
-                            <div className='bg-gradient-to-br from-success-500/20 to-success-400/20 rounded-lg p-4 border border-success-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>⚡ Instant Payments</h4>
-                              <p className='text-white/80 text-sm'>
-                                Built on Stellar's fast, low-cost network. Payments settle in 3-5
-                                seconds with minimal fees.
-                              </p>
-                            </div>
-                            <div className='bg-gradient-to-br from-accent-500/20 to-accent-400/20 rounded-lg p-4 border border-accent-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>🌐 Global Access</h4>
-                              <p className='text-white/80 text-sm'>
-                                Borderless transactions, no geographic restrictions, and 24/7
-                                availability for global teams.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Business Benefits */}
-                        <div className='space-y-6'>
-                          <h3 className='text-2xl font-bold text-accent-300'>
-                            💼 Business Benefits
-                          </h3>
-                          <div className='space-y-4'>
-                            <div className='bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg p-4 border border-purple-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>💰 Cost Reduction</h4>
-                              <p className='text-white/80 text-sm'>
-                                Eliminate payment processing fees, reduce administrative overhead,
-                                and automate financial workflows.
-                              </p>
-                            </div>
-                            <div className='bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg p-4 border border-cyan-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>
-                                ⚡ Speed & Efficiency
-                              </h4>
-                              <p className='text-white/80 text-sm'>
-                                Instant settlements, automated milestone tracking, and reduced
-                                time-to-payment cycles.
-                              </p>
-                            </div>
-                            <div className='bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg p-4 border border-green-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>🛡️ Risk Mitigation</h4>
-                              <p className='text-white/80 text-sm'>
-                                Built-in dispute resolution, time-locked releases, and
-                                multi-signature security for complex projects.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Implementation Guide */}
-                      <div className='bg-gradient-to-br from-white/5 to-white/10 rounded-xl p-6 border border-white/20'>
-                        <h3 className='text-2xl font-bold text-white mb-6'>🛠️ Getting Started</h3>
-                        <div className='grid md:grid-cols-4 gap-4'>
-                          <div className='text-center p-4 bg-gradient-to-br from-brand-500/20 to-brand-400/20 rounded-lg border border-brand-400/30'>
-                            <div className='text-3xl mb-3'>1️⃣</div>
-                            <h4 className='font-semibold text-white mb-2'>
-                              Understand the Concept
-                            </h4>
-                            <p className='text-white/80 text-sm'>
-                              Learn how smart contract escrow works and its benefits for your
-                              business.
-                            </p>
-                          </div>
-                          <div className='text-center p-4 bg-gradient-to-br from-success-500/20 to-success-400/20 rounded-lg border border-success-400/30'>
-                            <div className='text-3xl mb-3'>2️⃣</div>
-                            <h4 className='font-semibold text-white mb-2'>Choose Your Use Case</h4>
-                            <p className='text-white/80 text-sm'>
-                              Identify projects, services, or work that can benefit from escrow
-                              mechanics.
-                            </p>
-                          </div>
-                          <div className='text-center p-4 bg-gradient-to-br from-accent-500/20 to-accent-400/20 rounded-lg border border-accent-400/30'>
-                            <div className='text-3xl mb-3'>3️⃣</div>
-                            <h4 className='font-semibold text-white mb-2'>Plan Your Integration</h4>
-                            <p className='text-white/80 text-sm'>
-                              Design workflows, define milestones, and plan dispute resolution
-                              processes.
-                            </p>
-                          </div>
-                          <div className='text-center p-4 bg-gradient-to-br from-warning-500/20 to-warning-400/20 rounded-lg border border-warning-400/30'>
-                            <div className='text-3xl mb-3'>4️⃣</div>
-                            <h4 className='font-semibold text-white mb-2'>Launch & Scale</h4>
-                            <p className='text-white/80 text-sm'>
-                              Deploy your solution, onboard users, and scale your trustless work
-                              platform.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+              {/* System Architecture Section - Collapsible */}
+              <details className='mt-16 group'>
+                <summary className='cursor-pointer list-none'>
+                  <div className='text-center mb-8 transition-all duration-300'>
+                    <div className='inline-flex items-center space-x-3 bg-gradient-to-r from-brand-500/20 to-accent-500/20 px-6 py-4 rounded-xl border border-brand-400/30 hover:border-brand-400/60 hover:shadow-lg hover:shadow-brand-500/20 transition-all duration-300'>
+                      <span className='text-2xl group-open:rotate-90 transition-transform duration-300'>▶</span>
+                      <h3 className='text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-accent-400 to-brand-400'>
+                        🏗️ System Architecture
+                      </h3>
                     </div>
-                  )}
-
-                  {/* Stellar Guide */}
-                  {activeSection === 'stellar-guide' && (
-                    <div className='space-y-8'>
-                      <div className='text-center mb-8'>
-                        <h2 className='text-3xl font-bold text-white mb-4'>⭐ Stellar Guide</h2>
-                        <p className='text-lg text-white/80 max-w-3xl mx-auto'>
-                          Learn about Stellar blockchain, its advantages for business applications,
-                          and how it powers Trustless Work mechanics.
-                        </p>
-                      </div>
-
-                      <div className='grid md:grid-cols-2 gap-8'>
-                        {/* Stellar Advantages */}
-                        <div className='space-y-6'>
-                          <h3 className='text-2xl font-bold text-brand-300'>🌟 Why Stellar?</h3>
-                          <div className='space-y-4'>
-                            <div className='bg-gradient-to-br from-brand-500/20 to-brand-400/20 rounded-lg p-4 border border-brand-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>⚡ Fast & Cheap</h4>
-                              <p className='text-white/80 text-sm'>
-                                3-5 second finality with ultra-low fees (~$0.000001 per
-                                transaction). Perfect for high-volume applications.
-                              </p>
-                            </div>
-                            <div className='bg-gradient-to-br from-success-500/20 to-success-400/20 rounded-lg p-4 border border-success-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>🌍 Global Reach</h4>
-                              <p className='text-white/80 text-sm'>
-                                Built for cross-border payments with native multi-asset support and
-                                regulatory compliance features.
-                              </p>
-                            </div>
-                            <div className='bg-gradient-to-br from-accent-500/20 to-accent-400/20 rounded-lg p-4 border border-accent-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>🔄 Interoperability</h4>
-                              <p className='text-white/80 text-sm'>
-                                Seamless integration with traditional financial systems and other
-                                blockchain networks.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Business Applications */}
-                        <div className='space-y-6'>
-                          <h3 className='text-2xl font-bold text-accent-300'>
-                            💼 Business Applications
-                          </h3>
-                          <div className='space-y-4'>
-                            <div className='bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg p-4 border border-purple-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>
-                                💳 Payment Processing
-                              </h4>
-                              <p className='text-white/80 text-sm'>
-                                Process payments, subscriptions, and recurring transactions with
-                                minimal fees and instant settlement.
-                              </p>
-                            </div>
-                            <div className='bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg p-4 border border-cyan-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>🏦 Banking Services</h4>
-                              <p className='text-white/80 text-sm'>
-                                Build banking solutions, remittances, and financial services with
-                                regulatory compliance.
-                              </p>
-                            </div>
-                            <div className='bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg p-4 border border-green-400/30'>
-                              <h4 className='font-semibold text-white mb-2'>🔐 Escrow Services</h4>
-                              <p className='text-white/80 text-sm'>
-                                Implement smart contract escrow for freelancing, e-commerce, and
-                                service-based businesses.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Stellar Ecosystem */}
-                      <div className='bg-gradient-to-br from-warning-500/20 to-warning-400/20 rounded-xl p-6 border border-warning-400/30'>
-                        <h3 className='text-2xl font-bold text-white mb-4'>🌐 Stellar Ecosystem</h3>
-                        <div className='grid md:grid-cols-3 gap-6'>
-                          <div>
-                            <h4 className='font-semibold text-warning-300 mb-3'>Core Assets</h4>
-                            <ul className='text-white/80 text-sm space-y-2'>
-                              <li>
-                                • <strong>XLM:</strong> Native currency for fees and operations
-                              </li>
-                              <li>
-                                • <strong>USDC:</strong> USD-pegged stablecoin for stable value
-                              </li>
-                              <li>
-                                • <strong>Custom Assets:</strong> Create your own tokens
-                              </li>
-                              <li>
-                                • <strong>Anchors:</strong> Fiat currency gateways
-                              </li>
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className='font-semibold text-warning-300 mb-3'>
-                              Development Tools
-                            </h4>
-                            <ul className='text-white/80 text-sm space-y-2'>
-                              <li>
-                                • <strong>Stellar SDK:</strong> Core development library
-                              </li>
-                              <li>
-                                • <strong>Horizon API:</strong> Blockchain data access
-                              </li>
-                              <li>
-                                • <strong>Laboratory:</strong> Testing and experimentation
-                              </li>
-                              <li>
-                                • <strong>Network Explorer:</strong> Transaction monitoring
-                              </li>
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className='font-semibold text-warning-300 mb-3'>
-                              Integration Partners
-                            </h4>
-                            <ul className='text-white/80 text-sm space-y-2'>
-                              <li>
-                                • <strong>Circle:</strong> USDC issuer and payments
-                              </li>
-                              <li>
-                                • <strong>MoneyGram:</strong> Global remittances
-                              </li>
-                              <li>
-                                • <strong>IBM:</strong> Enterprise blockchain solutions
-                              </li>
-                              <li>
-                                • <strong>Banking Partners:</strong> Traditional finance integration
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-
-              {/* System Architecture */}
-              {activeSection === 'architecture' && (
-                <div className='space-y-8'>
-                  <div className='text-center mb-8'>
-                    <h2 className='text-3xl font-bold text-white mb-4'>🏗️ System Architecture</h2>
-                    <p className='text-lg text-white/80'>
-                      Comprehensive overview of the Trustless Work system architecture and component
-                      relationships
+                    <p className='text-md text-white/70 max-w-3xl mx-auto mt-3'>
+                      Click to view comprehensive overview of the Trustless Work system architecture
                     </p>
                   </div>
 
-                  <div className='bg-white/5 rounded-lg p-4 border border-white/20 overflow-x-auto'>
+                </summary>
+
+                <div className='mt-8 space-y-8'>
+                  <div className='bg-white/5 rounded-lg p-6 border border-white/20 overflow-x-auto'>
                     <div className='mermaid-diagram min-w-[800px] text-sm'>
-                      <div className='text-center text-white/60 mb-4'>
-                        <p>Trustless Work System Architecture & Data Flow</p>
+                      <div className='text-center text-white/60 mb-6'>
+                        <p className='text-lg'>Trustless Work System Architecture & Data Flow</p>
                         <p className='text-xs'>Component relationships and integration points</p>
                       </div>
 
-                      {/* Architecture Diagram using Mermaid-like structure */}
+                      {/* Architecture Diagram */}
                       <div className='architecture-diagram space-y-6'>
                         {/* User Layer */}
                         <div className='text-center'>
@@ -982,9 +494,7 @@ export default VibecodingComponent;`}
 
                           {/* Smart Contract Components */}
                           <div className='mt-4'>
-                            <div className='text-sm text-white/70 mb-3'>
-                              Smart Contract Components
-                            </div>
+                            <div className='text-sm text-white/70 mb-3'>Smart Contract Components</div>
                             <div className='grid grid-cols-2 gap-4 max-w-2xl mx-auto'>
                               <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
                                 <div className='text-xs text-white/80'>Multi-Signature</div>
@@ -1027,241 +537,86 @@ export default VibecodingComponent;`}
                     </div>
                   </div>
 
-                  {/* Architecture Description */}
-                  <div className='bg-gradient-to-br from-white/5 to-white/10 rounded-xl p-6 border border-white/20'>
-                    <h3 className='text-2xl font-bold text-white mb-4'>🏛️ Architecture Overview</h3>
-                    <div className='grid md:grid-cols-2 gap-6'>
-                      <div>
-                        <h4 className='font-semibold text-brand-300 mb-3'>System Layers</h4>
-                        <ul className='text-white/80 text-sm space-y-2'>
-                          <li>
-                            • <strong>UI Layer:</strong> React components with hooks and state
-                            management
-                          </li>
-                          <li>
-                            • <strong>State Layer:</strong> React Context for global state
-                            synchronization
-                          </li>
-                          <li>
-                            • <strong>Logic Layer:</strong> Trustless Work SDK with business logic
-                          </li>
-                          <li>
-                            • <strong>Blockchain Layer:</strong> Stellar network integration and
-                            smart contracts
-                          </li>
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className='font-semibold text-accent-300 mb-3'>
-                          Key Integration Points
-                        </h4>
-                        <ul className='text-white/80 text-sm space-y-2'>
-                          <li>
-                            • <strong>UI → State:</strong> Components consume context state and
-                            dispatch actions
-                          </li>
-                          <li>
-                            • <strong>State → Logic:</strong> Context uses SDK hooks for business
-                            operations
-                          </li>
-                          <li>
-                            • <strong>Logic → Blockchain:</strong> SDK executes Stellar operations
-                            and contract logic
-                          </li>
-                          <li>
-                            • <strong>Blockchain → State:</strong> Network events update application
-                            state
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              )}
-
-              {/* Nexus Starters */}
-              {activeSection === 'starters' && (
-                <div className='space-y-8'>
-                  <div className='text-center mb-8'>
-                    <h2 className='text-3xl font-bold text-white mb-4'>👨🏻‍💻 Nexus Starters</h2>
-                    <p className='text-lg text-white/80 max-w-2xl mx-auto'>
-                      Build on Stellar with Trustless Work — comprehensive starter kits for
-                      innovative apps using advanced escrow mechanics and enhanced Stellar
-                      integrations.
-                    </p>
-                  </div>
-
-                  <div className='grid md:grid-cols-3 gap-6'>
-                    {/* DeFi Starter */}
-                    <div className='bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-400/30 rounded-2xl p-6 hover:border-cyan-400/50 transition-all duration-300 group relative'>
-                      {/* Coming Soon Badge */}
-                      <div className='absolute top-4 right-4 z-10'>
-                        <span className='bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse'>
-                          🔜 Coming Soon
-                        </span>
-                      </div>
-
-                      <div className='text-center mb-4'>
-                        <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
-                          💎
-                        </div>
-                        <h4 className='text-xl font-bold text-white mb-2'>DeFi Starter</h4>
-                        <p className='text-white/70 text-sm mb-4'>
-                          Create decentralized financial apps with escrow contracts and yield
-                          optimization.
-                        </p>
-                      </div>
-
-                      <div className='space-y-2 mb-4'>
-                        <div className='flex items-center text-sm text-cyan-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Yield farming protocols</span>
-                        </div>
-                        <div className='flex items-center text-sm text-cyan-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Liquidity provision</span>
-                        </div>
-                        <div className='flex items-center text-sm text-cyan-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Cross-chain bridges</span>
-                        </div>
-                        <div className='flex items-center text-sm text-cyan-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Risk management tools</span>
-                        </div>
-                      </div>
-
-                      <button
-                        disabled
-                        className='block w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white/50 font-semibold py-3 px-4 rounded-xl transition-all duration-300 cursor-not-allowed text-center'
-                      >
-                        💎 Explore DeFi Starter
-                      </button>
-                    </div>
-
-                    {/* Gaming Starter */}
-                    <div className='bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-400/30 rounded-2xl p-6 hover:border-purple-400/50 transition-all duration-300 group relative'>
-                      {/* Coming Soon Badge */}
-                      <div className='absolute top-4 right-4 z-10'>
-                        <span className='bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse'>
-                          🔜 Coming Soon
-                        </span>
-                      </div>
-
-                      <div className='text-center mb-4'>
-                        <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
-                          🎮
-                        </div>
-                        <h4 className='text-xl font-bold text-white mb-2'>Gaming Starter</h4>
-                        <p className='text-white/70 text-sm mb-4'>
-                          Build play-to-earn games with secure escrow for tournaments, rewards, and
-                          trading.
-                        </p>
-                      </div>
-
-                      <div className='space-y-2 mb-4'>
-                        <div className='flex items-center text-sm text-purple-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Tournament prize pools</span>
-                        </div>
-                        <div className='flex items-center text-sm text-purple-300'>
-                          <span className='mr-2'>•</span>
-                          <span>NFT marketplace integration</span>
-                        </div>
-                        <div className='flex items-center text-sm text-purple-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Cross-game asset transfers</span>
-                        </div>
-                        <div className='flex items-center text-sm text-purple-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Automated reward distribution</span>
-                        </div>
-                      </div>
-
-                      <button
-                        disabled
-                        className='block w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white/50 font-semibold py-3 px-4 rounded-xl transition-all duration-300 cursor-not-allowed text-center'
-                      >
-                        🎮 Explore Gaming Starter
-                      </button>
-                    </div>
-
-                    {/* Unicorn Starter */}
-                    <div className='bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-400/30 rounded-2xl p-6 hover:border-green-400/50 transition-all duration-300 group relative'>
-                      {/* Coming Soon Badge */}
-                      <div className='absolute top-4 right-4 z-10'>
-                        <span className='bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse'>
-                          🔜 Coming Soon
-                        </span>
-                      </div>
-
-                      <div className='text-center mb-4'>
-                        <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
-                          🦄
-                        </div>
-                        <h4 className='text-xl font-bold text-white mb-2'>Unicorn Starter</h4>
-                        <p className='text-white/70 text-sm mb-4'>
-                          Build "unicorn" apps with cutting-edge features and disruptive tech.
-                        </p>
-                      </div>
-
-                      <div className='space-y-2 mb-4'>
-                        <div className='flex items-center text-sm text-green-300'>
-                          <span className='mr-2'>•</span>
-                          <span>AI-powered features</span>
-                        </div>
-                        <div className='flex items-center text-sm text-green-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Cross-chain interoperability</span>
-                        </div>
-                        <div className='flex items-center text-sm text-green-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Advanced tokenomics</span>
-                        </div>
-                        <div className='flex items-center text-sm text-green-300'>
-                          <span className='mr-2'>•</span>
-                          <span>Revolutionary UX/UI</span>
-                        </div>
-                      </div>
-
-                      <button
-                        disabled
-                        className='block w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white/50 font-semibold py-3 px-4 rounded-xl transition-all duration-300 cursor-not-allowed text-center'
-                      >
-                        🦄 Explore Unicorn Starter
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className='bg-gradient-to-br from-brand-500/20 to-brand-400/20 rounded-xl p-6 border border-brand-400/30'>
-                    <h3 className='text-2xl font-bold text-white mb-4'>🚀 Getting Started</h3>
-                    <div className='grid md:grid-cols-2 gap-6'>
-                      <div>
-                        <h4 className='font-semibold text-brand-300 mb-3'>Quick Start</h4>
-                        <ul className='text-white/80 text-sm space-y-2'>
-                          <li>• Clone the starter repository</li>
-                          <li>• Install dependencies with npm</li>
-                          <li>• Configure your Stellar wallet</li>
-                          <li>• Deploy to your preferred platform</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className='font-semibold text-accent-300 mb-3'>Features Included</h4>
-                        <ul className='text-white/80 text-sm space-y-2'>
-                          <li>• Pre-configured Trustless Work integration</li>
-                          <li>• Stellar wallet connection setup</li>
-                          <li>• Example escrow contracts</li>
-                          <li>• TypeScript support and documentation</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              </details>
             </div>
+
+            {/* Architecture Description */}
+            <div className='bg-gradient-to-br from-white/5 to-white/10 rounded-xl p-6 border border-white/20'>
+              <h3 className='text-2xl font-bold text-white mb-4'>🏛️ Architecture Overview</h3>
+              <div className='grid md:grid-cols-2 gap-6'>
+                <div>
+                  <h4 className='font-semibold text-brand-300 mb-3'>System Layers</h4>
+                  <ul className='text-white/80 text-sm space-y-2'>
+                    <li>
+                      • <strong>UI Layer:</strong> React components with hooks and state management
+                    </li>
+                    <li>
+                      • <strong>State Layer:</strong> React Context for global state synchronization
+                    </li>
+                    <li>
+                      • <strong>Logic Layer:</strong> Trustless Work SDK with business logic
+                    </li>
+                    <li>
+                      • <strong>Blockchain Layer:</strong> Stellar network integration and smart contracts
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className='font-semibold text-accent-300 mb-3'>Key Integration Points</h4>
+                  <ul className='text-white/80 text-sm space-y-2'>
+                    <li>
+                      • <strong>UI → State:</strong> Components consume context state and dispatch actions
+                    </li>
+                    <li>
+                      • <strong>State → Logic:</strong> Context uses SDK hooks for business operations
+                    </li>
+                    <li>
+                      • <strong>Logic → Blockchain:</strong> SDK executes Stellar operations and contract logic
+                    </li>
+                    <li>
+                      • <strong>Blockchain → State:</strong> Network events update application state
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </main>
+
+      {/* DocsSidebar Component */}
+      <DocsSidebar
+        isOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        initialTab={sidebarTab}
+      />
+
+      {/* Floating Documentation Button */}
+      {!isSidebarOpen && (
+        <div className='fixed bottom-8 right-8 z-30 flex flex-col space-y-3'>
+          <button
+            onClick={() => openSidebar('developer')}
+            className='group p-4 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white shadow-lg transition-all duration-300 transform hover:scale-110 relative -p-10'
+            title='Open Documentation'
+          >
+            <span className='text-2xl'>
+              <Image
+                src='/images/logo/logoicon.png'
+                alt='STELLAR NEXUS'
+                width={54}
+                height={54}
+                style={{ width: 'auto', height: 'auto' }}
+              />
+            </span>
+            {/* Tooltip */}
+            <div className='absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none'>
+              Open Documentation
+            </div>
+          </button>
+        </div>
+      )}
 
       {/* Nexus Prime */}
       <NexusPrime currentPage='docs' walletConnected={isConnected} />

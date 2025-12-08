@@ -354,7 +354,7 @@ class NotificationService {
       const badgemessage = badgeName ? `and unlocked the ${badgeName} badge` : '';
       const message = `You completed the mission: ${questName}! You earned ${xpEarned} XP and ${pointsEarned} points${badgemessage}.`;
 
-      return this.createNotification(userId, 'quest_completed', '✅🫡¡Misión Completed!', message, {
+      return this.createNotification(userId, 'quest_completed', '🫡 Mission Completed!', message, {
         questId,
         xpEarned,
         pointsEarned,

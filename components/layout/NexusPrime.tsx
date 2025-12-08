@@ -124,6 +124,16 @@ export const NexusPrime: React.FC<NexusPrimeProps> = ({
           },
         },
       },
+      docs: {
+        welcome:
+          'Welcome to the Documentation Hub! 📚 Here you\'ll find everything you need to understand the Stellar Nexus Experience platform.',
+        architecture:
+          'Explore our comprehensive system architecture, from UI components to smart contracts on the Stellar blockchain! 🏗️',
+        learning:
+          'Ready to dive deep? Check out the Developer and Founder guides in the sidebar for starter kits, tutorials, and best practices! 💡',
+        platform:
+          'The Stellar Nexus Experience combines trustless escrow mechanics, gamification, and lightning-fast Stellar blockchain technology. ⚡',
+      },
       wallet: {
         connected:
           'Excellent! Your Stellar wallet is now connected. The power of trustless systems is yours!',
@@ -155,6 +165,16 @@ export const NexusPrime: React.FC<NexusPrimeProps> = ({
       } else {
         message = characterMessages.demos.welcome;
       }
+    } else if (currentPage === 'docs') {
+      // Rotate through different docs messages for variety
+      const docsMessages = [
+        characterMessages.docs.welcome,
+        characterMessages.docs.architecture,
+        characterMessages.docs.learning,
+        characterMessages.docs.platform,
+      ];
+      const randomIndex = Math.floor(Math.random() * docsMessages.length);
+      message = docsMessages[randomIndex];
     } else if (currentPage === 'mini-games') {
       // If we have a specific gameId, provide game-specific guidance
       if (
