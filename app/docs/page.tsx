@@ -598,10 +598,18 @@ export default function DocsPage() {
         <div className='fixed bottom-8 right-8 z-30 flex flex-col space-y-3'>
           <button
             onClick={() => openSidebar('developer')}
-            className='group p-4 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white shadow-lg transition-all duration-300 transform hover:scale-110 relative'
+            className='group p-4 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white shadow-lg transition-all duration-300 transform hover:scale-110 relative -p-10'
             title='Open Documentation'
           >
-            <span className='text-2xl'>📚</span>
+            <span className='text-2xl'>
+              <Image
+                src='/images/logo/logoicon.png'
+                alt='STELLAR NEXUS'
+                width={54}
+                height={54}
+                style={{ width: 'auto', height: 'auto' }}
+              />
+            </span>
             {/* Tooltip */}
             <div className='absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none'>
               Open Documentation
