@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { ChristmasHat } from '@/components/ui/christmas/ChristmasHat';
 
 interface HeroSectionProps {
   isVideoPlaying: boolean;
@@ -30,7 +31,7 @@ export const HeroSection = ({
       <div className='text-center'>
         {/* Page Header */}
         <div className='text-center mb-16'>
-          <div className='flex justify-center mb-6'>
+          <div className='flex justify-center mb-6 relative'>
             <Image
               src='/images/logo/logoicon.png'
               alt='STELLAR NEXUS'
@@ -38,6 +39,15 @@ export const HeroSection = ({
               height={300}
               priority
               style={{ zIndex: -1, position: 'relative', width: 'auto', height: 'auto' }}
+            />
+            <ChristmasHat
+              size={200}
+              style={{
+                position: 'absolute',
+                top: '25px',
+                right: 'calc(50% - 130px)',
+                zIndex: 10
+              }}
             />
           </div>
 
@@ -135,10 +145,9 @@ export const HeroSection = ({
                   text-white shadow-lg border-2 border-white/20 
                   
                   // ✅ 2. ESTILOS CONDICIONALES BASADOS EN EL ESTADO ✅
-                  ${
-                    isTechTreeDisabled
-                      ? 'opacity-50 cursor-not-allowed transform scale-100' // Estado Deshabilitado
-                      : 'bg-gradient-to-r from-brand-500/20 to-accent-500/20 hover:from-brand-800/50 hover:to-accent-800/50 transform hover:scale-105 hover:shadow-xl hover:border-white/40' // Estado Habilitado
+                  ${isTechTreeDisabled
+                    ? 'opacity-50 cursor-not-allowed transform scale-100' // Estado Deshabilitado
+                    : 'bg-gradient-to-r from-brand-500/20 to-accent-500/20 hover:from-brand-800/50 hover:to-accent-800/50 transform hover:scale-105 hover:shadow-xl hover:border-white/40' // Estado Habilitado
                   }
                 `}
               >
@@ -190,11 +199,10 @@ export const HeroSection = ({
                       e.preventDefault();
                     }
                   }}
-                  className={`relative w-full md:w-auto px-6 md:px-8 py-4 font-bold rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 transform shadow-lg border-2 ${
-                    miniGamesUnlocked
-                      ? '!animate-none bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-600 hover:to-accent-600 text-white hover:scale-105 hover:shadow-xl border-white/20 hover:border-white/40 cursor-pointer '
-                      : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'
-                  }`}
+                  className={`relative w-full md:w-auto px-6 md:px-8 py-4 font-bold rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 transform shadow-lg border-2 ${miniGamesUnlocked
+                    ? '!animate-none bg-gradient-to-r from-brand-500 to-accent-500 hover:from-brand-600 hover:to-accent-600 text-white hover:scale-105 hover:shadow-xl border-white/20 hover:border-white/40 cursor-pointer '
+                    : 'bg-gray-600 text-gray-400 border-gray-600 cursor-not-allowed'
+                    }`}
                   title={
                     isLoadingAccount && isConnected
                       ? 'Loading your account...'

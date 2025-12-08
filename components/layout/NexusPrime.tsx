@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Image from 'next/image';
+import { ChristmasHat } from '@/components/ui/christmas/ChristmasHat';
 
 interface NexusPrimeProps {
   currentPage?: string;
@@ -159,12 +160,12 @@ export const NexusPrime: React.FC<NexusPrimeProps> = ({
       if (
         gameId &&
         characterMessages['mini-games'].games[
-          gameId as keyof (typeof characterMessages)['mini-games']['games']
+        gameId as keyof (typeof characterMessages)['mini-games']['games']
         ]
       ) {
         const gameMessages =
           characterMessages['mini-games'].games[
-            gameId as keyof (typeof characterMessages)['mini-games']['games']
+          gameId as keyof (typeof characterMessages)['mini-games']['games']
           ];
         // Rotate through different message types for variety
         const messageTypes = [gameMessages.welcome, gameMessages.tips, gameMessages.encouragement];
@@ -435,6 +436,17 @@ export const NexusPrime: React.FC<NexusPrimeProps> = ({
                 </div>
               )}
             </div>
+
+            {/* Christmas Hat on NexusPrime */}
+            <ChristmasHat
+              size={85}
+              style={{
+                position: 'absolute',
+                top: '-26px',
+                right: '22px',
+                zIndex: 20
+              }}
+            />
           </div>
 
           {/* Speech Bubble - Don't show during loading */}
@@ -537,11 +549,10 @@ export const NexusPrime: React.FC<NexusPrimeProps> = ({
                       <button
                         onClick={previousTutorialStep}
                         disabled={tutorialStep === 0}
-                        className={`flex-1 px-2 py-1.5 text-xs rounded-lg transition-colors border ${
-                          tutorialStep === 0
-                            ? 'bg-white/5 text-white/30 border-white/10 cursor-not-allowed'
-                            : 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/30'
-                        }`}
+                        className={`flex-1 px-2 py-1.5 text-xs rounded-lg transition-colors border ${tutorialStep === 0
+                          ? 'bg-white/5 text-white/30 border-white/10 cursor-not-allowed'
+                          : 'bg-white/10 hover:bg-white/20 text-white border-white/20 hover:border-white/30'
+                          }`}
                       >
                         ← Previous
                       </button>

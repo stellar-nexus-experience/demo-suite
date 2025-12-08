@@ -1,6 +1,7 @@
 'use client';
 
 import { appConfig, stellarConfig } from '@/lib/stellar/wallet-config';
+import { ChristmasHat } from '@/components/ui/christmas/ChristmasHat';
 import Image from 'next/image';
 
 export const Footer = () => {
@@ -13,12 +14,21 @@ export const Footer = () => {
           {/* App Information */}
           <div className='max-w-2xl mx-auto'>
             <div className='flex items-center justify-center space-x-3 mb-4'>
-              <div className='-mt-4'>
+              <div className='-mt-4 relative inline-block'>
                 <Image
                   src='/images/logo/logoicon.png'
                   alt='STELLAR NEXUS'
                   width={150}
                   height={150}
+                />
+                <ChristmasHat
+                  size={105}
+                  style={{
+                    position: 'absolute',
+                    top: '-5px',
+                    right: '15px',
+                    zIndex: 10
+                  }}
                 />
               </div>
               <div>

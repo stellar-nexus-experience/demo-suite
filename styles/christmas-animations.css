@@ -1,0 +1,124 @@
+/* Christmas Theme Animations */
+
+/* Festive glow effect for buttons */
+@keyframes festive-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(220, 38, 38, 0.3),
+                0 0 10px rgba(220, 38, 38, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5),
+                0 0 20px rgba(220, 38, 38, 0.3),
+                0 0 30px rgba(34, 197, 94, 0.2);
+  }
+}
+
+/* Festive button hover class */
+.festive-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.festive-button:hover {
+  animation: festive-glow 2s ease-in-out infinite;
+  transform: translateY(-2px);
+}
+
+/* Christmas sparkle effect */
+@keyframes christmas-sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.christmas-sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  animation: christmas-sparkle 1.5s ease-in-out infinite;
+}
+
+/* Festive gradient background */
+.christmas-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(220, 38, 38, 0.1) 0%,
+    rgba(34, 197, 94, 0.1) 100%
+  );
+}
+
+/* Gentle pulse for Christmas elements */
+@keyframes gentle-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.christmas-pulse {
+  animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+/* Shimmer effect for text */
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.christmas-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Snow particle base styles */
+.snow-particle {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Festive border glow */
+.festive-border {
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  box-shadow: 0 0 10px rgba(220, 38, 38, 0.2),
+              inset 0 0 10px rgba(34, 197, 94, 0.1);
+}
+
+/* Christmas card hover effect */
+.christmas-card {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.christmas-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.2),
+              0 5px 15px rgba(34, 197, 94, 0.1);
+}
+
+/* Festive text glow */
+.festive-text-glow {
+  text-shadow: 0 0 10px rgba(220, 38, 38, 0.5),
+               0 0 20px rgba(34, 197, 94, 0.3);
+}
