@@ -443,11 +443,186 @@ export default function DocsPage() {
                 </div>
               </div>
 
-              {/* Call to Action */}
-              <div className='text-center mt-8 relative z-10'>
-                <p className='text-white/60 text-sm'>
-                  Explore the documentation below to learn how to build on Stellar Nexus Experience
-                </p>
+              {/* System Architecture Section */}
+              <div className='mt-16'>
+                <div className='text-center mb-12'>
+                  <h3 className='text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-accent-400 to-brand-400 mb-4'>
+                    🏗️ System Architecture
+                  </h3>
+                  <p className='text-lg text-white/80 max-w-3xl mx-auto'>
+                    Comprehensive overview of the Trustless Work system architecture and component relationships
+                  </p>
+                </div>
+
+                <div className='bg-white/5 rounded-lg p-6 border border-white/20 overflow-x-auto mb-8'>
+                  <div className='mermaid-diagram min-w-[800px] text-sm'>
+                    <div className='text-center text-white/60 mb-6'>
+                      <p className='text-lg'>Trustless Work System Architecture & Data Flow</p>
+                      <p className='text-xs'>Component relationships and integration points</p>
+                    </div>
+
+                    {/* Architecture Diagram */}
+                    <div className='architecture-diagram space-y-6'>
+                      {/* User Layer */}
+                      <div className='text-center'>
+                        <div className='inline-block bg-gradient-to-r from-brand-500/30 to-accent-500/30 px-6 py-3 rounded-lg border border-brand-400/50'>
+                          <div className='text-2xl mb-2'>👤</div>
+                          <div className='font-semibold text-white'>User Interface Layer</div>
+                          <div className='text-xs text-white/70'>React Components & Hooks</div>
+                        </div>
+                      </div>
+
+                      {/* State Management Layer */}
+                      <div className='text-center'>
+                        <div className='inline-block bg-gradient-to-r from-success-500/30 to-success-400/30 px-6 py-3 rounded-lg border border-success-400/50'>
+                          <div className='text-2xl mb-2'>⚙️</div>
+                          <div className='font-semibold text-white'>State Management Layer</div>
+                          <div className='text-xs text-white/70'>React Context & Hooks</div>
+                        </div>
+                        <div className='grid grid-cols-3 gap-3 mt-4 max-w-2xl mx-auto'>
+                          <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                            <div className='text-xs text-white/80'>Wallet Context</div>
+                            <div className='text-xs text-white/60'>Stellar Integration</div>
+                          </div>
+                          <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                            <div className='text-xs text-white/80'>Escrow Context</div>
+                            <div className='text-xs text-white/60'>Smart Contract State</div>
+                          </div>
+                          <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                            <div className='text-xs text-white/80'>Transaction Context</div>
+                            <div className='text-xs text-white/60'>Network Operations</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Business Logic Layer */}
+                      <div className='text-center'>
+                        <div className='inline-block bg-gradient-to-r from-accent-500/30 to-accent-400/30 px-6 py-3 rounded-lg border border-accent-400/50'>
+                          <div className='text-2xl mb-2'>🔧</div>
+                          <div className='font-semibold text-white'>Business Logic Layer</div>
+                          <div className='text-xs text-white/70'>Trustless Work SDK</div>
+                        </div>
+                        <div className='grid grid-cols-3 gap-3 mt-4 max-w-xl mx-auto'>
+                          <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                            <div className='text-xs text-white/80'>Escrow Management</div>
+                            <div className='text-xs text-white/60'>Contract Logic</div>
+                          </div>
+                          <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                            <div className='text-xs text-white/80'>Wallet Operations</div>
+                            <div className='text-xs text-white/60'>Key Management</div>
+                          </div>
+                          <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                            <div className='text-xs text-white/80'>Transaction Handling</div>
+                            <div className='text-xs text-white/60'>Network Operations</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Blockchain Layer */}
+                      <div className='text-center'>
+                        <div className='inline-block bg-warning-500/30 to-warning-400/30 px-6 py-3 rounded-lg border border-warning-400/50'>
+                          <div className='text-2xl mb-2'>🚀</div>
+                          <div className='font-semibold text-white'>Blockchain Layer</div>
+                          <div className='text-xs text-white/70'>Stellar Network</div>
+                        </div>
+
+                        {/* Stellar Components */}
+                        <div className='grid grid-cols-2 gap-4 mt-4 max-w-lg mx-auto'>
+                          <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                            <div className='text-xs text-white/80'>Horizon API</div>
+                            <div className='text-xs text-white/60'>Network Interface</div>
+                          </div>
+                          <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                            <div className='text-xs text-white/80'>Stellar SDK</div>
+                            <div className='text-xs text-white/60'>Core Operations</div>
+                          </div>
+                        </div>
+
+                        {/* Smart Contract Components */}
+                        <div className='mt-4'>
+                          <div className='text-sm text-white/70 mb-3'>Smart Contract Components</div>
+                          <div className='grid grid-cols-2 gap-4 max-w-2xl mx-auto'>
+                            <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                              <div className='text-xs text-white/80'>Multi-Signature</div>
+                              <div className='text-xs text-white/60'>Escrow Accounts</div>
+                            </div>
+                            <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                              <div className='text-xs text-white/80'>Time Locks</div>
+                              <div className='text-xs text-white/60'>Release Conditions</div>
+                            </div>
+                            <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                              <div className='text-xs text-white/80'>Asset Management</div>
+                              <div className='text-xs text-white/60'>Token Operations</div>
+                            </div>
+                            <div className='bg-white/10 px-3 py-2 rounded border border-white/20'>
+                              <div className='text-xs text-white/80'>Dispute Resolution</div>
+                              <div className='text-xs text-white/60'>Arbitration Logic</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Data Flow Indicators */}
+                      <div className='text-center text-white/60 text-xs'>
+                        <div className='flex items-center justify-center space-x-8'>
+                          <div className='flex items-center space-x-2'>
+                            <div className='w-3 h-3 bg-brand-400 rounded-full'></div>
+                            <span>Uses</span>
+                          </div>
+                          <div className='flex items-center space-x-2'>
+                            <div className='w-3 h-3 bg-success-400 rounded-full'></div>
+                            <span>Manages State</span>
+                          </div>
+                          <div className='flex items-center space-x-2'>
+                            <div className='w-3 h-3 bg-accent-400 rounded-full'></div>
+                            <span>Executes Logic</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Architecture Description */}
+                <div className='bg-gradient-to-br from-white/5 to-white/10 rounded-xl p-6 border border-white/20'>
+                  <h3 className='text-2xl font-bold text-white mb-4'>🏛️ Architecture Overview</h3>
+                  <div className='grid md:grid-cols-2 gap-6'>
+                    <div>
+                      <h4 className='font-semibold text-brand-300 mb-3'>System Layers</h4>
+                      <ul className='text-white/80 text-sm space-y-2'>
+                        <li>
+                          • <strong>UI Layer:</strong> React components with hooks and state management
+                        </li>
+                        <li>
+                          • <strong>State Layer:</strong> React Context for global state synchronization
+                        </li>
+                        <li>
+                          • <strong>Logic Layer:</strong> Trustless Work SDK with business logic
+                        </li>
+                        <li>
+                          • <strong>Blockchain Layer:</strong> Stellar network integration and smart contracts
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className='font-semibold text-accent-300 mb-3'>Key Integration Points</h4>
+                      <ul className='text-white/80 text-sm space-y-2'>
+                        <li>
+                          • <strong>UI → State:</strong> Components consume context state and dispatch actions
+                        </li>
+                        <li>
+                          • <strong>State → Logic:</strong> Context uses SDK hooks for business operations
+                        </li>
+                        <li>
+                          • <strong>Logic → Blockchain:</strong> SDK executes Stellar operations and contract logic
+                        </li>
+                        <li>
+                          • <strong>Blockchain → State:</strong> Network events update application state
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
