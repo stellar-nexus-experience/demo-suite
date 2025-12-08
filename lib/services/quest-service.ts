@@ -148,7 +148,8 @@ export class QuestService {
           quest.title, // Nombre de la misión
           quest.rewards.experience,
           quest.rewards.points,
-          badgeName // Nombre legible de la insignia (puede ser '')
+          badgeName, // Nombre legible de la insignia (puede ser '')
+          quest.rewards.badgeId
         );
       } catch (notificationError) {
         // No interrumpir el flujo principal si la notificación falla🚫

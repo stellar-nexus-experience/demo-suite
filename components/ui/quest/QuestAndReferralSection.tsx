@@ -70,28 +70,79 @@ export const QuestAndReferralSection: React.FC<QuestAndReferralSectionProps> = (
 
               const hasBadge = badgesEarnedArray.includes(badge.id);
 
+              // Get badge-specific colors
+              const getBadgeColors = (badgeId: string) => {
+                switch (badgeId) {
+                  case 'welcome_explorer':
+                    return {
+                      bg: 'bg-gray-500/20',
+                      border: 'border-gray-400/30',
+                      text: 'text-gray-300',
+                      icon: 'text-gray-400',
+                    };
+                  case 'escrow_expert':
+                    return {
+                      bg: 'bg-blue-500/20',
+                      border: 'border-blue-400/30',
+                      text: 'text-blue-300',
+                      icon: 'text-blue-400',
+                    };
+                  case 'trust_guardian':
+                    return {
+                      bg: 'bg-orange-500/20',
+                      border: 'border-orange-400/30',
+                      text: 'text-orange-300',
+                      icon: 'text-orange-400',
+                    };
+                  case 'stellar_champion':
+                    return {
+                      bg: 'bg-pink-500/20',
+                      border: 'border-pink-400/30',
+                      text: 'text-pink-300',
+                      icon: 'text-pink-400',
+                    };
+                  case 'nexus_master':
+                    return {
+                      bg: 'bg-green-500/20',
+                      border: 'border-green-400/30',
+                      text: 'text-green-300',
+                      icon: 'text-green-400',
+                    };
+                  default:
+                    return {
+                      bg: 'bg-white/5',
+                      border: 'border-white/10',
+                      text: 'text-white/70',
+                      icon: 'text-white/50',
+                    };
+                }
+              };
+
+              const colors = hasBadge ? getBadgeColors(badge.id) : {
+                bg: 'bg-white/5',
+                border: 'border-white/10',
+                text: 'text-white/70',
+                icon: 'text-white/50',
+              };
+
               return (
                 <div
                   key={badge.id}
-                  className={`flex items-center gap-3 p-3 rounded-lg ${
-                    hasBadge
-                      ? 'bg-green-500/20 border border-green-400/30'
-                      : 'bg-white/5 border border-white/10'
-                  }`}
+                  className={`flex items-center gap-3 p-3 rounded-lg ${colors.bg} border ${colors.border}`}
                 >
                   <div className='flex items-center justify-center w-8 h-8'>
                     <BadgeEmblem
                       id={badge.id}
                       size='sm'
-                      className={hasBadge ? 'text-green-400' : 'text-white/50'}
+                      className={colors.icon}
                     />
                   </div>
                   <div className='flex-1'>
-                    <div className={`font-medium ${hasBadge ? 'text-green-300' : 'text-white/70'}`}>
+                    <div className={`font-medium ${colors.text}`}>
                       {badge.name}
                     </div>
                   </div>
-                  <div className={`text-2xl ${hasBadge ? 'text-green-400' : 'text-white/30'}`}>
+                  <div className={`text-2xl ${hasBadge ? colors.icon : 'text-white/30'}`}>
                     {hasBadge ? '✅' : '⏳'}
                   </div>
                 </div>

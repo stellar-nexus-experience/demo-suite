@@ -390,7 +390,8 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({ children }) 
           demoName, // Nombre legible corregido
           xpEarned,
           pointsEarned,
-          badgeName
+          badgeName,
+          badgeToAward
         );
 
         // Show badge animation

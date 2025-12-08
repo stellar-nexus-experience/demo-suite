@@ -318,7 +318,8 @@ class NotificationService {
     demoName: string,
     xpEarned: number,
     pointsEarned: number,
-    badgeName?: string
+    badgeName?: string,
+    badgeId?: string
   ): Promise<string | null> {
     try {
       const badgeText = badgeName ? ` and unlocked the ${badgeName} badge` : '';
@@ -329,6 +330,7 @@ class NotificationService {
         xpEarned,
         pointsEarned,
         badgeName,
+        badgeId,
         demoName,
       });
     } catch (error) {
@@ -345,7 +347,8 @@ class NotificationService {
     questName: string,
     xpEarned: number,
     pointsEarned: number,
-    badgeName?: string
+    badgeName?: string,
+    badgeId?: string
   ): Promise<string | null> {
     try {
       const badgemessage = badgeName ? `and unlocked the ${badgeName} badge` : '';
@@ -356,6 +359,7 @@ class NotificationService {
         xpEarned,
         pointsEarned,
         badgeName,
+        badgeId,
         questName,
       });
     } catch (error) {

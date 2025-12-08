@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useAccount } from '@/contexts/auth/AccountContext';
 import { notificationService, Notification } from '@/lib/services/notification-service';
 import { useRouter } from 'next/navigation';
+import { getBadgeIcon } from '@/utils/constants/badges/assets';
 
 export const NotificationBell: React.FC = () => {
   const { account } = useAccount();
@@ -138,6 +139,21 @@ export const NotificationBell: React.FC = () => {
     }
   };
 
+  const getBadgeNotificationColor = (badgeId?: string) => {
+    switch (badgeId) {
+      case 'escrow_expert':
+        return 'bg-blue-500/20'; // Blue for Escrow Expert
+      case 'trust_guardian':
+        return 'bg-orange-500/20'; // Orange for Trust Guardian
+      case 'stellar_champion':
+        return 'bg-pink-500/20'; // Pink for Stellar Champion
+      case 'nexus_master':
+        return 'bg-green-500/20'; // Green for Nexus Master
+      default:
+        return 'bg-gray-500/20'; // Default gray
+    }
+  };
+
   const formatTimeAgo = (timestamp: any) => {
     const now = new Date();
     const notificationDate = timestamp.toDate();
@@ -207,17 +223,12 @@ export const NotificationBell: React.FC = () => {
                   <button
                     key={notification.id}
                     onClick={() => handleNotificationClick(notification)}
-                    className={`w-full text-left p-3 rounded-lg border transition-all duration-200 hover:scale-[1.02] ${
-                      notification.read
-                        ? 'bg-white/5 border-white/10 opacity-60'
-                        : `bg-gradient-to-br ${getNotificationColor(notification.type)}`
-                    }`}
+                    className={`w-full text-left p-3 rounded-lg border transition-all duration-200 hover:scale-[1.02] ${notification.read
+                      ? 'bg-white/5 border-white/10 opacity-60'
+                      : `bg-gradient-to-br ${getNotificationColor(notification.type)}`
+                      }`}
                   >
                     <div className='flex items-start gap-3'>
-                      {/* Icon */}
-                      <div className='text-2xl flex-shrink-0'>
-                        {getNotificationIcon(notification.type)}
-                      </div>
 
                       {/* Content */}
                       <div className='flex-1 min-w-0'>
@@ -245,8 +256,15 @@ export const NotificationBell: React.FC = () => {
                           )}
                           {/* Mostrar Insignia Ganada (NUEVO) */}
                           {notification.data?.badgeName && (
-                            <div className='inline-flex items-center gap-1 text-xs font-semibold text-purple-400 bg-purple-500/20 px-2 py-1 rounded'>
-                              🏅 {notification.data.badgeName}
+                            <div className={`inline-flex items-center gap-1 text-xs font-semibold text-white ${getBadgeNotificationColor(notification.data.badgeId)} px-2 py-1 rounded`}>
+                              {notification.data.badgeId ? (
+                                <span className="w-4 h-4 flex items-center justify-center">
+                                  {getBadgeIcon(notification.data.badgeId, 'w-4 h-4')}
+                                </span>
+                              ) : (
+                                '🏅'
+                              )}
+                              {notification.data.badgeName}
                             </div>
                           )}
                         </div>
